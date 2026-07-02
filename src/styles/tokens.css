@@ -1,0 +1,46 @@
+/* Design tokens — repris du prototype (§8). Thème sombre, mobile-first. */
+:root {
+  --bg: #0f1216;
+  --surface: #171b22;
+  --surface2: #1e2430;
+  --line: #2a3242;
+  --text: #eceef2;
+  --muted: #868fa0;
+  --faint: #5a6274;
+
+  /* disciplines */
+  --swim: #33c0d0;
+  --bike: #f5a65b;
+  --run: #ec6a80;
+  --taichi: #a99bea;
+
+  /* phases */
+  --p0: #4c86c6;
+  --p1: #6ba644;
+  --p2: #d4a72c;
+  --p3: #d65563;
+
+  --good: #4fbf8b;
+  --danger: #ec6a80;
+
+  /* typo */
+  --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* signature : dégradé des 3 disciplines */
+  --grad-tri: linear-gradient(135deg, var(--swim), var(--bike), var(--run));
+
+  /* rayons / espacements */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --tap: 44px; /* zone tactile minimale */
+
+  /* safe-area */
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+
+  --tabbar-h: 62px;
+}

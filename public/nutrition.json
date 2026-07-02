@@ -1,0 +1,47 @@
+[
+  {
+    "title": "Petit-déjeuner",
+    "accent": "swim",
+    "items": [
+      {"h": "Avant une longue séance (matin)", "t": "Glucides hauts, peu de fibres/gras pour la digestion. Flocons d'avoine + banane + miel + un peu de skyr, ou pain blanc/biscottes + miel/confiture + 1 fruit. Manger 1h30-2h avant si possible."},
+      {"h": "Jour d'entraînement normal", "t": "Glucides + protéines, durable. Flocons d'avoine + fruits rouges + yaourt grec/skyr + noix/graines, ou pain complet + œufs + fruit."},
+      {"h": "Jour de repos", "t": "On lève un peu le pied sur les féculents, on garde les protéines. Œufs + pain complet + légume (tomate/avocat) + 1 fruit, ou yaourt grec + fruits + noix."},
+      {"h": "Après une séance du matin (récup)", "t": "Refaire le plein dans l'heure : glucides + protéines. Ajouter une source de protéines (skyr, œufs, lait) + glucides (fruit, pain, flocons). La fenêtre post-effort compte sur ce volume."}
+    ]
+  },
+  {
+    "title": "Déjeuner",
+    "accent": "bike",
+    "items": [
+      {"h": "Structure de base", "t": "FÉCULENT + PROTÉINE + LÉGUME. On la périodise selon la charge du jour."},
+      {"h": "Grosse séance / longue cet aprèm", "t": "Féculent généreux (riz, pâtes, patate douce, quinoa) + poulet/poisson/œufs/légumineuses + légumes. Glucides prioritaires pour charger."},
+      {"h": "Jour d'entraînement standard", "t": "1 portion de féculent + protéine + grosse part de légumes + filet d'huile d'olive. Énergie stable l'après-midi."},
+      {"h": "Jour de repos", "t": "Plus de légumes, féculent en plus petite portion (ou légumineuses qui font les deux). Protéines constantes pour la récup."},
+      {"h": "Batch cooking du dimanche", "t": "Cuire en lot : riz/quinoa, protéines (poulet, lentilles, œufs durs), plateau de légumes rôtis. Tu composes tes midis en 2 min. L'habitude structurante n°1 de ta semaine."}
+    ]
+  },
+  {
+    "title": "Dîner",
+    "accent": "run",
+    "items": [
+      {"h": "Après une grosse séance / avant une longue demain", "t": "Reconstituer les réserves : féculents généreux + protéines. Pâtes/riz/pommes de terre + viande/poisson/œufs + légumes. Un dessert glucidique simple (compote, riz au lait) est le bienvenu ces soirs-là."},
+      {"h": "Soir de journée standard", "t": "Protéines + légumes à volonté + féculent modéré. Poisson gras 2×/sem (saumon, maquereau, sardine), utile en endurance. Huile d'olive/colza."},
+      {"h": "Veille de jour de repos", "t": "On allège les féculents, on garde protéines et légumes. Soupe + protéine + légumes, ou salade composée avec légumineuses."},
+      {"h": "Récupération & sommeil", "t": "Protéines à chaque dîner (réparation nocturne). Éviter les repas très gras/copieux trop tard. Alcool à limiter fortement en prépa (dégrade récup et sommeil)."},
+      {"h": "Après une séance tardive", "t": "Ne pas se coucher en déficit : un vrai repas glucides + protéines dans l'heure, même s'il est tard."}
+    ]
+  },
+  {
+    "title": "Carburant entraînement & course",
+    "accent": "p3",
+    "items": [
+      {"h": "Règle d'or : entraîne ton ventre", "t": "L'erreur n°1 en longue distance = un système digestif jamais entraîné. Chaque sortie > 1h30 = répétition de ta nutrition course. On commence léger et on monte."},
+      {"h": "Combien de glucides / heure", "t": "Sur le vélo long : viser 60 g/h au début, monter vers 80-90 g/h en fin de prépa (boisson glucidique + gels + barres/banane). Boire régulièrement, sans attendre la soif."},
+      {"h": "Sel / électrolytes", "t": "Sur les longues sorties, surtout par temps chaud, ajouter des électrolytes (pastilles/boisson). Utile en septembre à Evian s'il fait chaud."},
+      {"h": "Avant une longue séance", "t": "Petit-déj glucidique 1h30-2h avant. Commencer à manger dès la 1re heure sur le vélo, pas quand le coup de moins bien arrive."},
+      {"h": "Spécial Evian (3900 D+)", "t": "Sur un parcours montagneux, l'effort est long (~8-9 h de vélo) : la stratégie nutrition/hydratation est décisive pour tenir les barrières horaires des cols. À répéter sur tes sorties montagne du pic."},
+      {"h": "Fer & énergie", "t": "Gros volume d'endurance = surveiller la fatigue chronique. Baisse de forme durable et inexpliquée → un bilan sanguin (dont ferritine) chez le médecin est pertinent."},
+      {"h": "Hydratation de base", "t": "Sodas éliminés (bon réflexe déjà acté). Eau en base, thé/café OK. La boisson glucidique se réserve à l'effort long."}
+    ]
+  }
+]
