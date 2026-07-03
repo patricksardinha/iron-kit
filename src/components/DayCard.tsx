@@ -1,114 +1,205 @@
 import { useState } from 'react'
+import type { Session } from '../types'
 import { DAY_NAMES } from '../lib/constants'
-import { dateOfDay, disciplineOf, formatShort, isTraining, isOverdue } from '../lib/logic'
+import {
+  dayDiscipline,
+  discLabel,
+  formatDuration,
+  formatShort,
+  isDayValidated,
+  isTestDay,
+  isTrainingDay,
+  isOverdue,
+  sessionKey,
+} from '../lib/logic'
 import { Icon } from './Icon'
 
 interface Props {
   wk: number
   di: number
-  label: string
+  day: Session[]
+  date: Date
   today: Date
   isToday: boolean
-  done: boolean
-  taichi: boolean
+  sessions: Record<string, number>
+  options: string[]
+  isOptionDone: (label: string) => boolean
   note: string | undefined
-  onToggleDone: () => void
-  onToggleTaichi: () => void
+  onSetSession: (si: number, min: number | null) => void
+  onToggleOption: (label: string) => void
   onSetNote: (text: string) => void
 }
 
 export function DayCard({
   wk,
   di,
-  label,
+  day,
+  date,
   today,
   isToday,
-  done,
-  taichi,
+  sessions,
+  options,
+  isOptionDone,
   note,
-  onToggleDone,
-  onToggleTaichi,
+  onSetSession,
+  onToggleOption,
   onSetNote,
 }: Props) {
   const [editing, setEditing] = useState(false)
-  const disc = disciplineOf(label)
-  const training = isTraining(label)
-  const overdue = !done && isOverdue(wk, di, label, today)
-  const date = dateOfDay(wk, di)
+  const training = isTrainingDay(day)
+  const dayDone = isDayValidated(wk, di, day, sessions)
+  const overdue = !dayDone && isOverdue(date, day, today)
 
-  // Une seule couleur de liseré via variable CSS. Pour l'épreuve (dégradé),
-  // on garde une teinte pleine (run) pour les bordures/checks.
+  const disc = dayDiscipline(day)
   const discColor = disc.key === 'race' ? 'var(--run)' : disc.color
+  const doneCount = day.filter((_, si) => sessionKey(wk, di, si) in sessions).length
+
+  // État global du jour : « x » (manqué) prime sur « ! » (partiel) sur « ✓ » (plein).
+  let anyZero = false
+  let anyPartial = false
+  day.forEach((s, si) => {
+    const k = sessionKey(wk, di, si)
+    if (!(k in sessions)) return
+    const a = sessions[k]!
+    if (s.min > 0) {
+      if (a === 0) anyZero = true
+      else if (a < s.min) anyPartial = true
+    }
+  })
+  const dayState = anyZero ? 'zero' : anyPartial ? 'partial' : 'full'
+  const test = isTestDay(day)
 
   const cls = [
     'day',
     training ? '' : 'rest',
-    done ? 'done' : '',
+    dayDone ? 'done' : '',
     isToday ? 'today' : '',
     overdue ? 'overdue' : '',
+    test ? 'test' : '',
   ]
     .filter(Boolean)
     .join(' ')
 
   return (
     <div className={cls} style={{ ['--disc' as string]: discColor }}>
-      {/* Zone principale : valide/dévalide la séance. Bouton uniquement si entraînement,
-          sinon simple div non interactive (repos non validable, §5). Le Tai Chi et la note
-          sont des contrôles SÉPARÉS hors de cette zone → jamais interceptés. */}
-      {training ? (
-        <button
-          type="button"
-          className="day-main"
-          onClick={onToggleDone}
-          aria-pressed={done}
-          aria-label={`${done ? 'Dévalider' : 'Valider'} : ${label}`}
-        >
-          <DayInner
-            di={di}
-            date={date}
-            label={label}
-            training
-            overdue={overdue}
-            note={note}
-            editing={editing}
-          />
-        </button>
+      <div className="day-head">
+        <span className="day-name">
+          {DAY_NAMES[di]} <span className="day-date">{formatShort(date)}</span>
+        </span>
+        {test && (
+          <span className="day-test-tag">
+            <Icon name="trophy" size={13} /> Test
+          </span>
+        )}
+        {training &&
+          (dayDone ? (
+            <span className={`day-status ${dayState}`}>
+              {dayState === 'full' && <Icon name="check" size={13} />}
+              {dayState === 'partial' && <b className="g">!</b>}
+              {dayState === 'zero' && <b className="g">✕</b>}
+              Enregistré
+            </span>
+          ) : (
+            <span className="day-steps">
+              {doneCount}/{day.length}
+            </span>
+          ))}
+        {overdue && <span className="day-overdue-tag">manqué</span>}
+      </div>
+
+      {!training ? (
+        <div className="day-rest-label">Repos / mobilité</div>
       ) : (
-        <div className="day-main" aria-label={`${DAY_NAMES[di]} — repos`}>
-          <DayInner
-            di={di}
-            date={date}
-            label={label}
-            training={false}
-            overdue={false}
-            note={note}
-            editing={editing}
-          />
-        </div>
+        <ul className="sess-list">
+          {day.map((s, si) => {
+            const key = sessionKey(wk, di, si)
+            const logged = key in sessions
+            const actual = logged ? sessions[key]! : 0
+            // full : atteint (ou épreuve sans durée) · zero : validé mais rien fait · partial : entre les deux
+            const status = !logged
+              ? 'todo'
+              : s.min === 0 || actual >= s.min
+                ? 'full'
+                : actual === 0
+                  ? 'zero'
+                  : 'partial'
+            return (
+              <li className={`sess ${status}`} key={si}>
+                <button
+                  type="button"
+                  className="sess-dot"
+                  onClick={() => onSetSession(si, logged ? null : s.min)}
+                  aria-pressed={logged}
+                  aria-label={`${logged ? 'Dévalider' : 'Valider'} ${s.detail || discLabel(s.disc)}`}
+                >
+                  {status === 'full' && <Icon name="check" size={12} />}
+                  {status === 'partial' && <b className="g">!</b>}
+                  {status === 'zero' && <b className="g">✕</b>}
+                </button>
+                <span className="sess-body">
+                  <span className="sess-label">{s.detail || discLabel(s.disc)}</span>
+                  {s.min > 0 && (
+                    <span className="sess-dur">
+                      {logged ? (
+                        <span className="stepper">
+                          <button
+                            type="button"
+                            onClick={() => onSetSession(si, Math.max(0, actual - 5))}
+                            aria-label="Moins 5 min"
+                          >
+                            −
+                          </button>
+                          <span className="stepper-val">{formatDuration(actual)}</span>
+                          <button
+                            type="button"
+                            onClick={() => onSetSession(si, Math.min(300, actual + 5))}
+                            aria-label="Plus 5 min"
+                          >
+                            +
+                          </button>
+                        </span>
+                      ) : (
+                        <span className="sess-planned">{formatDuration(s.min)}</span>
+                      )}
+                    </span>
+                  )}
+                </span>
+              </li>
+            )
+          })}
+        </ul>
       )}
 
       <div className="day-actions">
-        <button
-          type="button"
-          className={`taichi-chip${taichi ? ' on' : ''}`}
-          onClick={onToggleTaichi}
-          aria-pressed={taichi}
-          aria-label={`Tai Chi ${taichi ? 'fait' : 'à faire'}`}
-        >
-          <Icon name="taichi" size={16} /> Tai Chi
-          {taichi && <Icon name="check" size={14} />}
-        </button>
+        {options.map((label) => {
+          const on = isOptionDone(label)
+          return (
+            <button
+              key={label}
+              type="button"
+              className={`opt-chip${on ? ' on' : ''}`}
+              onClick={() => onToggleOption(label)}
+              aria-pressed={on}
+              aria-label={`${label} ${on ? 'fait' : 'à faire'}`}
+            >
+              {label === 'Tai Chi' && <Icon name="taichi" size={15} />} {label}
+              {on && <Icon name="check" size={13} />}
+            </button>
+          )
+        })}
 
         <button
           type="button"
-          className={`note-btn${note ? ' has' : ''}`}
+          className={`note-btn${note ? ' has' : ''}${editing ? ' active' : ''}`}
           onClick={() => setEditing((e) => !e)}
           aria-expanded={editing}
-          aria-label={note ? 'Modifier la note' : 'Ajouter une note'}
+          aria-label={editing ? 'Fermer la note' : note ? 'Modifier la note' : 'Ajouter une note'}
         >
-          <Icon name="note" size={16} />
+          <Icon name={editing ? 'close' : 'note'} size={16} />
         </button>
       </div>
+
+      {note && !editing && <div className="day-note-preview">{note}</div>}
 
       {editing && (
         <div className="note-editor">
@@ -117,45 +208,9 @@ export function DayCard({
             value={note ?? ''}
             placeholder="Ressenti, allure, sensations, météo, douleurs…"
             onChange={(e) => onSetNote(e.target.value)}
-            onBlur={() => setEditing(false)}
           />
         </div>
       )}
     </div>
-  )
-}
-
-interface InnerProps {
-  di: number
-  date: Date
-  label: string
-  training: boolean
-  overdue: boolean
-  note: string | undefined
-  editing: boolean
-}
-
-function DayInner({ di, date, label, training, overdue, note, editing }: InnerProps) {
-  return (
-    <>
-      {/* pastille de validation (masquée mais présente pour l'alignement sur les repos) */}
-      <span
-        className="day-check"
-        aria-hidden="true"
-        style={training ? undefined : { visibility: 'hidden' }}
-      >
-        <Icon name="check" size={16} />
-      </span>
-      <div className="day-body">
-        <div className="day-head">
-          <span className="day-name">
-            {DAY_NAMES[di]} <span className="day-date">{formatShort(date)}</span>
-          </span>
-          {overdue && <span className="day-overdue-tag">manqué</span>}
-        </div>
-        <div className="day-label">{label}</div>
-        {note && !editing && <div className="day-note-preview">{note}</div>}
-      </div>
-    </>
   )
 }

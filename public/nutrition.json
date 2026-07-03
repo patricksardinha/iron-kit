@@ -3,45 +3,244 @@
     "title": "Petit-déjeuner",
     "accent": "swim",
     "items": [
-      {"h": "Avant une longue séance (matin)", "t": "Glucides hauts, peu de fibres/gras pour la digestion. Flocons d'avoine + banane + miel + un peu de skyr, ou pain blanc/biscottes + miel/confiture + 1 fruit. Manger 1h30-2h avant si possible."},
-      {"h": "Jour d'entraînement normal", "t": "Glucides + protéines, durable. Flocons d'avoine + fruits rouges + yaourt grec/skyr + noix/graines, ou pain complet + œufs + fruit."},
-      {"h": "Jour de repos", "t": "On lève un peu le pied sur les féculents, on garde les protéines. Œufs + pain complet + légume (tomate/avocat) + 1 fruit, ou yaourt grec + fruits + noix."},
-      {"h": "Après une séance du matin (récup)", "t": "Refaire le plein dans l'heure : glucides + protéines. Ajouter une source de protéines (skyr, œufs, lait) + glucides (fruit, pain, flocons). La fenêtre post-effort compte sur ce volume."}
+      {
+        "h": "Avant une longue séance (matin)",
+        "t": "Glucides hauts, peu de fibres/gras pour la digestion.",
+        "list": [
+          "Flocons d'avoine 80 g",
+          "Banane 1",
+          "Miel 1 c. à soupe",
+          "Skyr 100 g (optionnel)",
+          "Ou : pain blanc / biscottes 80 g + confiture",
+          "Café ou thé",
+          "Manger 1h30-2h avant l'effort"
+        ]
+      },
+      {
+        "h": "Jour d'entraînement normal",
+        "t": "Glucides + protéines, durable.",
+        "list": [
+          "Flocons d'avoine 60-80 g",
+          "Skyr ou yaourt grec 150 g",
+          "Fruits rouges 100 g",
+          "Noix / graines 20 g",
+          "Ou : pain complet 80 g + 2-3 œufs + 1 fruit"
+        ]
+      },
+      {
+        "h": "Jour de repos",
+        "t": "On lève un peu le pied sur les féculents, on garde les protéines.",
+        "list": [
+          "3 œufs",
+          "Pain complet 40-60 g",
+          "Avocat ½ ou tomate",
+          "1 fruit",
+          "Ou : yaourt grec 200 g + fruits + noix 20 g"
+        ]
+      },
+      {
+        "h": "Après une séance du matin (récup)",
+        "t": "Refaire le plein dans l'heure : glucides + protéines.",
+        "list": [
+          "Skyr 150 g ou 3 œufs",
+          "Flocons d'avoine 60 g ou pain 60 g",
+          "1 fruit (banane)",
+          "Verre de lait 250 ml",
+          "Dans l'heure qui suit l'effort"
+        ]
+      }
     ]
   },
   {
     "title": "Déjeuner",
     "accent": "bike",
     "items": [
-      {"h": "Structure de base", "t": "FÉCULENT + PROTÉINE + LÉGUME. On la périodise selon la charge du jour."},
-      {"h": "Grosse séance / longue cet aprèm", "t": "Féculent généreux (riz, pâtes, patate douce, quinoa) + poulet/poisson/œufs/légumineuses + légumes. Glucides prioritaires pour charger."},
-      {"h": "Jour d'entraînement standard", "t": "1 portion de féculent + protéine + grosse part de légumes + filet d'huile d'olive. Énergie stable l'après-midi."},
-      {"h": "Jour de repos", "t": "Plus de légumes, féculent en plus petite portion (ou légumineuses qui font les deux). Protéines constantes pour la récup."},
-      {"h": "Batch cooking du dimanche", "t": "Cuire en lot : riz/quinoa, protéines (poulet, lentilles, œufs durs), plateau de légumes rôtis. Tu composes tes midis en 2 min. L'habitude structurante n°1 de ta semaine."}
+      {
+        "h": "Structure de base",
+        "t": "FÉCULENT + PROTÉINE + LÉGUME. On la périodise selon la charge du jour.",
+        "list": [
+          "Féculent cuit 150-250 g selon la charge",
+          "Protéine 130-160 g",
+          "Légumes : ½ de l'assiette",
+          "Huile d'olive / colza 1 c. à soupe"
+        ]
+      },
+      {
+        "h": "Grosse séance / longue cet aprèm",
+        "t": "Glucides prioritaires pour charger.",
+        "list": [
+          "Riz / pâtes / quinoa cuits 250 g",
+          "Poulet ou poisson 150 g (ou légumineuses 200 g)",
+          "Légumes",
+          "Pain 30 g en plus",
+          "1 fruit ou compote"
+        ]
+      },
+      {
+        "h": "Jour d'entraînement standard",
+        "t": "Énergie stable l'après-midi.",
+        "list": [
+          "Féculent cuit 180-200 g",
+          "Protéine 140 g",
+          "Grosse part de légumes",
+          "Huile d'olive 1 c. à soupe"
+        ]
+      },
+      {
+        "h": "Jour de repos",
+        "t": "Plus de légumes, féculent en plus petite portion. Protéines constantes.",
+        "list": [
+          "Féculent cuit 120 g (ou légumineuses 200 g)",
+          "Protéine 140 g",
+          "Légumes à volonté",
+          "Huile d'olive 1 c. à soupe"
+        ]
+      },
+      {
+        "h": "Batch cooking du dimanche",
+        "t": "Cuire en lot : tu composes tes midis en 2 min.",
+        "list": [
+          "Riz / quinoa 300-400 g cru",
+          "Poulet 500-600 g ou lentilles 1 boîte",
+          "Œufs durs 6",
+          "Plateau de légumes rôtis",
+          "Portionner en 4-5 boîtes"
+        ]
+      }
     ]
   },
   {
     "title": "Dîner",
     "accent": "run",
     "items": [
-      {"h": "Après une grosse séance / avant une longue demain", "t": "Reconstituer les réserves : féculents généreux + protéines. Pâtes/riz/pommes de terre + viande/poisson/œufs + légumes. Un dessert glucidique simple (compote, riz au lait) est le bienvenu ces soirs-là."},
-      {"h": "Soir de journée standard", "t": "Protéines + légumes à volonté + féculent modéré. Poisson gras 2×/sem (saumon, maquereau, sardine), utile en endurance. Huile d'olive/colza."},
-      {"h": "Veille de jour de repos", "t": "On allège les féculents, on garde protéines et légumes. Soupe + protéine + légumes, ou salade composée avec légumineuses."},
-      {"h": "Récupération & sommeil", "t": "Protéines à chaque dîner (réparation nocturne). Éviter les repas très gras/copieux trop tard. Alcool à limiter fortement en prépa (dégrade récup et sommeil)."},
-      {"h": "Après une séance tardive", "t": "Ne pas se coucher en déficit : un vrai repas glucides + protéines dans l'heure, même s'il est tard."}
+      {
+        "h": "Après une grosse séance / avant une longue demain",
+        "t": "Reconstituer les réserves : féculents généreux + protéines.",
+        "list": [
+          "Pâtes / riz / pommes de terre cuits 220 g",
+          "Viande / poisson / œufs 140 g",
+          "Légumes",
+          "Dessert glucidique simple (compote, riz au lait)"
+        ]
+      },
+      {
+        "h": "Soir de journée standard",
+        "t": "Protéines + légumes à volonté + féculent modéré.",
+        "list": [
+          "Protéine 140 g (poisson gras 2×/sem)",
+          "Légumes à volonté",
+          "Féculent cuit 120 g",
+          "Huile d'olive / colza"
+        ]
+      },
+      {
+        "h": "Veille de jour de repos",
+        "t": "On allège les féculents, on garde protéines et légumes.",
+        "list": [
+          "Soupe de légumes",
+          "Protéine 140 g (œufs, poisson, tofu)",
+          "Légumes / légumineuses",
+          "Peu ou pas de féculent"
+        ]
+      },
+      {
+        "h": "Récupération & sommeil",
+        "t": "Protéines à chaque dîner (réparation nocturne).",
+        "list": [
+          "Source de protéines à chaque dîner",
+          "Éviter les repas très gras / copieux trop tard",
+          "Alcool à limiter fortement en prépa",
+          "Tisane / eau"
+        ]
+      },
+      {
+        "h": "Après une séance tardive",
+        "t": "Ne pas se coucher en déficit : un vrai repas dans l'heure.",
+        "list": [
+          "Féculent cuit 150 g",
+          "Protéine 130 g",
+          "Légumes",
+          "Dans l'heure, même s'il est tard"
+        ]
+      }
     ]
   },
   {
     "title": "Carburant entraînement & course",
     "accent": "p3",
     "items": [
-      {"h": "Règle d'or : entraîne ton ventre", "t": "L'erreur n°1 en longue distance = un système digestif jamais entraîné. Chaque sortie > 1h30 = répétition de ta nutrition course. On commence léger et on monte."},
-      {"h": "Combien de glucides / heure", "t": "Sur le vélo long : viser 60 g/h au début, monter vers 80-90 g/h en fin de prépa (boisson glucidique + gels + barres/banane). Boire régulièrement, sans attendre la soif."},
-      {"h": "Sel / électrolytes", "t": "Sur les longues sorties, surtout par temps chaud, ajouter des électrolytes (pastilles/boisson). Utile en septembre à Evian s'il fait chaud."},
-      {"h": "Avant une longue séance", "t": "Petit-déj glucidique 1h30-2h avant. Commencer à manger dès la 1re heure sur le vélo, pas quand le coup de moins bien arrive."},
-      {"h": "Spécial Evian (3900 D+)", "t": "Sur un parcours montagneux, l'effort est long (~8-9 h de vélo) : la stratégie nutrition/hydratation est décisive pour tenir les barrières horaires des cols. À répéter sur tes sorties montagne du pic."},
-      {"h": "Fer & énergie", "t": "Gros volume d'endurance = surveiller la fatigue chronique. Baisse de forme durable et inexpliquée → un bilan sanguin (dont ferritine) chez le médecin est pertinent."},
-      {"h": "Hydratation de base", "t": "Sodas éliminés (bon réflexe déjà acté). Eau en base, thé/café OK. La boisson glucidique se réserve à l'effort long."}
+      {
+        "h": "Règle d'or : entraîne ton ventre",
+        "t": "L'erreur n°1 en longue distance = un système digestif jamais entraîné.",
+        "list": [
+          "Chaque sortie > 1h30 = répéter ta nutrition course",
+          "Commencer léger : 30-40 g de glucides/h",
+          "Monter progressivement au fil de la prépa",
+          "Noter ce qui passe bien / mal"
+        ]
+      },
+      {
+        "h": "Combien de glucides / heure",
+        "t": "Sur le vélo long : viser 60 g/h au début, monter vers 80-90 g/h en fin de prépa.",
+        "list": [
+          "Début de prépa : 60 g/h",
+          "Fin de prépa : 80-90 g/h",
+          "Boisson glucidique ~500 ml/h",
+          "1 gel (~25 g) toutes les 30-45 min",
+          "Banane / barre / pâte de fruit en complément"
+        ]
+      },
+      {
+        "h": "Sel / électrolytes",
+        "t": "Sur les longues sorties, surtout par temps chaud, ajouter des électrolytes.",
+        "list": [
+          "1 pastille électrolytes par heure si chaud",
+          "500-750 ml de boisson / heure",
+          "Ajouter du sel sur les sorties > 3h",
+          "Utile en septembre à Evian s'il fait chaud"
+        ]
+      },
+      {
+        "h": "Avant une longue séance",
+        "t": "Petit-déj glucidique 1h30-2h avant. Commencer à manger dès la 1re heure.",
+        "list": [
+          "Petit-déj : 80-100 g de glucides, 1h30-2h avant",
+          "Commencer à manger dès la 1re heure sur le vélo",
+          "Ne pas attendre le coup de moins bien",
+          "Boire dès le départ"
+        ]
+      },
+      {
+        "h": "Spécial Evian (3900 D+)",
+        "t": "Sur un parcours montagneux, la stratégie nutrition/hydratation est décisive.",
+        "list": [
+          "~8-9 h de vélo : viser ~80 g glucides/h",
+          "2 bidons + réserves solides accessibles",
+          "Manger avant chaque grosse montée",
+          "Répéter la stratégie sur les sorties montagne du pic",
+          "Écrire un plan hydratation / sel"
+        ]
+      },
+      {
+        "h": "Fer & énergie",
+        "t": "Gros volume d'endurance = surveiller la fatigue chronique.",
+        "list": [
+          "Viande rouge 1-2×/sem",
+          "Légumineuses + source de vitamine C (absorption)",
+          "Fatigue durable inexpliquée → bilan sanguin (ferritine)",
+          "Éviter thé/café juste après un repas riche en fer"
+        ]
+      },
+      {
+        "h": "Hydratation de base",
+        "t": "Sodas éliminés. Eau en base, thé/café OK.",
+        "list": [
+          "Eau en base : ~2-3 L/j selon la charge",
+          "Thé / café OK",
+          "Sodas éliminés",
+          "Boisson glucidique réservée à l'effort long"
+        ]
+      }
     ]
   }
 ]

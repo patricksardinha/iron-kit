@@ -1,7 +1,7 @@
 import type { Week } from '../types'
 import type { AppState } from '../hooks/useAppState'
-import { phaseColor } from '../lib/constants'
-import { dayKey } from '../lib/logic'
+import { JALONS, phaseColor, phaseParts } from '../lib/constants'
+import { dateOfDay, dayKey, optionKey, weekDatesLabel, weekVolume } from '../lib/logic'
 import { weekProgress } from '../lib/stats'
 import { DayCard } from './DayCard'
 import { Icon } from './Icon'
@@ -20,10 +20,12 @@ export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, onNav
   const week = weeks[weekIndex - 1]
   if (!week) return null
 
-  const { state, toggleDone, toggleTaichi, setNote } = appState
-  const prog = weekProgress(week, state.done)
+  const { state, setSession, toggleOption, setNote } = appState
+  const prog = weekProgress(week, state.sessions)
   const pct = prog.total ? Math.round((prog.validated / prog.total) * 100) : 0
   const pc = phaseColor(week.phase)
+  const { num: phaseNum, label: phaseLabel } = phaseParts(week.phase)
+  const jalon = JALONS.find((j) => j.wk === week.wk)
 
   const showFab = weekIndex !== currentWk
 
@@ -40,7 +42,7 @@ export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, onNav
         </button>
         <div className="wk-title">
           <div className="n">Sem. {week.wk} / {total}</div>
-          <div className="d">{week.dates}</div>
+          <div className="d">{weekDatesLabel(week.start)}</div>
         </div>
         <button
           className="arrow"
@@ -52,13 +54,27 @@ export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, onNav
         </button>
       </div>
 
+      {jalon && (
+        <div className="week-jalon">
+          <span className="wj-icon">
+            <Icon name="trophy" size={20} />
+          </span>
+          <div className="wj-body">
+            <div className="wj-kicker">Semaine test / jalon</div>
+            <div className="wj-title">{jalon.t}</div>
+            <div className="wj-desc">{jalon.d}</div>
+          </div>
+        </div>
+      )}
+
       <div className="wk-card">
         <div className="wk-meta">
-          <span className="chip" style={{ background: `color-mix(in srgb, ${pc} 22%, var(--surface2))`, color: pc }}>
-            {week.phase}
+          <span className="phase-tag" style={{ ['--phasec' as string]: pc }}>
+            {phaseNum !== '' && <span className="phase-num">{phaseNum}</span>}
+            {phaseLabel}
           </span>
           <span className="badge">{week.typ}</span>
-          <span className="badge">{week.vol} h</span>
+          <span className="badge">{weekVolume(week)} h</span>
         </div>
         <div className="wk-obj">{week.obj}</div>
         <div className="progress-row">
@@ -73,7 +89,7 @@ export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, onNav
       </div>
 
       <div className="days">
-        {week.days.map((label, di) => {
+        {week.days.map((day, di) => {
           const k = dayKey(week.wk, di)
           const isToday = week.wk === currentWk && todayIndex(today) === di
           return (
@@ -81,14 +97,16 @@ export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, onNav
               key={k}
               wk={week.wk}
               di={di}
-              label={label}
+              day={day}
+              date={dateOfDay(week.start, di)}
               today={today}
               isToday={isToday}
-              done={!!state.done[k]}
-              taichi={!!state.taichi[k]}
+              sessions={state.sessions}
+              options={week.dayOptions[di] ?? []}
+              isOptionDone={(label) => !!state.options[optionKey(week.wk, di, label)]}
               note={state.notes[k]}
-              onToggleDone={() => toggleDone(week.wk, di)}
-              onToggleTaichi={() => toggleTaichi(week.wk, di)}
+              onSetSession={(si, min) => setSession(week.wk, di, si, min)}
+              onToggleOption={(label) => toggleOption(week.wk, di, label)}
               onSetNote={(text) => setNote(week.wk, di, text)}
             />
           )

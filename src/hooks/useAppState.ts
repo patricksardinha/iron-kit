@@ -1,16 +1,18 @@
-// État utilisateur : done / taichi / notes — persistant sous une clé unique.
+// État utilisateur : validation par étape / taichi / notes — persistant.
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { State } from '../types'
 import { loadState, saveState } from '../lib/storage'
-import { dayKey } from '../lib/logic'
+import { dayKey, optionKey, sessionKey } from '../lib/logic'
 
 export interface AppState {
   state: State
-  toggleDone: (wk: number, di: number) => void
-  toggleTaichi: (wk: number, di: number) => void
+  setSession: (wk: number, di: number, si: number, min: number | null) => void
+  toggleOption: (wk: number, di: number, label: string) => void
   setNote: (wk: number, di: number, text: string) => void
   replaceState: (next: State) => void
   remapAfterDeleteWeek: (pos: number) => void
+  remapAfterInsertWeek: (pos: number) => void
+  remapReorderWeek: (from: number, to: number) => void
 }
 
 function withoutKey<T>(rec: Record<string, T>, key: string): Record<string, T> {
@@ -19,10 +21,23 @@ function withoutKey<T>(rec: Record<string, T>, key: string): Record<string, T> {
   return next
 }
 
+/** Applique un remap de numéro de semaine aux clés `${wk}-…` d'un enregistrement. */
+function remapKeys<T>(rec: Record<string, T>, mapWk: (wk: number) => number | null): Record<string, T> {
+  const next: Record<string, T> = {}
+  for (const [k, v] of Object.entries(rec)) {
+    const dash = k.indexOf('-')
+    const wk = Number(k.slice(0, dash))
+    const rest = k.slice(dash + 1)
+    const nw = mapWk(wk)
+    if (nw === null) continue
+    next[`${nw}-${rest}`] = v
+  }
+  return next
+}
+
 export function useAppState(): AppState {
   const [state, setState] = useState<State>(() => loadState())
 
-  // Sauvegarde à chaque changement (toggle / frappe).
   const first = useRef(true)
   useEffect(() => {
     if (first.current) {
@@ -32,57 +47,70 @@ export function useAppState(): AppState {
     saveState(state)
   }, [state])
 
-  const toggleDone = useCallback((wk: number, di: number) => {
-    const k = dayKey(wk, di)
-    setState((s) =>
-      s.done[k]
-        ? { ...s, done: withoutKey(s.done, k) }
-        : { ...s, done: { ...s.done, [k]: true } },
-    )
+  // Valide/ajuste une étape : min = minutes faites (clé présente), null = dévalider.
+  const setSession = useCallback((wk: number, di: number, si: number, min: number | null) => {
+    const k = sessionKey(wk, di, si)
+    setState((s) => {
+      if (min === null) return { ...s, sessions: withoutKey(s.sessions, k) }
+      const v = Math.max(0, Math.round(min))
+      return { ...s, sessions: { ...s.sessions, [k]: v } }
+    })
   }, [])
 
-  const toggleTaichi = useCallback((wk: number, di: number) => {
-    const k = dayKey(wk, di)
+  const toggleOption = useCallback((wk: number, di: number, label: string) => {
+    const k = optionKey(wk, di, label)
     setState((s) =>
-      s.taichi[k]
-        ? { ...s, taichi: withoutKey(s.taichi, k) }
-        : { ...s, taichi: { ...s.taichi, [k]: true } },
+      s.options[k]
+        ? { ...s, options: withoutKey(s.options, k) }
+        : { ...s, options: { ...s.options, [k]: true } },
     )
   }, [])
 
   const setNote = useCallback((wk: number, di: number, text: string) => {
     const k = dayKey(wk, di)
     setState((s) => {
-      const trimmed = text
-      if (!trimmed.trim()) return { ...s, notes: withoutKey(s.notes, k) }
-      return { ...s, notes: { ...s.notes, [k]: trimmed } }
+      if (!text.trim()) return { ...s, notes: withoutKey(s.notes, k) }
+      return { ...s, notes: { ...s.notes, [k]: text } }
     })
   }, [])
 
   const replaceState = useCallback((next: State) => setState(next), [])
 
-  // Suppression de la semaine `pos` : on retire ses clés et on décale
-  // (wk-1) toutes les clés des semaines suivantes, pour rester aligné sur la
-  // renumérotation du plan (wk = position).
-  const remapAfterDeleteWeek = useCallback((pos: number) => {
-    const shift = <T>(rec: Record<string, T>): Record<string, T> => {
-      const next: Record<string, T> = {}
-      for (const [k, v] of Object.entries(rec)) {
-        const dash = k.indexOf('-')
-        const wk = Number(k.slice(0, dash))
-        const di = k.slice(dash + 1)
-        if (wk === pos) continue
-        const nk = wk > pos ? `${wk - 1}-${di}` : k
-        next[nk] = v
-      }
-      return next
-    }
+  const applyRemap = useCallback((map: (wk: number) => number | null) => {
     setState((s) => ({
-      done: shift(s.done),
-      taichi: shift(s.taichi),
-      notes: shift(s.notes),
+      sessions: remapKeys(s.sessions, map),
+      options: remapKeys(s.options, map),
+      notes: remapKeys(s.notes, map),
     }))
   }, [])
 
-  return { state, toggleDone, toggleTaichi, setNote, replaceState, remapAfterDeleteWeek }
+  const remapAfterDeleteWeek = useCallback(
+    (pos: number) => applyRemap((wk) => (wk === pos ? null : wk > pos ? wk - 1 : wk)),
+    [applyRemap],
+  )
+  const remapAfterInsertWeek = useCallback(
+    (pos: number) => applyRemap((wk) => (wk >= pos ? wk + 1 : wk)),
+    [applyRemap],
+  )
+  const remapReorderWeek = useCallback(
+    (from: number, to: number) =>
+      applyRemap((wk) => {
+        if (wk === from) return to
+        if (from < to && wk > from && wk <= to) return wk - 1
+        if (to < from && wk >= to && wk < from) return wk + 1
+        return wk
+      }),
+    [applyRemap],
+  )
+
+  return {
+    state,
+    setSession,
+    toggleOption,
+    setNote,
+    replaceState,
+    remapAfterDeleteWeek,
+    remapAfterInsertWeek,
+    remapReorderWeek,
+  }
 }

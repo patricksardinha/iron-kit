@@ -3,21 +3,35 @@ import type { State } from '../types'
 
 export const STORAGE_KEY = 'objectif-evian-state-v1'
 
-export const emptyState = (): State => ({ done: {}, taichi: {}, notes: {} })
+export const emptyState = (): State => ({ sessions: {}, options: {}, notes: {} })
 
 /** Sanitise un objet inconnu en State valide (robuste au JSON importé). */
 function coerce(raw: unknown): State {
   const s = emptyState()
   if (!raw || typeof raw !== 'object') return s
   const o = raw as Record<string, unknown>
-  if (o['done'] && typeof o['done'] === 'object') {
-    for (const [k, v] of Object.entries(o['done'] as Record<string, unknown>)) {
-      if (v === true) s.done[k] = true
+  // Nouveau format : sessions (minutes par étape).
+  if (o['sessions'] && typeof o['sessions'] === 'object') {
+    for (const [k, v] of Object.entries(o['sessions'] as Record<string, unknown>)) {
+      if (typeof v === 'number' && v >= 0 && Number.isFinite(v)) s.sessions[k] = v
     }
   }
+  // Rétro-compat : ancien format `done` (jour validé) → étape 0 du jour.
+  if (o['done'] && typeof o['done'] === 'object') {
+    for (const [k, v] of Object.entries(o['done'] as Record<string, unknown>)) {
+      if (v === true) s.sessions[`${k}-0`] = 0
+    }
+  }
+  // Options (Tai Chi et autres).
+  if (o['options'] && typeof o['options'] === 'object') {
+    for (const [k, v] of Object.entries(o['options'] as Record<string, unknown>)) {
+      if (v === true) s.options[k] = true
+    }
+  }
+  // Rétro-compat : ancien format `taichi` (clé `${wk}-${di}`) → option "Tai Chi".
   if (o['taichi'] && typeof o['taichi'] === 'object') {
     for (const [k, v] of Object.entries(o['taichi'] as Record<string, unknown>)) {
-      if (v === true) s.taichi[k] = true
+      if (v === true) s.options[`${k}::Tai Chi`] = true
     }
   }
   if (o['notes'] && typeof o['notes'] === 'object') {

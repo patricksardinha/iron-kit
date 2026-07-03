@@ -1,46 +1,70 @@
-/* Design tokens — repris du prototype (§8). Thème sombre, mobile-first. */
+/* Design tokens — thème sombre coloré, mobile-first. */
 :root {
-  --bg: #0f1216;
-  --surface: #171b22;
-  --surface2: #1e2430;
+  --bg: #0b0d13;
+  --surface: #14181f;
+  --surface2: #1c212c;
+  --surface3: #232a38;
   --line: #2a3242;
-  --text: #eceef2;
-  --muted: #868fa0;
-  --faint: #5a6274;
+  --text: #f0f2f7;
+  --muted: #8b93a4;
+  --faint: #59617a;
 
-  /* disciplines */
-  --swim: #33c0d0;
-  --bike: #f5a65b;
-  --run: #ec6a80;
-  --taichi: #a99bea;
+  /* disciplines — plus vives */
+  --swim: #2dd4d8;
+  --bike: #ffb14e;
+  --run: #ff6b8a;
+  --taichi: #b3a4ff;
 
   /* phases */
-  --p0: #4c86c6;
-  --p1: #6ba644;
-  --p2: #d4a72c;
-  --p3: #d65563;
+  --p0: #5b8def;
+  --p1: #4fd08b;
+  --p2: #f4c04a;
+  --p3: #f26d8b;
 
-  --good: #4fbf8b;
-  --danger: #ec6a80;
+  --good: #4fd39a;
+  --warn: #f5b638;
+  --danger: #f4574b;
+
+  /* accent unique de la marque (IronKit) */
+  --accent: #ff5a36;
+  --accent-2: #ff8038;
+  --accent-ink: #1a0d08;
+
+  /* états de validation des étapes (distincts des couleurs de discipline) */
+  --done: #4fd39a; /* validé plein (vert) */
+  --partial: #ffe14d; /* partiel : jaune vif, ≠ vélo (ambre) */
+  --miss: #ff3b30; /* manqué : rouge franc, ≠ CAP (rose) */
+
+  /* paliers de badges */
+  --bronze: #d08a54;
+  --silver: #c3ccdb;
+  --gold: #f4c04a;
+  --special: #b3a4ff;
 
   /* typo */
   --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 
-  /* signature : dégradé des 3 disciplines */
-  --grad-tri: linear-gradient(135deg, var(--swim), var(--bike), var(--run));
+  /* dégradés — réservés aux data-viz (anneau). Pas d'arc-en-ciel décoratif. */
+  --grad-tri: linear-gradient(120deg, var(--swim), var(--bike) 55%, var(--run));
+  --accent-grad: linear-gradient(135deg, var(--accent), var(--accent-2));
+
+  /* ombres / halos */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 12px 30px rgba(0, 0, 0, 0.42);
+  --shadow-glow: 0 8px 30px -8px color-mix(in srgb, var(--accent) 55%, transparent);
 
   /* rayons / espacements */
-  --r-sm: 8px;
-  --r-md: 12px;
-  --r-lg: 16px;
-  --tap: 44px; /* zone tactile minimale */
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 26px;
+  --tap: 44px;
 
-  /* safe-area */
   --safe-t: env(safe-area-inset-top, 0px);
   --safe-b: env(safe-area-inset-bottom, 0px);
   --safe-l: env(safe-area-inset-left, 0px);
   --safe-r: env(safe-area-inset-right, 0px);
 
-  --tabbar-h: 62px;
+  --tabbar-h: 66px;
 }

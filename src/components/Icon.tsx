@@ -18,6 +18,8 @@ export type IconName =
   | 'trash'
   | 'close'
   | 'reset'
+  | 'trophy'
+  | 'settings'
 
 interface Props {
   name: IconName
@@ -131,6 +133,19 @@ const PATHS: Record<IconName, React.ReactNode> = {
     <>
       <path d="M4 12a8 8 0 1 0 2.3-5.6" />
       <path d="M4 4v4h4" />
+    </>
+  ),
+  trophy: (
+    <>
+      <path d="M7 4h10v5a5 5 0 0 1-10 0V4Z" />
+      <path d="M7 6H4.5v1A3 3 0 0 0 7 10M17 6h2.5v1A3 3 0 0 1 17 10" />
+      <path d="M12 14v3M8.5 21h7M10 21c0-1.6 4-1.6 4 0" />
+    </>
+  ),
+  settings: (
+    <>
+      <circle cx="12" cy="12" r="3" />
+      <path d="M12 2.5v2.5M12 19v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M2.5 12h2.5M19 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8" />
     </>
   ),
 }

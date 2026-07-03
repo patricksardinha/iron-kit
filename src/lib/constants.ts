@@ -26,6 +26,28 @@ export const JALONS: Jalon[] = [
   { wk: 62, t: 'LÉ-MAN Evian', d: 'Le jour J. ~14-16 h visées.' },
 ]
 
+// Phases connues (ordre chronologique) et types autorisés par phase (§ menus).
+export const PHASES = [
+  '0 - Fondation',
+  '1 - Construction',
+  '2 - Spécifique',
+  '3 - Pic & Affûtage',
+] as const
+
+// Type d'une semaine autorisé selon la phase. Clé = préfixe numérique de la phase.
+export const PHASE_TYPES: Record<string, string[]> = {
+  '0': ['Charge', 'Récup'],
+  '1': ['Charge', 'Récup'],
+  '2': ['Charge', 'Récup', 'Affût.', 'TEST 70.3'],
+  '3': ['Charge', 'Récup', 'PIC', 'Affût.', 'COURSE'],
+}
+
+/** Types autorisés pour une phase donnée (repli : liste complète). */
+export function typesForPhase(phase: string): string[] {
+  const n = phase.trim().charAt(0)
+  return PHASE_TYPES[n] ?? ['Charge', 'Récup', 'Affût.', 'PIC', 'TEST 70.3', 'COURSE']
+}
+
 // Association phase → token couleur (§8). La clé est le préfixe numérique de `phase`.
 export const PHASE_COLOR: Record<string, string> = {
   '0': 'var(--p0)',
@@ -37,4 +59,11 @@ export const PHASE_COLOR: Record<string, string> = {
 export function phaseColor(phase: string): string {
   const n = phase.trim().charAt(0)
   return PHASE_COLOR[n] ?? 'var(--faint)'
+}
+
+/** Sépare une phase « 0 - Fondation » en numéro + libellé. */
+export function phaseParts(phase: string): { num: string; label: string } {
+  const m = phase.trim().match(/^(\d+)\s*[-–—]?\s*(.*)$/)
+  if (m) return { num: m[1]!, label: (m[2] || '').trim() || phase }
+  return { num: '', label: phase }
 }

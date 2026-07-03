@@ -8,9 +8,11 @@ interface Props {
 
 const TABS: { id: Tab; label: string; ic: IconName }[] = [
   { id: 'week', label: 'Semaine', ic: 'week' },
-  { id: 'progress', label: 'Progression', ic: 'progress' },
+  { id: 'progress', label: 'Progrès', ic: 'progress' },
   { id: 'plan', label: 'Plan', ic: 'plan' },
+  { id: 'rewards', label: 'Badges', ic: 'trophy' },
   { id: 'nutrition', label: 'Nutrition', ic: 'nutrition' },
+  { id: 'settings', label: 'Réglages', ic: 'settings' },
 ]
 
 export function TabBar({ active, onChange }: Props) {

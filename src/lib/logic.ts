@@ -1,6 +1,6 @@
 // Logique métier (§7)
-import { START, DAY_MS, TOTAL_WEEKS } from './constants'
-import type { Discipline } from '../types'
+import { DAY_MS, TOTAL_WEEKS } from './constants'
+import type { Discipline, Session, SessionDisc, Week } from '../types'
 
 export { TOTAL_WEEKS }
 
@@ -9,9 +9,43 @@ const MONTHS_SHORT = [
   'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.',
 ]
 
-/** Date d'un jour donné : START + ((wk-1)*7 + dayIndex) jours. */
-export function dateOfDay(wk: number, di: number): Date {
-  return new Date(START.getTime() + ((wk - 1) * 7 + di) * DAY_MS)
+/* ---------- dates ISO ---------- */
+
+/** "2026-07-06" → Date locale à minuit (parse manuel, sans surprise de fuseau). */
+export function parseISO(iso: string): Date {
+  const [y, m, d] = iso.split('-').map(Number)
+  return new Date(y || 1970, (m || 1) - 1, d || 1)
+}
+
+/** Date → "AAAA-MM-JJ". */
+export function toISO(d: Date): string {
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
+
+export function addDays(d: Date, n: number): Date {
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n)
+}
+
+/** Lundi de la semaine contenant `d` (getDay: 0=dimanche). */
+export function mondayOf(d: Date): Date {
+  const js = d.getDay()
+  const back = js === 0 ? 6 : js - 1
+  return addDays(d, -back)
+}
+
+/** Libellé d'une semaine : "6 juil. → 12 juil. 2026" à partir du lundi ISO. */
+export function weekDatesLabel(startISO: string): string {
+  const a = parseISO(startISO)
+  const b = addDays(a, 6)
+  return `${a.getDate()} ${MONTHS_SHORT[a.getMonth()]} → ${b.getDate()} ${MONTHS_SHORT[b.getMonth()]} ${b.getFullYear()}`
+}
+
+/** Date d'un jour donné : start (lundi ISO) + dayIndex jours. */
+export function dateOfDay(startISO: string, di: number): Date {
+  return addDays(parseISO(startISO), di)
 }
 
 /** Nombre entier de jours entre deux dates (b - a), normalisé à minuit. */
@@ -21,35 +55,113 @@ export function daysBetween(a: Date, b: Date): number {
   return Math.round((b0 - a0) / DAY_MS)
 }
 
-function clamp(min: number, max: number, v: number): number {
-  return Math.max(min, Math.min(max, v))
+/** Semaine courante 1..N d'après `today` : celle dont [start, start+7) contient today. */
+export function currentWeekIndex(today: Date, weeks: Week[]): number {
+  if (weeks.length === 0) return 1
+  const t = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime()
+  for (const w of weeks) {
+    const s = parseISO(w.start).getTime()
+    const e = addDays(parseISO(w.start), 7).getTime()
+    if (t >= s && t < e) return w.wk
+  }
+  // Hors plage : avant la 1re → 1, après la dernière → dernière.
+  const first = parseISO(weeks[0]!.start).getTime()
+  return t < first ? 1 : weeks.length
 }
 
-/** Semaine courante 1..total en fonction de `today` (total = nb de semaines du plan). */
-export function currentWeekIndex(today: Date, total: number = TOTAL_WEEKS): number {
-  if (today < START) return 1
-  return clamp(1, total, Math.floor(daysBetween(START, today) / 7) + 1)
+/* ---------- séances ---------- */
+
+/** Un jour est un jour d'entraînement s'il contient au moins une séance. */
+export function isTrainingDay(day: Session[]): boolean {
+  return day.length > 0
 }
 
-/** Les repos ne sont ni validables ni comptés. */
-export function isTraining(label: string): boolean {
-  return !label.startsWith('Repos')
+/** Volume d'une semaine (heures) = Σ des durées de toutes les séances. */
+export function weekVolume(week: Week): number {
+  let min = 0
+  for (const day of week.days) for (const s of day) min += s.min || 0
+  return Math.round((min / 60) * 10) / 10
 }
 
-/** Discipline + couleur d'un libellé de séance. */
-export function disciplineOf(label: string): Discipline {
-  if (label.includes('>>>')) return { key: 'race', color: 'var(--grad-tri)' }
-  if (label.startsWith('Nat')) return { key: 'swim', color: 'var(--swim)' }
-  if (label.startsWith('Vélo')) return { key: 'bike', color: 'var(--bike)' }
-  if (label.startsWith('CAP')) return { key: 'run', color: 'var(--run)' }
-  if (label.startsWith('Repos') || label.startsWith('Activation'))
-    return { key: 'repos', color: 'var(--faint)' }
-  return { key: 'other', color: 'var(--faint)' }
+/** Discipline + couleur d'une séance (ou d'un jour via sa 1re séance). */
+export function disciplineOf(disc: SessionDisc): Discipline {
+  switch (disc) {
+    case 'race':
+      return { key: 'race', color: 'var(--grad-tri)' }
+    case 'swim':
+      return { key: 'swim', color: 'var(--swim)' }
+    case 'bike':
+      return { key: 'bike', color: 'var(--bike)' }
+    case 'run':
+      return { key: 'run', color: 'var(--run)' }
+    default:
+      return { key: 'other', color: 'var(--faint)' }
+  }
 }
 
-/** Clé d'état pour un jour. */
+/** Un jour est un « test/épreuve » s'il contient une course ou une séance « test ». */
+export function isTestDay(day: Session[]): boolean {
+  return day.some((s) => s.disc === 'race' || /\btest\b|épreuve/i.test(s.detail))
+}
+
+/** Discipline dominante d'un jour (1re séance) → couleur de liseré. */
+export function dayDiscipline(day: Session[]): Discipline {
+  const first = day[0]
+  return first ? disciplineOf(first.disc) : { key: 'repos', color: 'var(--faint)' }
+}
+
+/** Libellé court d'une discipline (pour l'affichage). */
+export function discLabel(disc: SessionDisc): string {
+  switch (disc) {
+    case 'swim':
+      return 'Natation'
+    case 'bike':
+      return 'Vélo'
+    case 'run':
+      return 'CAP (course à pied)'
+    case 'strength':
+      return 'Renfo'
+    case 'race':
+      return 'Épreuve'
+    default:
+      return 'Autre'
+  }
+}
+
+/** Durée en minutes → "1h15" / "45'" / "—". */
+export function formatDuration(min: number): string {
+  if (!min || min <= 0) return '—'
+  const h = Math.floor(min / 60)
+  const m = Math.round(min % 60)
+  if (h === 0) return `${m}'`
+  if (m === 0) return `${h}h`
+  return `${h}h${String(m).padStart(2, '0')}`
+}
+
+/** Clé d'état pour un jour (Tai Chi, note). */
 export function dayKey(wk: number, di: number): string {
   return `${wk}-${di}`
+}
+
+/** Clé d'état pour une étape (séance) d'un jour. */
+export function sessionKey(wk: number, di: number, si: number): string {
+  return `${wk}-${di}-${si}`
+}
+
+/** Clé d'état pour une option d'un jour (Tai Chi, etc.). */
+export function optionKey(wk: number, di: number, label: string): string {
+  return `${wk}-${di}::${label}`
+}
+
+/** Un jour d'entraînement est validé si toutes ses étapes sont validées. */
+export function isDayValidated(
+  wk: number,
+  di: number,
+  day: Session[],
+  sessions: Record<string, number>,
+): boolean {
+  if (day.length === 0) return false
+  return day.every((_, si) => sessionKey(wk, di, si) in sessions)
 }
 
 /** Formatage court d'une date : "6 juil." */
@@ -58,7 +170,7 @@ export function formatShort(d: Date): string {
 }
 
 /** Un jour d'entraînement passé (avant aujourd'hui) et non validé = "manqué". */
-export function isOverdue(wk: number, di: number, label: string, today: Date): boolean {
-  if (!isTraining(label)) return false
-  return dateOfDay(wk, di) < new Date(today.getFullYear(), today.getMonth(), today.getDate())
+export function isOverdue(date: Date, day: Session[], today: Date): boolean {
+  if (!isTrainingDay(day)) return false
+  return date < new Date(today.getFullYear(), today.getMonth(), today.getDate())
 }

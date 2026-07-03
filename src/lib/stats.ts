@@ -1,20 +1,22 @@
 // Calculs de l'onglet Progression (§9)
-import type { State, Week, DisciplineKey } from '../types'
-import { disciplineOf, isTraining, dayKey, dateOfDay } from './logic'
+import type { State, Week } from '../types'
+import { isTrainingDay, isDayValidated, dateOfDay, sessionKey, weekVolume } from './logic'
+
+type Sessions = State['sessions']
 
 export interface WeekProgress {
   validated: number
-  total: number // séances non-repos
+  total: number // jours d'entraînement (non-repos)
 }
 
-/** X/Y d'une semaine (Y = nb de séances non-repos). */
-export function weekProgress(week: Week, done: State['done']): WeekProgress {
+/** X/Y d'une semaine (Y = nb de jours d'entraînement, X = jours entièrement validés). */
+export function weekProgress(week: Week, sessions: Sessions): WeekProgress {
   let total = 0
   let validated = 0
-  week.days.forEach((label, di) => {
-    if (!isTraining(label)) return
+  week.days.forEach((day, di) => {
+    if (!isTrainingDay(day)) return
     total++
-    if (done[dayKey(week.wk, di)]) validated++
+    if (isDayValidated(week.wk, di, day, sessions)) validated++
   })
   return { validated, total }
 }
@@ -25,11 +27,11 @@ export interface Overall {
   pct: number
 }
 
-export function overallProgress(weeks: Week[], done: State['done']): Overall {
+export function overallProgress(weeks: Week[], sessions: Sessions): Overall {
   let total = 0
   let validated = 0
   for (const w of weeks) {
-    const p = weekProgress(w, done)
+    const p = weekProgress(w, sessions)
     total += p.total
     validated += p.validated
   }
@@ -37,19 +39,23 @@ export function overallProgress(weeks: Week[], done: State['done']): Overall {
   return { validated, total, pct }
 }
 
-/** Heures validées ≈ Σ(fraction validée d'une semaine × vol). Dénominateur = Σ vol. */
-export function hoursProgress(weeks: Week[], done: State['done']): {
+/** Heures : réalisées = Σ minutes réellement faites ; prévues = Σ volume. */
+export function hoursProgress(weeks: Week[], sessions: Sessions): {
   validated: number
   planned: number
 } {
-  let validated = 0
+  let done = 0
   let planned = 0
   for (const w of weeks) {
-    planned += w.vol
-    const p = weekProgress(w, done)
-    if (p.total > 0) validated += (p.validated / p.total) * w.vol
+    planned += weekVolume(w)
+    w.days.forEach((day, di) => {
+      day.forEach((s, si) => {
+        const k = sessionKey(w.wk, di, si)
+        if (k in sessions) done += sessions[k]! || s.min // 0 loggé (course) → planifié
+      })
+    })
   }
-  return { validated, planned }
+  return { validated: Math.round((done / 60) * 10) / 10, planned }
 }
 
 export interface DisciplineStat {
@@ -60,18 +66,19 @@ export interface DisciplineStat {
   planned: number
 }
 
-export function disciplineStats(weeks: Week[], done: State['done']): DisciplineStat[] {
+export function disciplineStats(weeks: Week[], sessions: Sessions): DisciplineStat[] {
   const base: Record<'swim' | 'bike' | 'run', DisciplineStat> = {
     swim: { key: 'swim', label: 'Natation', color: 'var(--swim)', validated: 0, planned: 0 },
     bike: { key: 'bike', label: 'Vélo', color: 'var(--bike)', validated: 0, planned: 0 },
     run: { key: 'run', label: 'Course', color: 'var(--run)', validated: 0, planned: 0 },
   }
   for (const w of weeks) {
-    w.days.forEach((label, di) => {
-      const k: DisciplineKey = disciplineOf(label).key
-      if (k !== 'swim' && k !== 'bike' && k !== 'run') return
-      base[k].planned++
-      if (done[dayKey(w.wk, di)]) base[k].validated++
+    w.days.forEach((day, di) => {
+      day.forEach((s, si) => {
+        if (s.disc !== 'swim' && s.disc !== 'bike' && s.disc !== 'run') return
+        base[s.disc].planned++
+        if (sessionKey(w.wk, di, si) in sessions) base[s.disc].validated++
+      })
     })
   }
   return [base.swim, base.bike, base.run]
@@ -85,7 +92,7 @@ export interface PhaseStat {
   pct: number
 }
 
-export function phaseStats(weeks: Week[], done: State['done']): PhaseStat[] {
+export function phaseStats(weeks: Week[], sessions: Sessions): PhaseStat[] {
   const order: string[] = []
   const map = new Map<string, PhaseStat>()
   for (const w of weeks) {
@@ -94,7 +101,7 @@ export function phaseStats(weeks: Week[], done: State['done']): PhaseStat[] {
       map.set(w.phase, { phase: w.phase, color: '', validated: 0, total: 0, pct: 0 })
     }
     const ps = map.get(w.phase)!
-    const p = weekProgress(w, done)
+    const p = weekProgress(w, sessions)
     ps.total += p.total
     ps.validated += p.validated
   }
@@ -106,24 +113,36 @@ export function phaseStats(weeks: Week[], done: State['done']): PhaseStat[] {
 }
 
 /** Série en cours : jours d'entraînement passés consécutifs validés. */
-export function currentStreak(weeks: Week[], done: State['done'], today: Date): number {
+export function currentStreak(weeks: Week[], sessions: Sessions, today: Date): number {
   const midnight = new Date(today.getFullYear(), today.getMonth(), today.getDate())
-  // Liste chronologique des jours d'entraînement strictement passés.
-  const past: string[] = []
+  const past: { wk: number; di: number; day: Week['days'][number] }[] = []
   for (const w of weeks) {
-    w.days.forEach((label, di) => {
-      if (!isTraining(label)) return
-      if (dateOfDay(w.wk, di) < midnight) past.push(dayKey(w.wk, di))
+    w.days.forEach((day, di) => {
+      if (!isTrainingDay(day)) return
+      if (dateOfDay(w.start, di) < midnight) past.push({ wk: w.wk, di, day })
     })
   }
   let streak = 0
   for (let i = past.length - 1; i >= 0; i--) {
-    if (done[past[i]!]) streak++
+    const p = past[i]!
+    if (isDayValidated(p.wk, p.di, p.day, sessions)) streak++
     else break
   }
   return streak
 }
 
-export function taichiCount(taichi: State['taichi']): number {
-  return Object.keys(taichi).length
+/** Nombre d'options validées portant un libellé donné (ex. "Tai Chi"). */
+export function countOption(options: State['options'], label: string): number {
+  const suffix = `::${label}`
+  return Object.keys(options).filter((k) => k.endsWith(suffix)).length
+}
+
+/** Total d'options validées (toutes étiquettes). */
+export function optionTotal(options: State['options']): number {
+  return Object.keys(options).length
+}
+
+/** Total d'étapes (séances) validées, toutes disciplines. */
+export function validatedSessionCount(sessions: Sessions): number {
+  return Object.keys(sessions).length
 }

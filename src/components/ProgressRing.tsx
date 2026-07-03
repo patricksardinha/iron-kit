@@ -18,9 +18,8 @@ export function ProgressRing({ pct, validated, total }: Props) {
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
           <defs>
             <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="var(--swim)" />
-              <stop offset="50%" stopColor="var(--bike)" />
-              <stop offset="100%" stopColor="var(--run)" />
+              <stop offset="0%" stopColor="var(--accent)" />
+              <stop offset="100%" stopColor="var(--accent-2)" />
             </linearGradient>
           </defs>
           <circle
@@ -48,7 +47,7 @@ export function ProgressRing({ pct, validated, total }: Props) {
           <div>
             <div className="pct">{pct}%</div>
             <div className="sub">
-              {validated} / {total} séances
+              {validated} / {total} jours
             </div>
           </div>
         </div>
