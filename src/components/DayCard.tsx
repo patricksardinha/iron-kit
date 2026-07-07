@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import type { Session } from '../types'
+import type { Session, SessionLibrary } from '../types'
 import { DAY_NAMES } from '../lib/constants'
+import { resolveSession, restInfo } from '../lib/sessions'
+import { SessionDetail } from './SessionDetail'
 import {
   dayDiscipline,
   discLabel,
@@ -22,6 +24,7 @@ interface Props {
   today: Date
   isToday: boolean
   sessions: Record<string, number>
+  library: SessionLibrary
   options: string[]
   isOptionDone: (label: string) => boolean
   note: string | undefined
@@ -38,6 +41,7 @@ export function DayCard({
   today,
   isToday,
   sessions,
+  library,
   options,
   isOptionDone,
   note,
@@ -46,6 +50,7 @@ export function DayCard({
   onSetNote,
 }: Props) {
   const [editing, setEditing] = useState(false)
+  const [showDetail, setShowDetail] = useState(false)
   const training = isTrainingDay(day)
   const dayDone = isDayValidated(wk, di, day, sessions)
   const overdue = !dayDone && isOverdue(date, day, today)
@@ -190,6 +195,16 @@ export function DayCard({
 
         <button
           type="button"
+          className={`detail-btn${showDetail ? ' active' : ''}`}
+          onClick={() => setShowDetail((d) => !d)}
+          aria-expanded={showDetail}
+        >
+          Détail
+          <Icon name={showDetail ? 'close' : 'chevron-down'} size={15} />
+        </button>
+
+        <button
+          type="button"
           className={`note-btn${note ? ' has' : ''}${editing ? ' active' : ''}`}
           onClick={() => setEditing((e) => !e)}
           aria-expanded={editing}
@@ -198,6 +213,32 @@ export function DayCard({
           <Icon name={editing ? 'close' : 'note'} size={16} />
         </button>
       </div>
+
+      {showDetail && (
+        <div className="day-detail">
+          {training ? (
+            day.map((s, si) => {
+              const info = resolveSession(s, library)
+              return info ? (
+                <SessionDetail key={si} info={info} />
+              ) : (
+                <div key={si} className="sd-missing">
+                  Détail indisponible pour « {s.detail || discLabel(s.disc)} ».
+                </div>
+              )
+            })
+          ) : (
+            (() => {
+              const info = restInfo(library)
+              return info ? (
+                <SessionDetail info={info} />
+              ) : (
+                <div className="sd-missing">Journée de repos / mobilité.</div>
+              )
+            })()
+          )}
+        </div>
+      )}
 
       {note && !editing && <div className="day-note-preview">{note}</div>}
 

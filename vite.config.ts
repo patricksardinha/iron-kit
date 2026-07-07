@@ -17,6 +17,7 @@ export default defineConfig({
         'icons/apple-touch-icon.png',
         'plan.json',
         'nutrition.json',
+        'sessions.json',
       ],
       manifest: {
         name: 'IronKit',

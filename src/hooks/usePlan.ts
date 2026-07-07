@@ -28,6 +28,7 @@ export interface PlanApi {
   addSession: (pos: number, di: number) => void
   updateSession: (pos: number, di: number, si: number, patch: Partial<Session>) => void
   removeSession: (pos: number, di: number, si: number) => void
+  moveSession: (pos: number, fromDi: number, fromSi: number, toDi: number, toSi: number) => void
   options: string[] // pool global d'options (Tai Chi, mobilité…)
   addOption: (label: string) => void
   removeOption: (label: string) => void
@@ -186,6 +187,25 @@ export function usePlan(base: Week[], hooks: PlanHooks): PlanApi {
     [setDays],
   )
 
+  // Déplace une séance (fromDi,fromSi) → insérée avant (toDi,toSi). Utilisé par le drag & drop.
+  const moveSession = useCallback(
+    (pos: number, fromDi: number, fromSi: number, toDi: number, toSi: number) => {
+      setDays(pos, (days) => {
+        const src = days[fromDi]
+        if (!src || fromSi < 0 || fromSi >= src.length) return days
+        const copy = days.map((d) => [...d])
+        const [moved] = copy[fromDi]!.splice(fromSi, 1)
+        if (!moved) return days
+        // Retrait puis insertion : si on descend dans le même jour, la cible glisse d'un cran.
+        let idx = fromDi === toDi && fromSi < toSi ? toSi - 1 : toSi
+        idx = Math.max(0, Math.min(idx, copy[toDi]!.length))
+        copy[toDi]!.splice(idx, 0, moved)
+        return copy
+      })
+    },
+    [setDays],
+  )
+
   const patchWeek = useCallback((pos: number, fn: (w: Week) => Week) => {
     setIsCustom(true)
     setWeeks((ws) => ws.map((w) => (w.wk === pos ? fn(w) : w)))
@@ -283,6 +303,7 @@ export function usePlan(base: Week[], hooks: PlanHooks): PlanApi {
     addSession,
     updateSession,
     removeSession,
+    moveSession,
     options,
     addOption,
     removeOption,

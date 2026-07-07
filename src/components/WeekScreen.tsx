@@ -1,4 +1,4 @@
-import type { Week } from '../types'
+import type { Week, SessionLibrary } from '../types'
 import type { AppState } from '../hooks/useAppState'
 import { JALONS, phaseColor, phaseParts } from '../lib/constants'
 import { dateOfDay, dayKey, optionKey, weekDatesLabel, weekVolume } from '../lib/logic'
@@ -12,10 +12,11 @@ interface Props {
   currentWk: number
   today: Date
   appState: AppState
+  library: SessionLibrary
   onNav: (wk: number) => void
 }
 
-export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, onNav }: Props) {
+export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, library, onNav }: Props) {
   const total = weeks.length
   const week = weeks[weekIndex - 1]
   if (!week) return null
@@ -102,6 +103,7 @@ export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, onNav
               today={today}
               isToday={isToday}
               sessions={state.sessions}
+              library={library}
               options={week.dayOptions[di] ?? []}
               isOptionDone={(label) => !!state.options[optionKey(week.wk, di, label)]}
               note={state.notes[k]}

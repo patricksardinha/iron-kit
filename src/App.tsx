@@ -73,6 +73,7 @@ function Main({ data }: { data: Data }) {
           currentWk={currentWk}
           today={today}
           appState={appState}
+          library={data.sessions}
           onNav={setWeekIndex}
         />
       )}
@@ -86,7 +87,7 @@ function Main({ data }: { data: Data }) {
         />
       )}
       {tab === 'plan' && (
-        <PlanScreen plan={plan} state={appState.state} currentWk={currentWk} />
+        <PlanScreen plan={plan} state={appState.state} currentWk={currentWk} library={data.sessions} />
       )}
       {tab === 'rewards' && (
         <RewardsScreen weeks={plan.weeks} state={appState.state} today={today} />

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { Week, State } from '../types'
+import type { Week, State, SessionLibrary } from '../types'
 import type { PlanApi } from '../hooks/usePlan'
 import { phaseColor, phaseParts } from '../lib/constants'
 import { weekDatesLabel, weekVolume } from '../lib/logic'
@@ -11,9 +11,10 @@ interface Props {
   plan: PlanApi
   state: State
   currentWk: number
+  library: SessionLibrary
 }
 
-export function PlanScreen({ plan, state, currentWk }: Props) {
+export function PlanScreen({ plan, state, currentWk, library }: Props) {
   const {
     weeks,
     isCustom,
@@ -21,6 +22,7 @@ export function PlanScreen({ plan, state, currentWk }: Props) {
     addSession,
     updateSession,
     removeSession,
+    moveSession,
     options,
     addOption,
     removeOption,
@@ -89,10 +91,14 @@ export function PlanScreen({ plan, state, currentWk }: Props) {
                     <WeekEditor
                       week={w}
                       validated={p.validated}
+                      library={library}
                       onPatch={(patch) => updateWeek(w.wk, patch)}
                       onAddSession={(di) => addSession(w.wk, di)}
                       onUpdateSession={(di, si, patch) => updateSession(w.wk, di, si, patch)}
                       onRemoveSession={(di, si) => removeSession(w.wk, di, si)}
+                      onMoveSession={(fromDi, fromSi, toDi, toSi) =>
+                        moveSession(w.wk, fromDi, fromSi, toDi, toSi)
+                      }
                       options={options}
                       onAddOption={(label) => addOption(label)}
                       onRemoveOption={(label) => removeOption(label)}

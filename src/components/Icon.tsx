@@ -20,6 +20,8 @@ export type IconName =
   | 'reset'
   | 'trophy'
   | 'settings'
+  | 'chevron-down'
+  | 'grip'
 
 interface Props {
   name: IconName
@@ -114,6 +116,18 @@ const PATHS: Record<IconName, React.ReactNode> = {
   ),
   'chevron-left': <path d="M15 5l-7 7 7 7" />,
   'chevron-right': <path d="M9 5l7 7-7 7" />,
+  'chevron-down': <path d="M5 9l7 7 7-7" />,
+  // poignée de glisse (6 points)
+  grip: (
+    <>
+      <circle cx="9" cy="6" r="1.3" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="6" r="1.3" fill="currentColor" stroke="none" />
+      <circle cx="9" cy="12" r="1.3" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="12" r="1.3" fill="currentColor" stroke="none" />
+      <circle cx="9" cy="18" r="1.3" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="18" r="1.3" fill="currentColor" stroke="none" />
+    </>
+  ),
   check: <path d="M5 12.5l4.5 4.5L19 7" />,
   edit: (
     <>

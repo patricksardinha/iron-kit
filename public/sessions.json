@@ -1,0 +1,434 @@
+{
+  "nat_tech": {
+    "name": "Natation — Technique crawl",
+    "disc": "swim",
+    "goal": "Construire un crawl efficace et économe. C'est LA priorité des premiers mois : la technique avant le volume.",
+    "blocks": [
+      {"h": "Échauffement (~10')", "items": [
+        "200 m souple en alternant 50 crawl / 50 dos ou brasse, respiration facile.",
+        "4×25 m battements de jambes avec planche, récup 15\"."
+      ]},
+      {"h": "Éducatifs — le cœur de la séance (~15')", "items": [
+        "4×25 m \"rattrapé\" (une main attend l'autre devant) → focus glisse et allonge.",
+        "4×25 m bras seul (un bras le long du corps, l'autre nage) → prise d'appui + rotation.",
+        "4×25 m menton rentré / regard vers le fond → corrige la position de tête (le bassin remonte).",
+        "Récup 15-20\" entre chaque, allure lente : la qualité prime sur la vitesse."
+      ]},
+      {"h": "Corps (~10-15')", "items": [
+        "8×25 m crawl complet en appliquant les consignes, récup 20\".",
+        "Nage lente et propre. Si tu tiens 50 m proprement, fais 6×50 m au lieu de 8×25."
+      ]},
+      {"h": "Retour au calme (~5')", "items": [
+        "100 m souple en respiration bilatérale (3 temps)."
+      ]}
+    ],
+    "cues": [
+      "Regard vers le fond, pas devant (garde les hanches hautes).",
+      "Tourne épaules ET hanches : tu nages sur le flanc, pas à plat.",
+      "Expire tout l'air dans l'eau, inspire vite sur le côté.",
+      "La main entre à plat et s'allonge devant AVANT de tirer.",
+      "Corps gainé, jambes qui flottent (petits battements)."
+    ],
+    "prog": "Fil rouge : 25 m propres → 50 m → 100 m sans t'arrêter. 1 à 3 leçons avec un maître-nageur au début = le meilleur investissement de toute ta prépa."
+  },
+  "nat_cont": {
+    "name": "Natation — Technique + distance continue",
+    "disc": "swim",
+    "goal": "Transformer la technique en capacité à nager longtemps sans s'arrêter.",
+    "blocks": [
+      {"h": "Échauffement (~10')", "items": [
+        "200 m souple + 4×25 m éducatifs (rattrapé, bras seul)."
+      ]},
+      {"h": "Corps — distance continue (voir le libellé du jour)", "items": [
+        "Nage la distance cible en CONTINU, allure lente et régulière, respiration 3 temps.",
+        "Si tu casses, note où et pourquoi (souffle ? technique ?).",
+        "Trop dur d'un coup ? Fractionne (ex. 4×200 récup 30\") puis réduis les coupures semaine après semaine.",
+        "Objectif : la continuité, pas le chrono."
+      ]},
+      {"h": "Retour au calme (~5')", "items": [
+        "100 m souple + battements légers."
+      ]}
+    ],
+    "cues": [
+      "Trouve un rythme respiratoire régulier et tiens-le.",
+      "Ralentis plutôt que de t'arrêter.",
+      "Relâche les épaules, ne te bats pas contre l'eau."
+    ],
+    "prog": "Réduis progressivement les récups jusqu'au 100 % continu. La distance cible monte chaque semaine (voir le plan)."
+  },
+  "nat_endur": {
+    "name": "Natation — Endurance",
+    "disc": "swim",
+    "goal": "Développer l'endurance aérobie en nage, à allure confortable.",
+    "blocks": [
+      {"h": "Échauffement (~10')", "items": [
+        "300 m progressif + 4×25 m éducatifs."
+      ]},
+      {"h": "Corps", "items": [
+        "Séries moyennes à allure aérobie : ex. 6-10×100 m récup 20\", ou 4×200 m récup 30\".",
+        "Allure régulière, \"je pourrais parler\". Adapte le volume au libellé du jour."
+      ]},
+      {"h": "Retour au calme (~5')", "items": [
+        "100-200 m souple."
+      ]}
+    ],
+    "cues": [
+      "Même allure sur TOUTES les répétitions.",
+      "La technique doit tenir même quand tu fatigues."
+    ],
+    "prog": "Allonge les répétitions (100→200→400 m) et réduis les récups au fil des semaines."
+  },
+  "nat_seuil": {
+    "name": "Natation — Seuil / allure course",
+    "disc": "swim",
+    "goal": "Habituer le corps à nager à une allure soutenue et régulière, proche de l'allure de course.",
+    "blocks": [
+      {"h": "Échauffement (~10-15')", "items": [
+        "300 m souple + 4×50 m progressifs (finir vite) récup 20\"."
+      ]},
+      {"h": "Corps", "items": [
+        "Blocs soutenus mais tenables : ex. 8-12×100 m récup 15-20\", ou 3-4×400 m récup 40\".",
+        "Effort \"confortablement difficile\". Volume selon le libellé du jour."
+      ]},
+      {"h": "Retour au calme (~5')", "items": [
+        "200 m souple."
+      ]}
+    ],
+    "cues": [
+      "Ne pars pas trop vite : allure régulière du début à la fin.",
+      "C'est l'allure que tu voudras tenir sur les 3,8 km d'Evian."
+    ],
+    "prog": "Réduis les récups et allonge les blocs (100→200→400 m)."
+  },
+  "nat_el": {
+    "name": "Natation — Eau libre (lac)",
+    "disc": "swim",
+    "goal": "Transférer la technique au milieu réel et acquérir les réflexes de course d'Evian.",
+    "blocks": [
+      {"h": "Avant d'entrer", "items": [
+        "Combinaison néoprène, échauffement des épaules à sec, repère un point sur la berge."
+      ]},
+      {"h": "Échauffement (~5-10')", "items": [
+        "Nage souple près du bord : habitue-toi à la température et à la visibilité.",
+        "N'hyperventile pas au contact du froid : entre progressivement, souffle dans l'eau."
+      ]},
+      {"h": "Corps (durée/distance du libellé)", "items": [
+        "Sighting : relève juste le front tous les 6-10 mouvements pour viser un repère, sans casser le rythme.",
+        "Nager droit : vérifie ta trajectoire et corrige.",
+        "Plus tard : répète le format d'Evian (rolling start + sortie à l'australienne), changements d'allure, nage en groupe."
+      ]},
+      {"h": "Retour au calme (~5')", "items": [
+        "Nage souple, sortie progressive (attention au vertige en se relevant)."
+      ]}
+    ],
+    "cues": [
+      "JAMAIS seul : zone surveillée, bouée de nage tractée, ou partenaire.",
+      "Vise souvent : sans lignes d'eau, on dévie vite.",
+      "Reste calme si l'eau est agitée : allure régulière, souffle long."
+    ],
+    "prog": "Augmente la durée continue. Sur les dernières séances, simule le départ et la distance de course."
+  },
+  "nat_recup": {
+    "name": "Natation — Facile / déliage",
+    "disc": "swim",
+    "goal": "Récupération active ou déliage avant une échéance. Relâchement, aucune charge.",
+    "blocks": [
+      {"h": "Séance courte", "items": [
+        "200 m souple mixte.",
+        "Quelques 25 m éducatifs tranquilles (+ 2-3×25 m un peu plus vifs si c'est un déliage d'avant-course).",
+        "100 m très souple."
+      ]}
+    ],
+    "cues": [
+      "Sensations avant tout, zéro intensité.",
+      "Tu dois sortir plus frais qu'en entrant."
+    ]
+  },
+  "velo_z2": {
+    "name": "Vélo — Endurance Z2",
+    "disc": "bike",
+    "goal": "Construire le moteur aérobie de base. La fondation du vélo.",
+    "blocks": [
+      {"h": "Échauffement (~10')", "items": [
+        "Montée en cadence progressive, jambes qui tournent (85-95 rpm)."
+      ]},
+      {"h": "Corps (durée du jour)", "items": [
+        "Rouler en Z2 : tu peux parler en phrases. Cadence souple.",
+        "Sur home trainer : résistance modérée, change de position de temps en temps.",
+        "Au-delà d'1 h : commence à boire et manger (entraînement digestif)."
+      ]},
+      {"h": "Retour au calme (~5')", "items": [
+        "Cadence légère, jambes qui décrantent."
+      ]}
+    ],
+    "cues": [
+      "Effort facile et RÉGULIER : ne pas transformer en course.",
+      "Si tu as des prolongateurs, prends l'habitude de la position tôt."
+    ]
+  },
+  "velo_ss": {
+    "name": "Vélo — Sweet spot / seuil (home trainer)",
+    "disc": "bike",
+    "goal": "Gagner de la puissance efficacement quand on manque d'heures. Idéal au home trainer l'hiver.",
+    "blocks": [
+      {"h": "Échauffement (~15')", "items": [
+        "Progressif + 2-3×1' à cadence élevée (100+ rpm) récup 1'."
+      ]},
+      {"h": "Corps (voir le libellé)", "items": [
+        "Blocs \"sweet spot\" = soutenu mais soutenable (7-8/10) : ex. 2×15' à 2×20' récup 5', assis, 85-95 rpm.",
+        "Variante force : basse cadence 50-60 rpm sur gros braquet pour simuler la montée d'un col."
+      ]},
+      {"h": "Retour au calme (~10')", "items": [
+        "Très facile."
+      ]}
+    ],
+    "cues": [
+      "Effort \"je peux dire quelques mots, pas une phrase\".",
+      "Régularité sur tout le bloc : ne pas exploser au début.",
+      "Ventile, garde la cadence."
+    ],
+    "prog": "Allonge les blocs (15→20→25') puis ajoute-en un 3e. Monte la résistance sur les portions force."
+  },
+  "velo_cotes": {
+    "name": "Vélo — Côtes / cols / force",
+    "disc": "bike",
+    "goal": "Construire les jambes de grimpeur qu'Evian exige (3900 m D+).",
+    "blocks": [
+      {"h": "Échauffement (~15')", "items": [
+        "Progressif + montée en cadence."
+      ]},
+      {"h": "Corps", "items": [
+        "Répétitions en côte : ex. 5×4' en bosse à effort soutenu, récup en descente.",
+        "Ou grimper un col long en Z2-seuil. Alterne assis (endurance de force) et quelques portions en danseuse.",
+        "Force : gros braquet, 50-60 rpm sur bosses courtes."
+      ]},
+      {"h": "Retour au calme (~10')", "items": [
+        "Roulage souple."
+      ]}
+    ],
+    "cues": [
+      "En montée, reste assis et régulier le plus possible (économe).",
+      "Garde de la marge : à Evian le Col du Corbier est placé TARD, il faut finir fort.",
+      "Travaille aussi la descente (freinage, trajectoires) : ça compte et ça s'entraîne."
+    ],
+    "prog": "Augmente le nombre de répétitions et la longueur des cols. Vise un D+ croissant (objectif 2500-3000 m au pic)."
+  },
+  "velo_long": {
+    "name": "Vélo — Sortie longue vallonnée",
+    "disc": "bike",
+    "goal": "Encaisser des heures + du dénivelé, et RÉPÉTER la nutrition de course. La séance la plus importante côté vélo.",
+    "blocks": [
+      {"h": "Échauffement (~15')", "items": [
+        "Montée progressive, cadence souple."
+      ]},
+      {"h": "Corps (durée du jour)", "items": [
+        "Z2 majoritaire mais VALLONNÉ : cherche le dénivelé, c'est la spécificité d'Evian.",
+        "En fin de prépa, insère des portions à allure IM en côte.",
+        "Nutrition : mange/bois dès la 1re heure. Vise 60 g de glucides/h (→ 80-90 g/h en fin de prépa). Teste TOUT ce que tu prendras le jour J.",
+        "Si \"+ brick\" : enchaîne la course juste après (voir la séance Brick)."
+      ]},
+      {"h": "Retour au calme (~10-15')", "items": [
+        "Roulage souple + étirements légers."
+      ]}
+    ],
+    "cues": [
+      "Gère l'effort comme le jour J : jamais dans le rouge en côte.",
+      "Bois avant la soif, mange avant le coup de moins bien.",
+      "Note ce qui passe / ne passe pas au niveau digestif."
+    ],
+    "prog": "+30 min maximum d'une sortie longue à l'autre. Le D+ ciblé augmente vers le pic."
+  },
+  "velo_recup": {
+    "name": "Vélo — Facile / activation",
+    "disc": "bike",
+    "goal": "Récupération active, ou déliage (openers) avant une échéance.",
+    "blocks": [
+      {"h": "Séance courte", "items": [
+        "Roulage très facile (Z1-Z2 bas).",
+        "Déliage d'avant-course : après échauffement, 3-4× accélérations de 1-2' à allure course, récup complète — juste réveiller les jambes."
+      ]}
+    ],
+    "cues": [
+      "Aucune fatigue accumulée. Jambes légères en sortant."
+    ]
+  },
+  "cap_qual": {
+    "name": "Course — Qualité / seuil",
+    "disc": "run",
+    "goal": "Entretenir l'économie et la vitesse de course sans t'user. 1×/semaine suffit largement vu ton niveau.",
+    "blocks": [
+      {"h": "Échauffement (~15')", "items": [
+        "Footing lent + 3-4 lignes progressives (accélérations de 20-30 m) + gammes (montées de genoux, talons-fesses)."
+      ]},
+      {"h": "Corps (voir le libellé)", "items": [
+        "Intervalles : ex. 5×3' au seuil (allure ~10 km) récup 1'30 en trot, ou 6×1' en côte récup en descente.",
+        "Effort soutenu et contrôlé."
+      ]},
+      {"h": "Retour au calme (~10')", "items": [
+        "Footing lent."
+      ]}
+    ],
+    "cues": [
+      "Allure régulière sur toutes les répétitions (ne pas exploser la 1re).",
+      "Seuil = \"soutenu, phrases courtes\".",
+      "Foulée relâchée, cadence élevée (~180)."
+    ],
+    "prog": "Allonge les blocs (3'→4'→5') ou réduis les récups."
+  },
+  "cap_im": {
+    "name": "Course — Allure Ironman",
+    "disc": "run",
+    "goal": "Ancrer l'allure marathon du jour J — plus lente que tu crois, tenable des heures (surtout sur jambes de vélo).",
+    "blocks": [
+      {"h": "Échauffement (~10')", "items": [
+        "Footing lent + 2-3 lignes."
+      ]},
+      {"h": "Corps", "items": [
+        "Blocs à l'allure IM visée : ex. 3×10' récup 2', ou en continu.",
+        "Souvent placé en fin de sortie ou juste après le vélo (brick).",
+        "Allure \"confortable, je pourrais tenir longtemps\"."
+      ]},
+      {"h": "Retour au calme (~5-10')", "items": [
+        "Footing lent."
+      ]}
+    ],
+    "cues": [
+      "Résiste à l'envie d'accélérer : c'est un travail de régularité et d'économie.",
+      "Cadence de pas élevée (~180), petits pas."
+    ]
+  },
+  "cap_long": {
+    "name": "Course — Sortie longue",
+    "disc": "run",
+    "goal": "Endurance + résistance, sans détruire les jambes. On plafonne volontairement la durée.",
+    "blocks": [
+      {"h": "Corps (durée du jour, plafond ~1h45-2h15)", "items": [
+        "Footing en endurance FACILE (Z2), terrain roulant ou trail facile.",
+        "Sur >1h15 : bois et prends un peu de glucides (entraînement digestif).",
+        "Sur brick / après vélo : les 1ers km semblent bizarres, c'est normal."
+      ]},
+      {"h": "Retour au calme", "items": [
+        "Marche 5' + étirements légers."
+      ]}
+    ],
+    "cues": [
+      "Allure FACILE, tu ralentis si besoin.",
+      "Le \"long\" d'un IM se construit surtout à vélo et en brick, pas en courant 3 h.",
+      "Écoute tes tendons (Achille, genou) : une douleur qui modifie la foulée = stop."
+    ]
+  },
+  "cap_recup": {
+    "name": "Course — Footing facile",
+    "disc": "run",
+    "goal": "Récupération active / entretien aérobie léger.",
+    "blocks": [
+      {"h": "Séance courte", "items": [
+        "Footing lent et court, respiration facile.",
+        "Déliage : ajouter 2-4 lignes vives en fin."
+      ]}
+    ],
+    "cues": [
+      "Très facile.",
+      "Une douleur qui modifie ta foulée → tu t'arrêtes."
+    ]
+  },
+  "cap_activation": {
+    "name": "Course — Déliage / lignes",
+    "disc": "run",
+    "goal": "Réveiller le système nerveux avant une échéance, sans fatigue.",
+    "blocks": [
+      {"h": "Séance très courte", "items": [
+        "Footing court très facile + 3-6 lignes progressives (accélérations courtes), récup complète."
+      ]}
+    ],
+    "cues": [
+      "Vif mais court. Tu dois finir frais."
+    ]
+  },
+  "brick": {
+    "name": "+ Enchaînement (brick)",
+    "disc": "run",
+    "goal": "LA séance reine de l'Ironman : apprendre à courir sur des jambes de vélo.",
+    "blocks": [
+      {"h": "Transition express (comme une vraie T2)", "items": [
+        "Descends du vélo, change de chaussures, pars courir en moins de 5 min.",
+        "Cours la durée indiquée (souvent 15-45'). Les 1res minutes : jambes \"en coton\", foulée haute et courte, laisse l'allure venir."
+      ]}
+    ],
+    "cues": [
+      "Cadence élevée dès la descente du vélo pour débloquer les jambes.",
+      "L'adaptation la plus spécifique de tout le plan — même court, ça paie."
+    ]
+  },
+  "gainage": {
+    "name": "+ Gainage / renfo (10-15')",
+    "disc": "run",
+    "goal": "Prévention blessure + maintien postural sur le long.",
+    "blocks": [
+      {"h": "Circuit", "items": [
+        "Planche ventrale + planches latérales (30-45\").",
+        "Pont fessier, gainage dynamique, équilibre unipodal.",
+        "Un peu de chaîne postérieure (bird-dog, superman)."
+      ]}
+    ],
+    "cues": [
+      "Qualité de position > durée.",
+      "On réduit en phase d'affûtage."
+    ]
+  },
+  "repos": {
+    "name": "Repos / mobilité",
+    "disc": "rest",
+    "goal": "La récupération EST un entraînement — c'est là que les adaptations se font.",
+    "blocks": [
+      {"h": "Au choix", "items": [
+        "Vrai repos, OU marche, étirements doux, mobilité hanches/épaules/chevilles.",
+        "Le Tai Chi 10' (ton ancre) reste le bienvenu."
+      ]}
+    ],
+    "cues": [
+      "Ne pas culpabiliser ni \"combler\" par une petite séance.",
+      "Le sommeil est la priorité."
+    ]
+  },
+  "activation_race": {
+    "name": "Activation / prépa course",
+    "disc": "rest",
+    "goal": "Déverrouiller le corps la veille/l'avant-veille et préparer le matériel.",
+    "blocks": [
+      {"h": "Activation courte", "items": [
+        "20-30' tous sports confondus à allure facile + quelques accélérations."
+      ]},
+      {"h": "Préparation matériel", "items": [
+        "Vélo : lumières avant/arrière (tunnels d'Evian !), pneus, freins.",
+        "Combinaison, ravitaillement, sacs de transition, dossard."
+      ]}
+    ],
+    "cues": [
+      "Aucune fatigue : le travail est fait.",
+      "Rester affûté et organisé."
+    ]
+  },
+  "race": {
+    "name": "Épreuve — Jour de course",
+    "disc": "race",
+    "goal": "Exécution et gestion. Tout est prêt : confiance.",
+    "blocks": [
+      {"h": "Natation", "items": [
+        "Pars prudent, trouve ton rythme respiratoire, sighting régulier."
+      ]},
+      {"h": "Vélo", "items": [
+        "Gère l'effort en côte (jamais dans le rouge).",
+        "Tiens ta nutrition (glucides/h + électrolytes).",
+        "Surveille les barrières horaires (Ramaz, Corbier)."
+      ]},
+      {"h": "Course", "items": [
+        "Allure IM contrôlée dès la sortie du vélo, marche les ravitos si besoin, avance."
+      ]}
+    ],
+    "cues": [
+      "Le jour J ne se gagne pas au début, il se sauve à la fin.",
+      "Découpe la course en petits objectifs. Savoure."
+    ]
+  }
+}

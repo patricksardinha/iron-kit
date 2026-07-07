@@ -29,7 +29,7 @@ Une **PWA mobile-first (priorité Android)**, installable sur l'écran d'accueil
 ## 3. Stack recommandée
 
 - **Vite + React 19 + TypeScript (strict)**.
-- **PWA** via `vite-plugin-pwa` (manifest + service worker, precache de l'app shell **et** de `plan.json` + `nutrition.json`).
+- **PWA** via `vite-plugin-pwa` (manifest + service worker, precache de l'app shell **et** de `plan.json` + `nutrition.json` + `sessions.json`).
 - **Persistance locale uniquement** : `localStorage` (simple) ou IndexedDB via `idb-keyval`. Pas de réseau au runtime.
 - **Styles** : CSS + variables (tokens §8). Tailwind accepté si préféré, mais garder les tokens.
 - **Polices auto-hébergées** (woff2) pour un offline réel — ne pas dépendre du CDN Google Fonts.
@@ -72,6 +72,43 @@ Tableau de sections, chacune avec une couleur d'accent (token, cf. §8) et une l
 ```
 
 Contenu **statique** (fourni, de confiance) : à rendre tel quel, pas d'échappement nécessaire.
+
+### `sessions.json` (bibliothèque de séances détaillées)
+
+Objet indexé par **code de séance**. Chaque entrée décrit la séquence complète d'un type de séance
+(échauffement → corps → retour au calme, points clés, progression) :
+
+```jsonc
+{
+  "nat_tech": {
+    "name": "Natation — Technique crawl",
+    "disc": "swim",                       // swim | bike | run | rest | race
+    "goal": "…",
+    "blocks": [ { "h": "Échauffement (~10')", "items": ["…","…"] } ],
+    "cues": ["…"],                        // optionnel : points clés
+    "prog": "…"                            // optionnel : logique de progression
+  },
+  "brick": { … }, "gainage": { … }, …
+}
+```
+
+**Résolution libellé → code** : le plan (`plan.json`) contient des libellés courts (« Nat technique 40'… »,
+« Vélo côtes : 5×4'… »). L'app doit **classer** chaque libellé vers un code de `sessions.json` via une
+fonction `classifySession(label)` (règles par mot-clé, dans l'ordre) :
+
+```
+>>> → race · commence par "Activation" → activation_race · "Repos" → repos
+Nat : "eau libre"/"EL"→nat_el · "seuil"→nat_seuil · "continu"→nat_cont · "technique"→nat_tech ·
+      "facile"/"déliage"→nat_recup · sinon nat_endur
+Vélo: "côtes"/"bosse"→velo_cotes · "sweet spot"/"SS"→velo_ss ·
+      "long"/"montagne"/"vallonné"/"dénivelé"→velo_long · "facile"/intervalles courts→velo_recup · sinon velo_z2
+CAP : "allure IM"→cap_im · "qualité"/"N×N'"/"seuil"→cap_qual · "longue"→cap_long ·
+      "ligne"/"accél"/"vifs"→cap_activation · sinon cap_recup
+```
+
+De plus : si le libellé contient « brick » → **ajouter** le bloc `sessions.brick` ; s'il contient « gainage »
+→ ajouter `sessions.gainage`. (Les distances/répétitions/durées propres à la semaine restent lues dans le
+libellé ; `sessions.json` fournit la *méthode*.)
 
 ---
 
@@ -174,6 +211,7 @@ Thème **sombre**, mobile-first (viewport ~380px), zones tactiles généreuses, 
   - Tap carte (hors repos) → **toggle validée** (remplissage couleur discipline + coche).
   - **Chip Tai Chi** sur **chaque** jour (repos inclus) → toggle **indépendant** (cf. §5).
   - **Note / ressenti par jour** : bouton 📝 sur chaque carte → ouvre une zone de saisie (`textarea`, placeholder « Ressenti, allure, sensations, météo, douleurs… »). **Sauvegarde auto** à la frappe. Aperçu (2 lignes, tronqué) sous le libellé quand une note existe. **Indépendant** de la validation et du Tai Chi.
+  - **Détail de la séance** (dépliable) : bouton « Détail de la séance » sur chaque carte → affiche la séquence complète résolue via `classifySession(label)` + `sessions.json` (objectif, blocs échauffement/corps/retour au calme, points clés, progression), + bloc **brick**/**gainage** si le libellé les mentionne. Rendu **paresseux** (au 1er dépliage). Disponible aussi sur les jours de repos et de course.
   - Jour courant mis en évidence ; jour **passé non validé** (hors repos) signalé (accent rouge/barré).
 - **Navigation** : semaine précédente / suivante (bornes 1 et 62) + bouton flottant **« Semaine du jour »** quand on n'y est pas.
 
@@ -201,7 +239,7 @@ Thème **sombre**, mobile-first (viewport ~380px), zones tactiles généreuses, 
 
 - `manifest.webmanifest` : `name:"Objectif Evian"`, `short_name:"Evian"`, `theme_color:"#0F1216"`,
   `background_color:"#0F1216"`, `display:"standalone"`, `start_url:"."`, icônes **192** et **512** (maskable incluse).
-- **Service worker** : precache app shell + `plan.json` + `nutrition.json` → **offline complet** après 1re visite.
+- **Service worker** : precache app shell + `plan.json` + `nutrition.json` + `sessions.json` → **offline complet** après 1re visite.
 - Doit être **installable sur Android** (« Ajouter à l'écran d'accueil » / bannière d'installation) et s'ouvrir en plein écran.
 
 ---
@@ -223,6 +261,7 @@ Thème **sombre**, mobile-first (viewport ~380px), zones tactiles généreuses, 
 - [ ] Les cartes **Repos** ne sont pas validables et ne comptent pas dans `X/Y`.
 - [ ] **Note par jour** : bouton 📝 ouvre une saisie, sauvegarde auto, aperçu affiché quand une note existe, persistante ; indépendante de la validation et du Tai Chi.
 - [ ] **Onglet Nutrition** présent, alimenté par `nutrition.json` (4 sections, cartes par item).
+- [ ] **Détail de séance** dépliable sur chaque carte, résolu via `classifySession` + `sessions.json` (blocs, points clés, progression ; + brick/gainage) ; chaque libellé du plan mappe vers un code existant.
 - [ ] Onglet Progression : anneau, 4 stats, barres discipline & phase, prochain jalon, `J−x` cohérents avec l'état.
 - [ ] Onglet Plan : 62 semaines groupées par phase, tap → ouvre la semaine.
 - [ ] Persistance locale sous une clé unique ; **export/import JSON** de l'état fonctionnel.

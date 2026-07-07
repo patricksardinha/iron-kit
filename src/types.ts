@@ -20,6 +20,21 @@ export interface Week {
   dayOptions: string[][] // 7 jours → options actives ce jour-là (issues du pool global)
 }
 
+// Bibliothèque de séances détaillées (source : sessions.json), indexée par code.
+export interface SessionBlock {
+  h: string // titre du bloc (« Échauffement (~10') »…)
+  items: string[] // consignes de ce bloc
+}
+export interface SessionInfo {
+  name: string
+  disc: 'swim' | 'bike' | 'run' | 'rest' | 'race'
+  goal: string
+  blocks: SessionBlock[]
+  cues?: string[] // points clés (optionnel)
+  prog?: string // logique de progression (optionnel)
+}
+export type SessionLibrary = Record<string, SessionInfo>
+
 // Contenu de l'onglet Nutrition (source : nutrition.json)
 export interface NutritionItem {
   h: string
