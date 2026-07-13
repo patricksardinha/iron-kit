@@ -146,3 +146,54 @@ export function optionTotal(options: State['options']): number {
 export function validatedSessionCount(sessions: Sessions): number {
   return Object.keys(sessions).length
 }
+
+/* ---------- séries pour les graphiques ---------- */
+
+export interface WeekVol {
+  wk: number
+  phase: string
+  planned: number // heures prévues
+  done: number // heures réalisées
+}
+
+/** Volume par semaine (prévu vs réalisé, en heures) — pour l'histogramme temporel. */
+export function weeklyVolumeSeries(weeks: Week[], sessions: Sessions): WeekVol[] {
+  return weeks.map((w) => {
+    let doneMin = 0
+    w.days.forEach((day, di) => {
+      day.forEach((s, si) => {
+        const k = sessionKey(w.wk, di, si)
+        if (k in sessions) doneMin += sessions[k]! || s.min
+      })
+    })
+    return {
+      wk: w.wk,
+      phase: w.phase,
+      planned: weekVolume(w),
+      done: Math.round((doneMin / 60) * 10) / 10,
+    }
+  })
+}
+
+/** Heures réalisées par discipline (natation / vélo / course) — pour le donut. */
+export function disciplineHours(weeks: Week[], sessions: Sessions): {
+  swim: number
+  bike: number
+  run: number
+} {
+  const m = { swim: 0, bike: 0, run: 0 }
+  for (const w of weeks) {
+    w.days.forEach((day, di) => {
+      day.forEach((s, si) => {
+        if (s.disc !== 'swim' && s.disc !== 'bike' && s.disc !== 'run') return
+        const k = sessionKey(w.wk, di, si)
+        if (k in sessions) m[s.disc] += sessions[k]! || s.min
+      })
+    })
+  }
+  return {
+    swim: Math.round((m.swim / 60) * 10) / 10,
+    bike: Math.round((m.bike / 60) * 10) / 10,
+    run: Math.round((m.run / 60) * 10) / 10,
+  }
+}

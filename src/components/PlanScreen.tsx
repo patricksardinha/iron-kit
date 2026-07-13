@@ -6,6 +6,7 @@ import { weekDatesLabel, weekVolume } from '../lib/logic'
 import { weekProgress } from '../lib/stats'
 import { Icon } from './Icon'
 import { WeekEditor } from './WeekEditor'
+import { ConfirmDialog } from './ConfirmDialog'
 
 interface Props {
   plan: PlanApi
@@ -23,6 +24,7 @@ export function PlanScreen({ plan, state, currentWk, library }: Props) {
     updateSession,
     removeSession,
     moveSession,
+    setSessionInfo,
     options,
     addOption,
     removeOption,
@@ -33,6 +35,9 @@ export function PlanScreen({ plan, state, currentWk, library }: Props) {
     reset,
   } = plan
   const [expanded, setExpanded] = useState<number | null>(null)
+  const [confirm, setConfirm] = useState<{ kind: 'delete'; wk: number } | { kind: 'reset' } | null>(
+    null,
+  )
 
   // Regroupement par phase (conserve l'ordre chronologique).
   const groups: { phase: string; weeks: Week[] }[] = []
@@ -84,6 +89,7 @@ export function PlanScreen({ plan, state, currentWk, library }: Props) {
                       </span>
                     </span>
                     <span className="cnt" aria-hidden="true">
+                      {open && <span className="edit-flag">Édition</span>}
                       <Icon name={open ? 'close' : 'edit'} size={16} />
                     </span>
                   </button>
@@ -99,21 +105,13 @@ export function PlanScreen({ plan, state, currentWk, library }: Props) {
                       onMoveSession={(fromDi, fromSi, toDi, toSi) =>
                         moveSession(w.wk, fromDi, fromSi, toDi, toSi)
                       }
+                      onSetSessionInfo={(di, si, info) => setSessionInfo(w.wk, di, si, info)}
                       options={options}
                       onAddOption={(label) => addOption(label)}
                       onRemoveOption={(label) => removeOption(label)}
                       onToggleDayOption={(di, label) => toggleDayOption(w.wk, di, label)}
                       onToggleWeekOption={(label) => toggleWeekOption(w.wk, label)}
-                      onDelete={() => {
-                        if (
-                          window.confirm(
-                            `Supprimer la semaine ${w.wk} ? Les validations/notes des semaines suivantes seront décalées.`,
-                          )
-                        ) {
-                          setExpanded(null)
-                          deleteWeek(w.wk)
-                        }
-                      }}
+                      onDelete={() => setConfirm({ kind: 'delete', wk: w.wk })}
                     />
                   )}
                 </div>
@@ -128,18 +126,39 @@ export function PlanScreen({ plan, state, currentWk, library }: Props) {
           <Icon name="plus" size={17} /> Ajouter la semaine suivante
         </button>
         {isCustom && (
-          <button
-            className="tool-btn danger"
-            onClick={() => {
-              if (window.confirm('Réinitialiser au plan d’origine ? Tes modifications du plan seront perdues.')) {
-                reset()
-              }
-            }}
-          >
+          <button className="tool-btn danger" onClick={() => setConfirm({ kind: 'reset' })}>
             <Icon name="reset" size={17} /> Réinitialiser
           </button>
         )}
       </div>
+
+      <ConfirmDialog
+        open={confirm?.kind === 'delete'}
+        danger
+        title={confirm?.kind === 'delete' ? `Supprimer la semaine ${confirm.wk} ?` : ''}
+        message="Les validations et notes des semaines suivantes seront décalées d'un cran. Action irréversible."
+        confirmLabel="Supprimer"
+        onConfirm={() => {
+          if (confirm?.kind === 'delete') {
+            setExpanded(null)
+            deleteWeek(confirm.wk)
+          }
+          setConfirm(null)
+        }}
+        onCancel={() => setConfirm(null)}
+      />
+      <ConfirmDialog
+        open={confirm?.kind === 'reset'}
+        danger
+        title="Réinitialiser le plan ?"
+        message="Le plan repart de sa version d'origine. Tes modifications du plan seront perdues (les validations sont conservées)."
+        confirmLabel="Réinitialiser"
+        onConfirm={() => {
+          reset()
+          setConfirm(null)
+        }}
+        onCancel={() => setConfirm(null)}
+      />
     </div>
   )
 }

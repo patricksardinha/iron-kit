@@ -8,6 +8,7 @@ export interface Session {
   disc: SessionDisc
   detail: string // libre : « Z2 vallonné », « 5×4' bosses », « 2000 m EL »…
   min: number // durée en minutes (0 possible)
+  info?: SessionInfo // détail éditable (override du catalogue sessions.json), propre au plan
 }
 
 export interface Week {
@@ -54,6 +55,7 @@ export interface State {
   sessions: Record<string, number>
   options: Record<string, true> // `${wk}-${di}::${label}` → option validée (ex. Tai Chi)
   notes: Record<string, string> // `${wk}-${dayIndex}` → note / ressenti libre
+  locks: Record<string, true> // `${wk}-${dayIndex}` → carte verrouillée (anti mauvaise manip)
 }
 
 // Récompense (onglet Progression).
@@ -68,9 +70,26 @@ export interface Badge {
   earned: boolean
   current: number
   target: number
+  hidden?: boolean // easter egg : masqué tant que non débloqué
 }
 
 export type Tab = 'week' | 'progress' | 'plan' | 'rewards' | 'nutrition' | 'settings'
+
+// Multi-plans : métadonnées d'un plan dans le registre.
+export interface PlanMeta {
+  id: string
+  name: string
+  createdAt: string // ISO
+  builtin?: boolean // plan intégré (Objectif Evian) — non supprimable, base = fichiers publics
+}
+
+// Format de fichier d'un plan importable (auto-suffisant).
+export interface PlanFile {
+  name: string
+  start?: string // lundi de départ (ISO) — sinon aujourd'hui
+  weeks: unknown[] // semaines (format libellés) — migrées à l'import
+  sessions?: SessionLibrary // catalogue de séances détaillées (optionnel)
+}
 
 // Réglages utilisateur (profil + apparence) — persistés séparément de l'état.
 export interface Settings {

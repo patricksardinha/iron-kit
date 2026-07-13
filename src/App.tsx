@@ -2,9 +2,12 @@ import { useMemo, useState } from 'react'
 import type { Tab } from './types'
 import type { PlanHooks } from './hooks/usePlan'
 import type { Data } from './hooks/useData'
+import type { PlansApi } from './hooks/usePlans'
+import type { SettingsApi } from './hooks/useSettings'
 import { useData } from './hooks/useData'
 import { useAppState } from './hooks/useAppState'
 import { usePlan } from './hooks/usePlan'
+import { usePlans } from './hooks/usePlans'
 import { useSettings } from './hooks/useSettings'
 import { currentWeekIndex } from './lib/logic'
 import { AppHeader } from './components/AppHeader'
@@ -38,12 +41,27 @@ export default function App() {
     )
   }
 
-  return <Main data={data.data} />
+  return <Root data={data.data} />
 }
 
-function Main({ data }: { data: Data }) {
-  const appState = useAppState()
-  const { settings, update: updateSettings } = useSettings()
+// Registre des plans + réglages globaux (persistent au switch de plan).
+function Root({ data }: { data: Data }) {
+  const settings = useSettings()
+  const plans = usePlans(data)
+  // key = plan actif → remonte tout le sous-arbre pour recharger l'état cloisonné.
+  return <PlanApp key={plans.activeId} data={data} plans={plans} settings={settings} />
+}
+
+function PlanApp({
+  data,
+  plans,
+  settings,
+}: {
+  data: Data
+  plans: PlansApi
+  settings: SettingsApi
+}) {
+  const appState = useAppState(plans.activeId)
   const planHooks = useMemo<PlanHooks>(
     () => ({
       onDeleteWeek: appState.remapAfterDeleteWeek,
@@ -52,7 +70,7 @@ function Main({ data }: { data: Data }) {
     }),
     [appState.remapAfterDeleteWeek, appState.remapAfterInsertWeek, appState.remapReorderWeek],
   )
-  const plan = usePlan(data.plan, planHooks)
+  const plan = usePlan(plans.baseWeeks, planHooks, plans.activeId)
   const [tab, setTab] = useState<Tab>('week')
 
   // "Aujourd'hui" figé au montage.
@@ -73,7 +91,7 @@ function Main({ data }: { data: Data }) {
           currentWk={currentWk}
           today={today}
           appState={appState}
-          library={data.sessions}
+          library={plans.library}
           onNav={setWeekIndex}
         />
       )}
@@ -87,18 +105,21 @@ function Main({ data }: { data: Data }) {
         />
       )}
       {tab === 'plan' && (
-        <PlanScreen plan={plan} state={appState.state} currentWk={currentWk} library={data.sessions} />
+        <PlanScreen plan={plan} state={appState.state} currentWk={currentWk} library={plans.library} />
       )}
       {tab === 'rewards' && (
         <RewardsScreen weeks={plan.weeks} state={appState.state} today={today} />
       )}
-      {tab === 'nutrition' && <NutritionScreen sections={data.nutrition} settings={settings} />}
+      {tab === 'nutrition' && (
+        <NutritionScreen sections={data.nutrition} settings={settings.settings} />
+      )}
       {tab === 'settings' && (
         <SettingsScreen
-          settings={settings}
-          update={updateSettings}
+          settings={settings.settings}
+          update={settings.update}
           state={appState.state}
           onImport={appState.replaceState}
+          plans={plans}
         />
       )}
 

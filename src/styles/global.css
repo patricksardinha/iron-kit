@@ -447,6 +447,40 @@ svg {
   flex-wrap: wrap;
 }
 
+/* verrou anti mauvaise manip */
+.lock-btn {
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--faint);
+}
+.lock-btn.on {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.day.locked {
+  border-style: dashed;
+}
+.day.locked .sess-dot,
+.day.locked .stepper button,
+.day.locked .opt-chip,
+.day.locked .note-btn {
+  opacity: 0.45;
+}
+.day.locked .sess-list,
+.day.locked .day-rest-label {
+  opacity: 0.7;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+
 .taichi-chip {
   display: inline-flex;
   align-items: center;
@@ -772,7 +806,7 @@ svg {
   background: var(--surface2);
   overflow: hidden;
   margin-top: 5px;
-  max-width: 160px;
+  width: 100%;
 }
 .plan-row .info .mini > i {
   display: block;
@@ -1392,10 +1426,19 @@ svg {
 
 /* ---- plan rows ---- */
 .plan-row.open {
-  border-color: var(--phasec);
-  box-shadow: inset 0 0 0 1px var(--phasec);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+}
+/* indicateur discret « en édition » dans le header déplié */
+.plan-row .edit-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent);
 }
 
 /* ---- day card : entête + étapes ---- */
@@ -1809,10 +1852,12 @@ svg {
 }
 .option-add {
   display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 .option-add input {
   flex: 1;
+  width: 100%;
   background: var(--bg);
   border: 1px solid var(--line);
   border-radius: var(--r-sm);
@@ -1827,8 +1872,9 @@ svg {
   border-color: var(--accent);
 }
 .option-add .tool-btn {
-  flex: 0 0 auto;
-  padding: 0 14px;
+  width: 100%;
+  justify-content: center;
+  padding: 10px 14px;
 }
 
 /* ---- en-tête de marque (IronKit) ---- */
@@ -2326,6 +2372,267 @@ svg {
   border-radius: var(--r-md);
 }
 
+/* ---------- Graphiques (Progression) ---------- */
+.chart-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.chart-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.chart-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+.chart-sub {
+  font-size: 11px;
+  color: var(--muted);
+}
+.chart-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.chart-svg.vol {
+  overflow: visible;
+}
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 10px;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+.chart-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.lg-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  display: inline-block;
+}
+.lg-bar {
+  width: 2px;
+  height: 12px;
+  background: var(--accent);
+  display: inline-block;
+  border-radius: 2px;
+}
+.donut-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.donut {
+  width: 120px;
+  height: 120px;
+  flex: none;
+}
+.donut-c-v {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  fill: var(--text);
+}
+.donut-c-k {
+  font-size: 9px;
+  fill: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.donut-legend {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dl-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+.dl-label {
+  color: var(--text);
+}
+.dl-val {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  font-weight: 600;
+}
+.dl-empty {
+  font-size: 12.5px;
+  color: var(--faint);
+  font-style: italic;
+}
+
+/* ---------- Gestion des plans (Réglages) ---------- */
+.plan-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.plan-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+}
+.plan-item.active {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+}
+.plan-pick {
+  flex: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+.plan-pick .radio {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  color: var(--accent-ink);
+}
+.plan-pick .radio.on {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.plan-name-static {
+  flex: 1;
+  font-weight: 600;
+  color: var(--text);
+  min-width: 0;
+}
+.plan-name-input {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 7px 9px;
+}
+.plan-name-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.plan-active-tag {
+  flex: none;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--accent);
+}
+.plan-del {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-sm);
+  color: var(--danger);
+  border: 1px solid color-mix(in srgb, var(--danger) 30%, var(--line));
+  background: transparent;
+}
+
+/* ---------- Modale de confirmation ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: color-mix(in srgb, #000 55%, transparent);
+  backdrop-filter: blur(3px);
+  animation: modal-fade 0.15s ease;
+}
+.modal-card {
+  width: 100%;
+  max-width: 340px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg, 16px);
+  padding: 22px 20px 16px;
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  animation: modal-pop 0.18s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+}
+.modal-icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface2));
+  color: var(--accent);
+}
+.modal-icon.danger {
+  background: color-mix(in srgb, var(--danger) 16%, var(--surface2));
+  color: var(--danger);
+}
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+}
+.modal-message {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-top: 8px;
+}
+.modal-actions .tool-btn {
+  flex: 1;
+  justify-content: center;
+}
+@keyframes modal-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes modal-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+}
+
 /* ---------- Détail de séance (résolu via sessions.json) ---------- */
 .detail-btn {
   display: inline-flex;
@@ -2417,4 +2724,106 @@ svg {
   font-size: 12.5px;
   color: var(--faint);
   font-style: italic;
+}
+
+/* ---------- Éditeur de détail de séance ---------- */
+.sd-editor {
+  margin-top: 4px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--surface2) 40%, var(--bg));
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.sde-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sde-field > span,
+.sde-lbl {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+.sd-editor input,
+.sd-editor textarea {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 13px;
+  padding: 8px 9px;
+}
+.sd-editor textarea {
+  resize: vertical;
+}
+.sd-editor input:focus,
+.sd-editor textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.sde-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sde-block {
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--bg);
+}
+.sde-block-head {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.sde-block-title {
+  font-weight: 600;
+}
+.sde-item {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.sde-del {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--r-sm);
+  color: var(--danger);
+  border: 1px solid color-mix(in srgb, var(--danger) 30%, var(--line));
+  background: transparent;
+}
+.sde-add {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--surface2);
+  border: 1px solid var(--line);
+}
+.sde-add.block {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+}
+.sde-reset {
+  margin-top: 2px;
 }

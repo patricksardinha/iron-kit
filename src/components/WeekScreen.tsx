@@ -21,7 +21,7 @@ export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, libra
   const week = weeks[weekIndex - 1]
   if (!week) return null
 
-  const { state, setSession, toggleOption, setNote } = appState
+  const { state, setSession, toggleOption, setNote, toggleLock } = appState
   const prog = weekProgress(week, state.sessions)
   const pct = prog.total ? Math.round((prog.validated / prog.total) * 100) : 0
   const pc = phaseColor(week.phase)
@@ -107,9 +107,11 @@ export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, libra
               options={week.dayOptions[di] ?? []}
               isOptionDone={(label) => !!state.options[optionKey(week.wk, di, label)]}
               note={state.notes[k]}
+              locked={!!state.locks[k]}
               onSetSession={(si, min) => setSession(week.wk, di, si, min)}
               onToggleOption={(label) => toggleOption(week.wk, di, label)}
               onSetNote={(text) => setNote(week.wk, di, text)}
+              onToggleLock={() => toggleLock(week.wk, di)}
             />
           )
         })}

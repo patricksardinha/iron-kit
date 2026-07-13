@@ -22,6 +22,8 @@ export type IconName =
   | 'settings'
   | 'chevron-down'
   | 'grip'
+  | 'lock'
+  | 'unlock'
 
 interface Props {
   name: IconName
@@ -117,6 +119,20 @@ const PATHS: Record<IconName, React.ReactNode> = {
   'chevron-left': <path d="M15 5l-7 7 7 7" />,
   'chevron-right': <path d="M9 5l7 7-7 7" />,
   'chevron-down': <path d="M5 9l7 7 7-7" />,
+  // cadenas fermé
+  lock: (
+    <>
+      <rect x="5" y="11" width="14" height="9" rx="2" />
+      <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+    </>
+  ),
+  // cadenas ouvert
+  unlock: (
+    <>
+      <rect x="5" y="11" width="14" height="9" rx="2" />
+      <path d="M8 11V8a4 4 0 0 1 7.7-1.5" />
+    </>
+  ),
   // poignée de glisse (6 points)
   grip: (
     <>

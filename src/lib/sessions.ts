@@ -45,9 +45,20 @@ export function classifySession(disc: SessionDisc, detail: string): string {
   }
 }
 
-/** SessionInfo résolue pour une séance du plan (undefined si code absent de la lib). */
+/** SessionInfo résolue : override édité du plan en priorité, sinon catalogue. */
 export function resolveSession(session: Session, lib: SessionLibrary): SessionInfo | undefined {
-  return lib[classifySession(session.disc, session.detail)]
+  return session.info ?? lib[classifySession(session.disc, session.detail)]
+}
+
+/** SessionInfo de départ pour l'édition (override existant, catalogue, ou canevas vierge). */
+export function scaffoldInfo(session: Session, lib: SessionLibrary): SessionInfo {
+  const resolved = resolveSession(session, lib)
+  if (resolved) return resolved
+  const disc =
+    session.disc === 'swim' || session.disc === 'bike' || session.disc === 'run' || session.disc === 'race'
+      ? session.disc
+      : 'rest'
+  return { name: session.detail || 'Séance', disc, goal: '', blocks: [], cues: [], prog: '' }
 }
 
 /** SessionInfo « repos / mobilité » (jours vides). */

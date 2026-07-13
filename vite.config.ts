@@ -18,6 +18,7 @@ export default defineConfig({
         'plan.json',
         'nutrition.json',
         'sessions.json',
+        'plan-template.json',
       ],
       manifest: {
         name: 'IronKit',

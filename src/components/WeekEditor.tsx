@@ -10,6 +10,7 @@ import {
   useSensors,
 } from '@dnd-kit/core'
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core'
+import { snapCenterToCursor } from '@dnd-kit/modifiers'
 import {
   SortableContext,
   sortableKeyboardCoordinates,
@@ -17,14 +18,14 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import type { Session, SessionDisc, SessionLibrary, Week } from '../types'
+import type { Session, SessionDisc, SessionInfo, SessionLibrary, Week } from '../types'
 import type { AddResult, WeekPatch } from '../hooks/usePlan'
 import { DAY_NAMES } from '../lib/constants'
 import { PHASES, typesForPhase } from '../lib/constants'
 import { discLabel, weekVolume } from '../lib/logic'
-import { resolveSession } from '../lib/sessions'
+import { scaffoldInfo } from '../lib/sessions'
 import { Icon } from './Icon'
-import { SessionDetail } from './SessionDetail'
+import { SessionDetailEditor } from './SessionDetailEditor'
 
 interface Props {
   week: Week
@@ -35,6 +36,7 @@ interface Props {
   onUpdateSession: (di: number, si: number, patch: Partial<Session>) => void
   onRemoveSession: (di: number, si: number) => void
   onMoveSession: (fromDi: number, fromSi: number, toDi: number, toSi: number) => void
+  onSetSessionInfo: (di: number, si: number, info: SessionInfo | null) => void
   options: string[]
   onAddOption: (label: string) => void
   onRemoveOption: (label: string) => void
@@ -62,6 +64,7 @@ export function WeekEditor({
   onUpdateSession,
   onRemoveSession,
   onMoveSession,
+  onSetSessionInfo,
   options,
   onAddOption,
   onRemoveOption,
@@ -194,10 +197,11 @@ export function WeekEditor({
               onAddSession={() => onAddSession(di)}
               onUpdateSession={(si, patch) => onUpdateSession(di, si, patch)}
               onRemoveSession={(si) => onRemoveSession(di, si)}
+              onSetSessionInfo={(si, info) => onSetSessionInfo(di, si, info)}
               onToggleDayOption={(label) => onToggleDayOption(di, label)}
             />
           ))}
-          <DragOverlay>
+          <DragOverlay modifiers={[snapCenterToCursor]}>
             {dragging ? (
               <div className="session-row drag-ghost">
                 <span className="drag-handle">
@@ -281,6 +285,7 @@ function DayColumn({
   onAddSession,
   onUpdateSession,
   onRemoveSession,
+  onSetSessionInfo,
   onToggleDayOption,
 }: {
   di: number
@@ -291,6 +296,7 @@ function DayColumn({
   onAddSession: () => void
   onUpdateSession: (si: number, patch: Partial<Session>) => void
   onRemoveSession: (si: number) => void
+  onSetSessionInfo: (si: number, info: SessionInfo | null) => void
   onToggleDayOption: (label: string) => void
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: dayId(di) })
@@ -320,6 +326,7 @@ function DayColumn({
             library={library}
             onChange={(patch) => onUpdateSession(si, patch)}
             onRemove={() => onRemoveSession(si)}
+            onSetInfo={(info) => onSetSessionInfo(si, info)}
           />
         ))}
       </SortableContext>
@@ -352,12 +359,14 @@ function SortableSession({
   library,
   onChange,
   onRemove,
+  onSetInfo,
 }: {
   id: string
   session: Session
   library: SessionLibrary
   onChange: (patch: Partial<Session>) => void
   onRemove: () => void
+  onSetInfo: (info: SessionInfo | null) => void
 }) {
   const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition, isDragging } =
     useSortable({ id })
@@ -379,7 +388,13 @@ function SortableSession({
       >
         <Icon name="grip" size={16} />
       </button>
-      <SessionRow session={session} library={library} onChange={onChange} onRemove={onRemove} />
+      <SessionRow
+        session={session}
+        library={library}
+        onChange={onChange}
+        onRemove={onRemove}
+        onSetInfo={onSetInfo}
+      />
     </div>
   )
 }
@@ -389,16 +404,17 @@ function SessionRow({
   library,
   onChange,
   onRemove,
+  onSetInfo,
 }: {
   session: Session
   library: SessionLibrary
   onChange: (patch: Partial<Session>) => void
   onRemove: () => void
+  onSetInfo: (info: SessionInfo | null) => void
 }) {
   const [showDetail, setShowDetail] = useState(false)
   const h = Math.floor(session.min / 60)
   const m = session.min % 60
-  const info = showDetail ? resolveSession(session, library) : undefined
 
   function setDuration(nh: number, nm: number) {
     const hh = Math.max(0, Math.min(12, nh || 0))
@@ -469,12 +485,14 @@ function SessionRow({
           <Icon name="trash" size={15} />
         </button>
       </div>
-      {showDetail &&
-        (info ? (
-          <SessionDetail info={info} />
-        ) : (
-          <div className="sd-missing">Détail indisponible pour cette séance.</div>
-        ))}
+      {showDetail && (
+        <SessionDetailEditor
+          info={scaffoldInfo(session, library)}
+          overridden={!!session.info}
+          onChange={(info) => onSetInfo(info)}
+          onReset={() => onSetInfo(null)}
+        />
+      )}
     </div>
   )
 }

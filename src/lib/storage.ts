@@ -3,7 +3,7 @@ import type { State } from '../types'
 
 export const STORAGE_KEY = 'objectif-evian-state-v1'
 
-export const emptyState = (): State => ({ sessions: {}, options: {}, notes: {} })
+export const emptyState = (): State => ({ sessions: {}, options: {}, notes: {}, locks: {} })
 
 /** Sanitise un objet inconnu en State valide (robuste au JSON importé). */
 function coerce(raw: unknown): State {
@@ -39,12 +39,17 @@ function coerce(raw: unknown): State {
       if (typeof v === 'string' && v.length) s.notes[k] = v
     }
   }
+  if (o['locks'] && typeof o['locks'] === 'object') {
+    for (const [k, v] of Object.entries(o['locks'] as Record<string, unknown>)) {
+      if (v === true) s.locks[k] = true
+    }
+  }
   return s
 }
 
-export function loadState(): State {
+export function loadState(key: string = STORAGE_KEY): State {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
+    const raw = localStorage.getItem(key)
     if (!raw) return emptyState()
     return coerce(JSON.parse(raw))
   } catch {
@@ -52,9 +57,9 @@ export function loadState(): State {
   }
 }
 
-export function saveState(state: State): void {
+export function saveState(state: State, key: string = STORAGE_KEY): void {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+    localStorage.setItem(key, JSON.stringify(state))
   } catch {
     /* quota / mode privé : on ignore silencieusement */
   }

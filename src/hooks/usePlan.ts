@@ -1,12 +1,13 @@
 // Plan éditable : part de plan.json (migré), puis surcouche persistée localement.
 // Invariant : semaines triées par date de début, wk = position chronologique (1..N).
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { Session, Week } from '../types'
+import type { Session, SessionInfo, Week } from '../types'
 import { migrateWeeks } from '../lib/migrate'
 import { addDays, mondayOf, parseISO, toISO } from './../lib/logic'
 
-export const PLAN_KEY = 'objectif-evian-plan-v1'
-export const OPTIONS_KEY = 'ironkit-options-v1'
+// Anciennes clés (avant multi-plans) — conservées pour la migration one-shot.
+export const LEGACY_PLAN_KEY = 'objectif-evian-plan-v1'
+export const LEGACY_OPTIONS_KEY = 'ironkit-options-v1'
 
 export type WeekPatch = Partial<Pick<Week, 'phase' | 'typ' | 'obj' | 'start'>>
 
@@ -29,6 +30,7 @@ export interface PlanApi {
   updateSession: (pos: number, di: number, si: number, patch: Partial<Session>) => void
   removeSession: (pos: number, di: number, si: number) => void
   moveSession: (pos: number, fromDi: number, fromSi: number, toDi: number, toSi: number) => void
+  setSessionInfo: (pos: number, di: number, si: number, info: SessionInfo | null) => void
   options: string[] // pool global d'options (Tai Chi, mobilité…)
   addOption: (label: string) => void
   removeOption: (label: string) => void
@@ -40,9 +42,9 @@ export interface PlanApi {
 }
 
 /** Pool global d'options : localStorage, sinon union des libellés déjà utilisés. */
-function loadOptions(weeks: Week[]): string[] {
+function loadOptions(weeks: Week[], optionsKey: string): string[] {
   try {
-    const raw = localStorage.getItem(OPTIONS_KEY)
+    const raw = localStorage.getItem(optionsKey)
     if (raw) {
       const parsed: unknown = JSON.parse(raw)
       if (Array.isArray(parsed)) return parsed.filter((x): x is string => typeof x === 'string')
@@ -61,9 +63,9 @@ function normalize(weeks: Week[]): Week[] {
   return sorted.map((w, i) => (w.wk === i + 1 ? w : { ...w, wk: i + 1 }))
 }
 
-function loadEdited(): Week[] | null {
+function loadEdited(planKey: string): Week[] | null {
   try {
-    const raw = localStorage.getItem(PLAN_KEY)
+    const raw = localStorage.getItem(planKey)
     if (!raw) return null
     const migrated = migrateWeeks(JSON.parse(raw))
     if (migrated.length === 0) return null
@@ -83,11 +85,13 @@ function defaultDayOptions(): string[][] {
   return Array.from({ length: 7 }, () => [...DEFAULT_OPTIONS])
 }
 
-export function usePlan(base: Week[], hooks: PlanHooks): PlanApi {
-  const edited = useRef<Week[] | null>(loadEdited())
+export function usePlan(base: Week[], hooks: PlanHooks, planId: string): PlanApi {
+  const planKey = `ik-plan-${planId}`
+  const optionsKey = `ik-options-${planId}`
+  const edited = useRef<Week[] | null>(loadEdited(planKey))
   const [weeks, setWeeks] = useState<Week[]>(() => edited.current ?? normalize(base))
   const [isCustom, setIsCustom] = useState<boolean>(() => edited.current != null)
-  const [options, setOptions] = useState<string[]>(() => loadOptions(edited.current ?? base))
+  const [options, setOptions] = useState<string[]>(() => loadOptions(edited.current ?? base, optionsKey))
 
   // Persiste le pool global d'options.
   const firstOpt = useRef(true)
@@ -97,11 +101,11 @@ export function usePlan(base: Week[], hooks: PlanHooks): PlanApi {
       return
     }
     try {
-      localStorage.setItem(OPTIONS_KEY, JSON.stringify(options))
+      localStorage.setItem(optionsKey, JSON.stringify(options))
     } catch {
       /* ignore */
     }
-  }, [options])
+  }, [options, optionsKey])
 
   // Miroir de `weeks` pour lire l'état courant hors updater (évite les effets de
   // bord dans setWeeks, doublés par StrictMode).
@@ -119,12 +123,12 @@ export function usePlan(base: Week[], hooks: PlanHooks): PlanApi {
     }
     if (isCustom) {
       try {
-        localStorage.setItem(PLAN_KEY, JSON.stringify(weeks))
+        localStorage.setItem(planKey, JSON.stringify(weeks))
       } catch {
         /* quota : on ignore */
       }
     }
-  }, [weeks, isCustom])
+  }, [weeks, isCustom, planKey])
 
   const setDays = useCallback(
     (pos: number, fn: (days: Session[][]) => Session[][]) => {
@@ -202,6 +206,27 @@ export function usePlan(base: Week[], hooks: PlanHooks): PlanApi {
         copy[toDi]!.splice(idx, 0, moved)
         return copy
       })
+    },
+    [setDays],
+  )
+
+  // Override du détail d'une séance (info = null → retour au catalogue).
+  const setSessionInfo = useCallback(
+    (pos: number, di: number, si: number, info: SessionInfo | null) => {
+      setDays(pos, (days) =>
+        days.map((day, i) =>
+          i === di
+            ? day.map((s, j) => {
+                if (j !== si) return s
+                if (info === null) {
+                  const { info: _drop, ...rest } = s
+                  return rest
+                }
+                return { ...s, info }
+              })
+            : day,
+        ),
+      )
     },
     [setDays],
   )
@@ -287,14 +312,14 @@ export function usePlan(base: Week[], hooks: PlanHooks): PlanApi {
 
   const reset = useCallback(() => {
     try {
-      localStorage.removeItem(PLAN_KEY)
+      localStorage.removeItem(planKey)
     } catch {
       /* ignore */
     }
     edited.current = null
     setIsCustom(false)
     setWeeks(normalize(base))
-  }, [base])
+  }, [base, planKey])
 
   return {
     weeks,
@@ -304,6 +329,7 @@ export function usePlan(base: Week[], hooks: PlanHooks): PlanApi {
     updateSession,
     removeSession,
     moveSession,
+    setSessionInfo,
     options,
     addOption,
     removeOption,

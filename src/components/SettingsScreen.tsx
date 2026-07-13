@@ -1,12 +1,15 @@
 import type { Settings, State } from '../types'
+import type { PlansApi } from '../hooks/usePlans'
 import { THEMES, ACCENTS } from '../lib/theme'
 import { ExportImport } from './ExportImport'
+import { PlansManager } from './PlansManager'
 
 interface Props {
   settings: Settings
   update: (patch: Partial<Settings>) => void
   state: State
   onImport: (next: State) => void
+  plans: PlansApi
 }
 
 function numOrNull(v: string): number | null {
@@ -14,10 +17,12 @@ function numOrNull(v: string): number | null {
   return v.trim() === '' || Number.isNaN(n) ? null : n
 }
 
-export function SettingsScreen({ settings, update, state, onImport }: Props) {
+export function SettingsScreen({ settings, update, state, onImport, plans }: Props) {
   return (
     <div className="screen">
       <h1 className="screen-title">Réglages</h1>
+
+      <PlansManager plans={plans} />
 
       <div className="section-h">Profil</div>
       <p className="tool-hint" style={{ marginTop: 0 }}>

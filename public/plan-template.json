@@ -1,0 +1,85 @@
+{
+  "name": "Mon plan (à renommer)",
+  "start": "2026-01-05",
+  "weeks": [
+    {
+      "phase": "0 - Fondation",
+      "typ": "Charge",
+      "obj": "Installer la routine, poser les bases aérobies.",
+      "days": [
+        "Repos / mobilité",
+        "Nat technique 40' (éducatifs)",
+        "Vélo Z2 1h",
+        "CAP facile 45' + gainage 10'",
+        "Repos / mobilité",
+        "Vélo long Z2 vallonné 1.5 h",
+        "CAP longue 1h"
+      ]
+    },
+    {
+      "phase": "0 - Fondation",
+      "typ": "Charge",
+      "obj": "Monter légèrement le volume.",
+      "days": [
+        "Repos / mobilité",
+        "Nat technique 40'",
+        "Vélo Z2 1h15",
+        "CAP facile 45'",
+        "Repos / mobilité",
+        "Vélo long Z2 vallonné 2 h",
+        "CAP longue 1h15"
+      ]
+    },
+    {
+      "phase": "1 - Construction",
+      "typ": "Charge",
+      "obj": "Introduire l'intensité (seuil, côtes).",
+      "days": [
+        "Repos / mobilité",
+        "Nat seuil 1500 m",
+        "Vélo côtes 5×4' en bosse (1h)",
+        "CAP allure IM 3×10' (1h)",
+        "Repos / mobilité",
+        "Vélo long vallonné 2.5 h + brick CAP 20'",
+        "CAP longue 1h30"
+      ]
+    },
+    {
+      "phase": "1 - Construction",
+      "typ": "Récup",
+      "obj": "Semaine allégée pour assimiler.",
+      "days": [
+        "Repos / mobilité",
+        "Nat facile 30'",
+        "Vélo Z2 45'",
+        "CAP facile 40'",
+        "Repos / mobilité",
+        "Vélo long Z2 1.5 h",
+        "CAP longue 1h"
+      ]
+    }
+  ],
+  "sessions": {
+    "nat_tech": {
+      "name": "Natation — Technique",
+      "disc": "swim",
+      "goal": "Construire une nage efficace : la technique avant le volume.",
+      "blocks": [
+        { "h": "Échauffement (~10')", "items": ["200 m souple", "4×25 m éducatifs (rattrapé, bras seul)"] },
+        { "h": "Corps (~20')", "items": ["Séries courtes propres, récup 15-20\"", "La qualité prime sur la vitesse."] },
+        { "h": "Retour au calme (~5')", "items": ["100 m souple, respiration bilatérale"] }
+      ],
+      "cues": ["Regard vers le fond, hanches hautes", "Expire dans l'eau, inspire vite sur le côté"],
+      "prog": "25 m propres → 50 m → 100 m sans t'arrêter."
+    },
+    "velo_z2": {
+      "name": "Vélo — Endurance Z2",
+      "disc": "bike",
+      "goal": "Construire le moteur aérobie de base.",
+      "blocks": [
+        { "h": "Corps (durée du jour)", "items": ["Rouler en Z2 : tu peux parler en phrases.", "Cadence souple 85-95 rpm."] }
+      ],
+      "cues": ["Effort facile et régulier : ne pas transformer en course."]
+    }
+  }
+}

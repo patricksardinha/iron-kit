@@ -2,7 +2,7 @@
 // Idempotent : un plan déjà au nouveau shape est renvoyé tel quel.
 import type { Session, SessionDisc, Week } from '../types'
 import { START } from './constants'
-import { addDays, toISO } from './logic'
+import { addDays, mondayOf, parseISO, toISO } from './logic'
 
 interface LegacyWeek {
   wk: number
@@ -137,14 +137,16 @@ function ensureWeekFields(w: Week): Week {
   return { ...w, phase: normPhase(w.phase), dayOptions }
 }
 
-/** Migre un plan inconnu vers Week[] structuré. Idempotent. */
-export function migrateWeeks(input: unknown): Week[] {
+/** Migre un plan inconnu vers Week[] structuré. Idempotent.
+ *  `startISO` : lundi de la 1re semaine pour un plan legacy (défaut : START). */
+export function migrateWeeks(input: unknown, startISO?: string): Week[] {
   if (!Array.isArray(input) || input.length === 0) return []
   if (isNewShape(input)) return (input as Week[]).map(ensureWeekFields)
 
+  const start0 = startISO ? mondayOf(parseISO(startISO)) : START
   return (input as LegacyWeek[]).map((w, i) => ({
     wk: i + 1,
-    start: toISO(addDays(START, i * 7)),
+    start: toISO(addDays(start0, i * 7)),
     phase: normPhase(w.phase ?? '0 - Fondation'),
     typ: w.typ ?? 'Charge',
     obj: w.obj ?? '',

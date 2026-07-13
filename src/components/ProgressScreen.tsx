@@ -9,8 +9,11 @@ import {
   phaseStats,
   currentStreak,
   countOption,
+  weeklyVolumeSeries,
+  disciplineHours,
 } from '../lib/stats'
 import { ProgressRing } from './ProgressRing'
+import { VolumeChart, DisciplineDonut } from './Charts'
 import { Icon } from './Icon'
 
 interface Props {
@@ -46,6 +49,8 @@ export function ProgressScreen({ weeks, state, currentWk, today, options }: Prop
   const discs = disciplineStats(weeks, state.sessions)
   const phases = phaseStats(weeks, state.sessions)
   const streak = currentStreak(weeks, state.sessions, today)
+  const volSeries = weeklyVolumeSeries(weeks, state.sessions)
+  const discHours = disciplineHours(weeks, state.sessions)
 
   // Niveau de la semaine → couleur + message + animation.
   const level =
@@ -139,6 +144,10 @@ export function ProgressScreen({ weeks, state, currentWk, today, options }: Prop
           </div>
         </div>
       </div>
+
+      <div className="section-h">Graphiques</div>
+      <VolumeChart data={volSeries} currentWk={currentWk} />
+      <DisciplineDonut swim={discHours.swim} bike={discHours.bike} run={discHours.run} />
 
       {/* Prochain test — mis en avant */}
       <div className="test-card">

@@ -28,9 +28,11 @@ interface Props {
   options: string[]
   isOptionDone: (label: string) => boolean
   note: string | undefined
+  locked: boolean
   onSetSession: (si: number, min: number | null) => void
   onToggleOption: (label: string) => void
   onSetNote: (text: string) => void
+  onToggleLock: () => void
 }
 
 export function DayCard({
@@ -45,9 +47,11 @@ export function DayCard({
   options,
   isOptionDone,
   note,
+  locked,
   onSetSession,
   onToggleOption,
   onSetNote,
+  onToggleLock,
 }: Props) {
   const [editing, setEditing] = useState(false)
   const [showDetail, setShowDetail] = useState(false)
@@ -81,6 +85,7 @@ export function DayCard({
     isToday ? 'today' : '',
     overdue ? 'overdue' : '',
     test ? 'test' : '',
+    locked ? 'locked' : '',
   ]
     .filter(Boolean)
     .join(' ')
@@ -110,6 +115,16 @@ export function DayCard({
             </span>
           ))}
         {overdue && <span className="day-overdue-tag">manqué</span>}
+        <button
+          type="button"
+          className={`lock-btn${locked ? ' on' : ''}`}
+          onClick={onToggleLock}
+          aria-pressed={locked}
+          aria-label={locked ? 'Déverrouiller la carte' : 'Verrouiller la carte'}
+          title={locked ? 'Déverrouiller' : 'Verrouiller (évite les manips accidentelles)'}
+        >
+          <Icon name={locked ? 'lock' : 'unlock'} size={15} />
+        </button>
       </div>
 
       {!training ? (
@@ -133,6 +148,7 @@ export function DayCard({
                 <button
                   type="button"
                   className="sess-dot"
+                  disabled={locked}
                   onClick={() => onSetSession(si, logged ? null : s.min)}
                   aria-pressed={logged}
                   aria-label={`${logged ? 'Dévalider' : 'Valider'} ${s.detail || discLabel(s.disc)}`}
@@ -149,6 +165,7 @@ export function DayCard({
                         <span className="stepper">
                           <button
                             type="button"
+                            disabled={locked}
                             onClick={() => onSetSession(si, Math.max(0, actual - 5))}
                             aria-label="Moins 5 min"
                           >
@@ -157,6 +174,7 @@ export function DayCard({
                           <span className="stepper-val">{formatDuration(actual)}</span>
                           <button
                             type="button"
+                            disabled={locked}
                             onClick={() => onSetSession(si, Math.min(300, actual + 5))}
                             aria-label="Plus 5 min"
                           >
@@ -183,6 +201,7 @@ export function DayCard({
               key={label}
               type="button"
               className={`opt-chip${on ? ' on' : ''}`}
+              disabled={locked}
               onClick={() => onToggleOption(label)}
               aria-pressed={on}
               aria-label={`${label} ${on ? 'fait' : 'à faire'}`}
@@ -206,6 +225,7 @@ export function DayCard({
         <button
           type="button"
           className={`note-btn${note ? ' has' : ''}${editing ? ' active' : ''}`}
+          disabled={locked}
           onClick={() => setEditing((e) => !e)}
           aria-expanded={editing}
           aria-label={editing ? 'Fermer la note' : note ? 'Modifier la note' : 'Ajouter une note'}

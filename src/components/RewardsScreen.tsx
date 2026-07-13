@@ -62,6 +62,18 @@ export function RewardsScreen({ weeks, state, today }: Props) {
 
 function BadgeCard({ badge }: { badge: Badge }) {
   const pct = badge.target ? Math.min(100, Math.round((badge.current / badge.target) * 100)) : 0
+  const secret = badge.hidden && !badge.earned
+
+  if (secret) {
+    return (
+      <div className="badge-card tier-special locked secret" title="Badge secret — à découvrir">
+        <span className="badge-emoji">❓</span>
+        <span className="badge-title">Badge secret</span>
+        <span className="badge-desc">À débloquer…</span>
+      </div>
+    )
+  }
+
   return (
     <div
       className={`badge-card tier-${badge.tier}${badge.earned ? ' earned' : ' locked'}`}

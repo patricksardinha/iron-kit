@@ -9,6 +9,7 @@ export interface AppState {
   setSession: (wk: number, di: number, si: number, min: number | null) => void
   toggleOption: (wk: number, di: number, label: string) => void
   setNote: (wk: number, di: number, text: string) => void
+  toggleLock: (wk: number, di: number) => void
   replaceState: (next: State) => void
   remapAfterDeleteWeek: (pos: number) => void
   remapAfterInsertWeek: (pos: number) => void
@@ -35,8 +36,9 @@ function remapKeys<T>(rec: Record<string, T>, mapWk: (wk: number) => number | nu
   return next
 }
 
-export function useAppState(): AppState {
-  const [state, setState] = useState<State>(() => loadState())
+export function useAppState(planId: string): AppState {
+  const key = `ik-state-${planId}`
+  const [state, setState] = useState<State>(() => loadState(key))
 
   const first = useRef(true)
   useEffect(() => {
@@ -44,8 +46,8 @@ export function useAppState(): AppState {
       first.current = false
       return
     }
-    saveState(state)
-  }, [state])
+    saveState(state, key)
+  }, [state, key])
 
   // Valide/ajuste une étape : min = minutes faites (clé présente), null = dévalider.
   const setSession = useCallback((wk: number, di: number, si: number, min: number | null) => {
@@ -74,6 +76,13 @@ export function useAppState(): AppState {
     })
   }, [])
 
+  const toggleLock = useCallback((wk: number, di: number) => {
+    const k = dayKey(wk, di)
+    setState((s) =>
+      s.locks[k] ? { ...s, locks: withoutKey(s.locks, k) } : { ...s, locks: { ...s.locks, [k]: true } },
+    )
+  }, [])
+
   const replaceState = useCallback((next: State) => setState(next), [])
 
   const applyRemap = useCallback((map: (wk: number) => number | null) => {
@@ -81,6 +90,7 @@ export function useAppState(): AppState {
       sessions: remapKeys(s.sessions, map),
       options: remapKeys(s.options, map),
       notes: remapKeys(s.notes, map),
+      locks: remapKeys(s.locks, map),
     }))
   }, [])
 
@@ -108,6 +118,7 @@ export function useAppState(): AppState {
     setSession,
     toggleOption,
     setNote,
+    toggleLock,
     replaceState,
     remapAfterDeleteWeek,
     remapAfterInsertWeek,
