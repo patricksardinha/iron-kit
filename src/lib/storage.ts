@@ -3,7 +3,13 @@ import type { State } from '../types'
 
 export const STORAGE_KEY = 'objectif-evian-state-v1'
 
-export const emptyState = (): State => ({ sessions: {}, options: {}, notes: {}, locks: {} })
+export const emptyState = (): State => ({
+  sessions: {},
+  options: {},
+  notes: {},
+  locks: {},
+  layout: {},
+})
 
 /** Sanitise un objet inconnu en State valide (robuste au JSON importé). */
 function coerce(raw: unknown): State {
@@ -42,6 +48,14 @@ function coerce(raw: unknown): State {
   if (o['locks'] && typeof o['locks'] === 'object') {
     for (const [k, v] of Object.entries(o['locks'] as Record<string, unknown>)) {
       if (v === true) s.locks[k] = true
+    }
+  }
+  if (o['layout'] && typeof o['layout'] === 'object') {
+    for (const [k, v] of Object.entries(o['layout'] as Record<string, unknown>)) {
+      // 7 jours, chacun une liste de séances : on fait confiance au round-trip JSON.
+      if (Array.isArray(v) && v.every((d) => Array.isArray(d))) {
+        s.layout[k] = v as State['layout'][string]
+      }
     }
   }
   return s

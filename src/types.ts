@@ -56,6 +56,9 @@ export interface State {
   options: Record<string, true> // `${wk}-${di}::${label}` → option validée (ex. Tai Chi)
   notes: Record<string, string> // `${wk}-${dayIndex}` → note / ressenti libre
   locks: Record<string, true> // `${wk}-${dayIndex}` → carte verrouillée (anti mauvaise manip)
+  // `${wk}` → agencement RÉEL des séances de la semaine (7 jours). Présent = l'utilisateur a
+  // réarrangé ses séances dans l'onglet Semaine (n'altère pas le plan). Sinon on suit le plan.
+  layout: Record<string, Session[][]>
 }
 
 // Récompense (onglet Progression).

@@ -9,8 +9,10 @@ import { useAppState } from './hooks/useAppState'
 import { usePlan } from './hooks/usePlan'
 import { usePlans } from './hooks/usePlans'
 import { useSettings } from './hooks/useSettings'
-import { currentWeekIndex } from './lib/logic'
+import { applyLayout, currentWeekIndex } from './lib/logic'
+import { computeBadges } from './lib/badges'
 import { AppHeader } from './components/AppHeader'
+import { BadgeCelebration } from './components/BadgeCelebration'
 import { TabBar } from './components/TabBar'
 import { WeekScreen } from './components/WeekScreen'
 import { ProgressScreen } from './components/ProgressScreen'
@@ -73,20 +75,33 @@ function PlanApp({
   const plan = usePlan(plans.baseWeeks, planHooks, plans.activeId)
   const [tab, setTab] = useState<Tab>('week')
 
+  // Réalité = plan + agencement réarrangé par l'utilisateur (onglet Semaine).
+  const weeksView = useMemo(
+    () => applyLayout(plan.weeks, appState.state.layout),
+    [plan.weeks, appState.state.layout],
+  )
+
   // "Aujourd'hui" figé au montage.
   const today = useMemo(() => new Date(), [])
-  const total = plan.weeks.length
-  const currentWk = useMemo(() => currentWeekIndex(today, plan.weeks), [today, plan.weeks])
+  const total = weeksView.length
+  const currentWk = useMemo(() => currentWeekIndex(today, weeksView), [today, weeksView])
 
   const [weekIndex, setWeekIndex] = useState(currentWk)
   const safeIndex = Math.min(Math.max(1, weekIndex), total)
 
+  // Badges recalculés pour détecter les déblocages (notification animée).
+  const badges = useMemo(
+    () => computeBadges(weeksView, appState.state, today),
+    [weeksView, appState.state, today],
+  )
+
   return (
     <div className="app">
+      <BadgeCelebration badges={badges} planId={plans.activeId} />
       <AppHeader />
       {tab === 'week' && (
         <WeekScreen
-          weeks={plan.weeks}
+          weeks={weeksView}
           weekIndex={safeIndex}
           currentWk={currentWk}
           today={today}
@@ -97,7 +112,7 @@ function PlanApp({
       )}
       {tab === 'progress' && (
         <ProgressScreen
-          weeks={plan.weeks}
+          weeks={weeksView}
           state={appState.state}
           currentWk={currentWk}
           today={today}
@@ -108,7 +123,7 @@ function PlanApp({
         <PlanScreen plan={plan} state={appState.state} currentWk={currentWk} library={plans.library} />
       )}
       {tab === 'rewards' && (
-        <RewardsScreen weeks={plan.weeks} state={appState.state} today={today} />
+        <RewardsScreen weeks={weeksView} state={appState.state} today={today} />
       )}
       {tab === 'nutrition' && (
         <NutritionScreen sections={data.nutrition} settings={settings.settings} />

@@ -1,7 +1,11 @@
 import { useState } from 'react'
+import { useDroppable } from '@dnd-kit/core'
+import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import type { Session, SessionLibrary } from '../types'
 import { DAY_NAMES } from '../lib/constants'
 import { resolveSession, restInfo } from '../lib/sessions'
+import { dayDropId, sessId } from '../lib/dnd'
 import { SessionDetail } from './SessionDetail'
 import {
   dayDiscipline,
@@ -78,6 +82,9 @@ export function DayCard({
   const dayState = anyZero ? 'zero' : anyPartial ? 'partial' : 'full'
   const test = isTestDay(day)
 
+  // Zone de dépôt pour le drag & drop des séances (réarrangement réel de la semaine).
+  const { setNodeRef: setDropRef, isOver } = useDroppable({ id: dayDropId(di), disabled: locked })
+
   const cls = [
     'day',
     training ? '' : 'rest',
@@ -86,12 +93,13 @@ export function DayCard({
     overdue ? 'overdue' : '',
     test ? 'test' : '',
     locked ? 'locked' : '',
+    isOver ? 'drop-over' : '',
   ]
     .filter(Boolean)
     .join(' ')
 
   return (
-    <div className={cls} style={{ ['--disc' as string]: discColor }}>
+    <div ref={setDropRef} className={cls} style={{ ['--disc' as string]: discColor }}>
       <div className="day-head">
         <span className="day-name">
           {DAY_NAMES[di]} <span className="day-date">{formatShort(date)}</span>
@@ -130,67 +138,26 @@ export function DayCard({
       {!training ? (
         <div className="day-rest-label">Repos / mobilité</div>
       ) : (
-        <ul className="sess-list">
-          {day.map((s, si) => {
-            const key = sessionKey(wk, di, si)
-            const logged = key in sessions
-            const actual = logged ? sessions[key]! : 0
-            // full : atteint (ou épreuve sans durée) · zero : validé mais rien fait · partial : entre les deux
-            const status = !logged
-              ? 'todo'
-              : s.min === 0 || actual >= s.min
-                ? 'full'
-                : actual === 0
-                  ? 'zero'
-                  : 'partial'
-            return (
-              <li className={`sess ${status}`} key={si}>
-                <button
-                  type="button"
-                  className="sess-dot"
-                  disabled={locked}
-                  onClick={() => onSetSession(si, logged ? null : s.min)}
-                  aria-pressed={logged}
-                  aria-label={`${logged ? 'Dévalider' : 'Valider'} ${s.detail || discLabel(s.disc)}`}
-                >
-                  {status === 'full' && <Icon name="check" size={12} />}
-                  {status === 'partial' && <b className="g">!</b>}
-                  {status === 'zero' && <b className="g">✕</b>}
-                </button>
-                <span className="sess-body">
-                  <span className="sess-label">{s.detail || discLabel(s.disc)}</span>
-                  {s.min > 0 && (
-                    <span className="sess-dur">
-                      {logged ? (
-                        <span className="stepper">
-                          <button
-                            type="button"
-                            disabled={locked}
-                            onClick={() => onSetSession(si, Math.max(0, actual - 5))}
-                            aria-label="Moins 5 min"
-                          >
-                            −
-                          </button>
-                          <span className="stepper-val">{formatDuration(actual)}</span>
-                          <button
-                            type="button"
-                            disabled={locked}
-                            onClick={() => onSetSession(si, Math.min(300, actual + 5))}
-                            aria-label="Plus 5 min"
-                          >
-                            +
-                          </button>
-                        </span>
-                      ) : (
-                        <span className="sess-planned">{formatDuration(s.min)}</span>
-                      )}
-                    </span>
-                  )}
-                </span>
-              </li>
-            )
-          })}
-        </ul>
+        <SortableContext
+          items={day.map((_, si) => sessId(di, si))}
+          strategy={verticalListSortingStrategy}
+        >
+          <ul className="sess-list">
+            {day.map((s, si) => (
+              <DragSess
+                key={sessId(di, si)}
+                id={sessId(di, si)}
+                s={s}
+                si={si}
+                wk={wk}
+                di={di}
+                sessions={sessions}
+                locked={locked}
+                onSetSession={onSetSession}
+              />
+            ))}
+          </ul>
+        </SortableContext>
       )}
 
       <div className="day-actions">
@@ -273,5 +240,103 @@ export function DayCard({
         </div>
       )}
     </div>
+  )
+}
+
+// Une séance déplaçable (poignée) dans la vue Semaine — la validation suit la séance.
+function DragSess({
+  id,
+  s,
+  si,
+  wk,
+  di,
+  sessions,
+  locked,
+  onSetSession,
+}: {
+  id: string
+  s: Session
+  si: number
+  wk: number
+  di: number
+  sessions: Record<string, number>
+  locked: boolean
+  onSetSession: (si: number, min: number | null) => void
+}) {
+  const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition, isDragging } =
+    useSortable({ id, disabled: locked })
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.4 : undefined,
+  }
+  const key = sessionKey(wk, di, si)
+  const logged = key in sessions
+  const actual = logged ? sessions[key]! : 0
+  const status = !logged
+    ? 'todo'
+    : s.min === 0 || actual >= s.min
+      ? 'full'
+      : actual === 0
+        ? 'zero'
+        : 'partial'
+
+  return (
+    <li ref={setNodeRef} style={style} className={`sess ${status}`}>
+      {!locked && (
+        <button
+          type="button"
+          ref={setActivatorNodeRef}
+          className="sess-grip"
+          aria-label="Déplacer la séance (glisser)"
+          {...attributes}
+          {...listeners}
+        >
+          <Icon name="grip" size={15} />
+        </button>
+      )}
+      <button
+        type="button"
+        className="sess-dot"
+        disabled={locked}
+        onClick={() => onSetSession(si, logged ? null : s.min)}
+        aria-pressed={logged}
+        aria-label={`${logged ? 'Dévalider' : 'Valider'} ${s.detail || discLabel(s.disc)}`}
+      >
+        {status === 'full' && <Icon name="check" size={12} />}
+        {status === 'partial' && <b className="g">!</b>}
+        {status === 'zero' && <b className="g">✕</b>}
+      </button>
+      <span className="sess-body">
+        <span className="sess-label">{s.detail || discLabel(s.disc)}</span>
+        {s.min > 0 && (
+          <span className="sess-dur">
+            {logged ? (
+              <span className="stepper">
+                <button
+                  type="button"
+                  disabled={locked}
+                  onClick={() => onSetSession(si, Math.max(0, actual - 5))}
+                  aria-label="Moins 5 min"
+                >
+                  −
+                </button>
+                <span className="stepper-val">{formatDuration(actual)}</span>
+                <button
+                  type="button"
+                  disabled={locked}
+                  onClick={() => onSetSession(si, Math.min(300, actual + 5))}
+                  aria-label="Plus 5 min"
+                >
+                  +
+                </button>
+              </span>
+            ) : (
+              <span className="sess-planned">{formatDuration(s.min)}</span>
+            )}
+          </span>
+        )}
+      </span>
+    </li>
   )
 }

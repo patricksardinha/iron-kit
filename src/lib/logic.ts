@@ -1,6 +1,6 @@
 // Logique métier (§7)
 import { DAY_MS, TOTAL_WEEKS } from './constants'
-import type { Discipline, Session, SessionDisc, Week } from '../types'
+import type { Discipline, Session, SessionDisc, State, Week } from '../types'
 
 export { TOTAL_WEEKS }
 
@@ -74,6 +74,14 @@ export function currentWeekIndex(today: Date, weeks: Week[]): number {
 /** Un jour est un jour d'entraînement s'il contient au moins une séance. */
 export function isTrainingDay(day: Session[]): boolean {
   return day.length > 0
+}
+
+/** Applique l'agencement réel (state.layout) par-dessus le plan : la réalité prime. */
+export function applyLayout(weeks: Week[], layout: State['layout']): Week[] {
+  return weeks.map((w) => {
+    const l = layout[String(w.wk)]
+    return l ? { ...w, days: l } : w
+  })
 }
 
 /** Volume d'une semaine (heures) = Σ des durées de toutes les séances. */

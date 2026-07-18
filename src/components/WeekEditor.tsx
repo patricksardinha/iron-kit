@@ -4,7 +4,6 @@ import {
   DragOverlay,
   KeyboardSensor,
   PointerSensor,
-  closestCorners,
   useDroppable,
   useSensor,
   useSensors,
@@ -24,6 +23,7 @@ import { DAY_NAMES } from '../lib/constants'
 import { PHASES, typesForPhase } from '../lib/constants'
 import { discLabel, weekVolume } from '../lib/logic'
 import { scaffoldInfo } from '../lib/sessions'
+import { dayDropId, followPointer, parseSessId, sessId } from '../lib/dnd'
 import { Icon } from './Icon'
 import { SessionDetailEditor } from './SessionDetailEditor'
 
@@ -46,14 +46,6 @@ interface Props {
 }
 
 const DISCS: SessionDisc[] = ['swim', 'bike', 'run', 'strength', 'other', 'race']
-
-// Identifiants d'items/conteneurs pour le drag & drop.
-const sessId = (di: number, si: number) => `s:${di}:${si}`
-const dayId = (di: number) => `day:${di}`
-function parseSessId(id: string): [number, number] {
-  const p = id.split(':')
-  return [Number(p[1]), Number(p[2])]
-}
 
 export function WeekEditor({
   week,
@@ -181,7 +173,7 @@ export function WeekEditor({
         </p>
         <DndContext
           sensors={sensors}
-          collisionDetection={closestCorners}
+          collisionDetection={followPointer}
           onDragStart={onDragStart}
           onDragEnd={onDragEnd}
           onDragCancel={() => setDragging(null)}
@@ -299,7 +291,7 @@ function DayColumn({
   onSetSessionInfo: (si: number, info: SessionInfo | null) => void
   onToggleDayOption: (label: string) => void
 }) {
-  const { setNodeRef, isOver } = useDroppable({ id: dayId(di) })
+  const { setNodeRef, isOver } = useDroppable({ id: dayDropId(di) })
   const ids = day.map((_, si) => sessId(di, si))
 
   return (

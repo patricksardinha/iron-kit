@@ -1,6 +1,6 @@
 // État utilisateur : validation par étape / taichi / notes — persistant.
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { State } from '../types'
+import type { Session, State } from '../types'
 import { loadState, saveState } from '../lib/storage'
 import { dayKey, optionKey, sessionKey } from '../lib/logic'
 
@@ -10,6 +10,16 @@ export interface AppState {
   toggleOption: (wk: number, di: number, label: string) => void
   setNote: (wk: number, di: number, text: string) => void
   toggleLock: (wk: number, di: number) => void
+  // Déplace une séance entre jours DANS la réalité de la semaine (n'altère pas le plan).
+  // `days` = agencement courant effectif de la semaine (validations déplacées avec la séance).
+  applyWeekMove: (
+    wk: number,
+    days: Session[][],
+    fromDi: number,
+    fromSi: number,
+    toDi: number,
+    toSi: number,
+  ) => void
   replaceState: (next: State) => void
   remapAfterDeleteWeek: (pos: number) => void
   remapAfterInsertWeek: (pos: number) => void
@@ -32,6 +42,17 @@ function remapKeys<T>(rec: Record<string, T>, mapWk: (wk: number) => number | nu
     const nw = mapWk(wk)
     if (nw === null) continue
     next[`${nw}-${rest}`] = v
+  }
+  return next
+}
+
+/** Remap d'un enregistrement dont la clé EST le numéro de semaine (ex. layout). */
+function remapNumKeys<T>(rec: Record<string, T>, mapWk: (wk: number) => number | null): Record<string, T> {
+  const next: Record<string, T> = {}
+  for (const [k, v] of Object.entries(rec)) {
+    const nw = mapWk(Number(k))
+    if (nw === null) continue
+    next[String(nw)] = v
   }
   return next
 }
@@ -83,6 +104,44 @@ export function useAppState(planId: string): AppState {
     )
   }, [])
 
+  // Déplace une séance entre jours dans la réalité de la semaine + suit ses validations.
+  const applyWeekMove = useCallback(
+    (wk: number, days: Session[][], fromDi: number, fromSi: number, toDi: number, toSi: number) => {
+      setState((s) => {
+        if (!days[fromDi] || fromSi < 0 || fromSi >= days[fromDi]!.length) return s
+        // Validations alignées sur l'agencement courant.
+        const val = days.map((day, di) =>
+          day.map((_, si) => {
+            const k = sessionKey(wk, di, si)
+            return k in s.sessions ? s.sessions[k]! : undefined
+          }),
+        )
+        const nd = days.map((d) => [...d])
+        const nv = val.map((a) => [...a])
+        const [ms] = nd[fromDi]!.splice(fromSi, 1)
+        const [mv] = nv[fromDi]!.splice(fromSi, 1)
+        if (ms === undefined) return s
+        let idx = fromDi === toDi && fromSi < toSi ? toSi - 1 : toSi
+        idx = Math.max(0, Math.min(idx, nd[toDi]!.length))
+        nd[toDi]!.splice(idx, 0, ms)
+        nv[toDi]!.splice(idx, 0, mv)
+        // Reconstruit les validations de la semaine wk depuis le nouvel agencement.
+        const prefix = `${wk}-`
+        const sessions: Record<string, number> = {}
+        for (const [k, v] of Object.entries(s.sessions)) {
+          if (!k.startsWith(prefix)) sessions[k] = v
+        }
+        nv.forEach((day, di) =>
+          day.forEach((v, si) => {
+            if (v !== undefined) sessions[sessionKey(wk, di, si)] = v
+          }),
+        )
+        return { ...s, sessions, layout: { ...s.layout, [String(wk)]: nd } }
+      })
+    },
+    [],
+  )
+
   const replaceState = useCallback((next: State) => setState(next), [])
 
   const applyRemap = useCallback((map: (wk: number) => number | null) => {
@@ -91,6 +150,7 @@ export function useAppState(planId: string): AppState {
       options: remapKeys(s.options, map),
       notes: remapKeys(s.notes, map),
       locks: remapKeys(s.locks, map),
+      layout: remapNumKeys(s.layout, map),
     }))
   }, [])
 
@@ -119,6 +179,7 @@ export function useAppState(planId: string): AppState {
     toggleOption,
     setNote,
     toggleLock,
+    applyWeekMove,
     replaceState,
     remapAfterDeleteWeek,
     remapAfterInsertWeek,
