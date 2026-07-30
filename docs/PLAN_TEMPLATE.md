@@ -5,7 +5,7 @@ et modifications). Tu peux créer ton propre plan dans un simple fichier JSON, p
 **Réglages → Plans → Importer un plan**.
 
 Un modèle prêt à remplir est téléchargeable dans l'app (**Réglages → Plans → Modèle de plan**) ou
-ici : [`public/plan-template.json`](public/plan-template.json).
+ici : [`public/plan-template.json`](../public/plan-template.json).
 
 ---
 
