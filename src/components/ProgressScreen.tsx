@@ -66,8 +66,13 @@ export function ProgressScreen({ weeks, state, currentWk, today, options }: Prop
   const streakM = milestone(streak, [3, 7, 14, 21, 30, 45, 60, 90])
   const hoursM = milestone(Math.round(hours.validated), [10, 25, 50, 100, 150, 250, 400])
 
-  // Prochain jalon (test) + décompte en JOURS.
-  const nextJalon = JALONS.find((j) => j.wk >= currentWk) ?? JALONS[JALONS.length - 1]!
+  // Prochain jalon (test) NON validé + décompte en JOURS.
+  const testsDone = JALONS.filter((j) => state.tests[String(j.wk)]).length
+  const nextJalon =
+    JALONS.find((j) => !state.tests[String(j.wk)] && j.wk >= currentWk) ??
+    JALONS.find((j) => !state.tests[String(j.wk)]) ??
+    JALONS[JALONS.length - 1]!
+  const nextJalonDone = !!state.tests[String(nextJalon.wk)]
   const jWeek = weeks[nextJalon.wk - 1]
   const jDays = jWeek ? daysBetween(today, parseISO(jWeek.start)) : null
   const jLabel =
@@ -149,17 +154,19 @@ export function ProgressScreen({ weeks, state, currentWk, today, options }: Prop
       <VolumeChart data={volSeries} currentWk={currentWk} />
       <DisciplineDonut swim={discHours.swim} bike={discHours.bike} run={discHours.run} />
 
-      {/* Prochain test — mis en avant */}
+      {/* Prochain test non validé — mis en avant (validation : bannière de l'onglet Semaine) */}
       <div className="test-card">
         <div className="tc-icon">
           <Icon name="trophy" size={22} />
         </div>
         <div className="tc-body">
-          <div className="tc-kicker">Prochain test</div>
+          <div className="tc-kicker">
+            {nextJalonDone ? 'Tests terminés' : 'Prochain test'} · {testsDone}/{JALONS.length} validés
+          </div>
           <div className="tc-title">{nextJalon.t}</div>
           <div className="tc-desc">{nextJalon.d}</div>
         </div>
-        <div className="tc-count">{jLabel}</div>
+        <div className="tc-count">{nextJalonDone ? '✓' : jLabel}</div>
       </div>
 
       {options.length > 0 && (

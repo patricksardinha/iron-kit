@@ -4,7 +4,7 @@ export type IconName =
   | 'week'
   | 'progress'
   | 'plan'
-  | 'nutrition'
+  | 'fridge'
   | 'taichi'
   | 'note'
   | 'today'
@@ -73,11 +73,12 @@ const PATHS: Record<IconName, React.ReactNode> = {
       <circle cx="4" cy="6" r="0.4" fill="currentColor" />
     </>
   ),
-  // feuille (nutrition)
-  nutrition: (
+  // réfrigérateur (frigo)
+  fridge: (
     <>
-      <path d="M5 19c0-7 5-12 14-12 0 7-4 12-11 12-1.5 0-3-.4-3-.4Z" />
-      <path d="M9 17c2-4 5-6 8-7" />
+      <rect x="6" y="3" width="12" height="18" rx="2" />
+      <path d="M6 10h12" />
+      <path d="M9 6v2M9 13v3" />
     </>
   ),
   // taiji (Tai Chi) en trait

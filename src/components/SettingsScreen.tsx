@@ -26,7 +26,7 @@ export function SettingsScreen({ settings, update, state, onImport, plans }: Pro
 
       <div className="section-h">Profil</div>
       <p className="tool-hint" style={{ marginTop: 0 }}>
-        Sert à personnaliser tes repères nutrition (besoins en protéines, glucides, hydratation).
+        Profil sportif (poids, taille, âge) — utilisé pour personnaliser les repères de l'app.
       </p>
       <div className="set-card">
         <div className="set-field">

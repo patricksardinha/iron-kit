@@ -1,5 +1,6 @@
 // Système de récompenses : set curé de badges nommés (+ easter eggs).
 import type { Badge, BadgeTier, State, Week } from '../types'
+import { JALONS } from './constants'
 import { sessionKey } from './logic'
 import { weekProgress, phaseStats, currentStreak, countOption, optionTotal } from './stats'
 
@@ -23,6 +24,7 @@ interface Summary {
   options: number
   notes: number
   raceDone: boolean
+  tests: number // tests/jalons validés (bannière de l'onglet Semaine)
   maxDaySessions: number // + de séances validées dans une même journée
   maxSessionMin: number // plus longue séance validée (minutes)
   maxWeekHours: number // plus gros volume réalisé sur une semaine (h)
@@ -98,6 +100,7 @@ function summarize(weeks: Week[], state: State, today: Date): Summary {
     options: optionTotal(state.options),
     notes: Object.keys(state.notes).length,
     raceDone,
+    tests: Object.keys(state.tests).length,
     maxDaySessions,
     maxSessionMin,
     maxWeekHours: Math.round(maxWeekHours * 10) / 10,
@@ -199,6 +202,8 @@ const DEFS: Def[] = [
   { id: 'zen-master', group: 'Secrets', emoji: '🕉️', title: 'Illumination', desc: '100 séances de Tai Chi. Ton ancre est devenue un art', tier: 'special', target: 100, value: (s) => s.taichi, hidden: true },
 
   // — Épreuve —
+  { id: 'test-1', group: 'Épreuve', emoji: '🧪', title: 'Première étape', desc: 'Valider un test / jalon du plan', tier: 'bronze', target: 1, value: (s) => s.tests },
+  { id: 'test-all', group: 'Épreuve', emoji: '🎓', title: 'Sans-faute aux tests', desc: `Valider les ${JALONS.length} tests du plan`, tier: 'special', target: JALONS.length, value: (s) => s.tests },
   { id: 'finisher', group: 'Épreuve', emoji: '🏁', title: 'Finisher', desc: 'Valider une épreuve du plan', tier: 'special', target: 1, value: (s) => (s.raceDone ? 1 : 0) },
 ]
 

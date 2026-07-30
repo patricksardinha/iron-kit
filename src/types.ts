@@ -36,16 +36,14 @@ export interface SessionInfo {
 }
 export type SessionLibrary = Record<string, SessionInfo>
 
-// Contenu de l'onglet Nutrition (source : nutrition.json)
-export interface NutritionItem {
-  h: string
-  t: string
-  list?: string[] // aliments concrets + quantités (homme 67-70 kg) — dépliable
-}
-export interface NutritionSection {
-  title: string
-  accent: string // token couleur : swim | bike | run | p3 …
-  items: NutritionItem[]
+// Recette de l'onglet Frigo (source : recipes.json)
+export interface Recipe {
+  name: string
+  cat: string // catégorie d'affichage : Petit-déj | Plat | Post-entraînement | Collation…
+  time?: number // préparation+cuisson (minutes)
+  desc?: string
+  ingredients: string[] // ingrédients nécessaires (noms simples en minuscules)
+  steps?: string[]
 }
 
 // État utilisateur persistant (§6)
@@ -59,6 +57,8 @@ export interface State {
   // `${wk}` → agencement RÉEL des séances de la semaine (7 jours). Présent = l'utilisateur a
   // réarrangé ses séances dans l'onglet Semaine (n'altère pas le plan). Sinon on suit le plan.
   layout: Record<string, Session[][]>
+  // `${wk}` → test/jalon (constants:JALONS) validé. Les jalons sont fixes : pas de remap.
+  tests: Record<string, true>
 }
 
 // Récompense (onglet Progression).
@@ -76,7 +76,7 @@ export interface Badge {
   hidden?: boolean // easter egg : masqué tant que non débloqué
 }
 
-export type Tab = 'week' | 'progress' | 'plan' | 'rewards' | 'nutrition' | 'settings'
+export type Tab = 'week' | 'progress' | 'plan' | 'rewards' | 'fridge' | 'settings'
 
 // Multi-plans : métadonnées d'un plan dans le registre.
 export interface PlanMeta {

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import {
   DndContext,
   DragOverlay,
@@ -39,7 +40,7 @@ export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, libra
   const week = weeks[weekIndex - 1]
   if (!week) return null
 
-  const { state, setSession, toggleOption, setNote, toggleLock, applyWeekMove } = appState
+  const { state, setSession, toggleOption, setNote, toggleLock, toggleTest, applyWeekMove } = appState
 
   function onDragStart(e: DragStartEvent) {
     if (!week) return
@@ -68,6 +69,7 @@ export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, libra
   const pc = phaseColor(week.phase)
   const { num: phaseNum, label: phaseLabel } = phaseParts(week.phase)
   const jalon = JALONS.find((j) => j.wk === week.wk)
+  const jalonDone = !!state.tests[String(week.wk)]
 
   const showFab = weekIndex !== currentWk
 
@@ -97,15 +99,25 @@ export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, libra
       </div>
 
       {jalon && (
-        <div className="week-jalon">
+        <div className={`week-jalon${jalonDone ? ' done' : ''}`}>
           <span className="wj-icon">
             <Icon name="trophy" size={20} />
           </span>
           <div className="wj-body">
-            <div className="wj-kicker">Semaine test / jalon</div>
+            <div className="wj-kicker">{jalonDone ? 'Test validé' : 'Semaine test / jalon'}</div>
             <div className="wj-title">{jalon.t}</div>
             <div className="wj-desc">{jalon.d}</div>
           </div>
+          <button
+            type="button"
+            className={`wj-check${jalonDone ? ' on' : ''}`}
+            onClick={() => toggleTest(week.wk)}
+            aria-pressed={jalonDone}
+            aria-label={jalonDone ? 'Dévalider le test' : 'Valider le test'}
+            title={jalonDone ? 'Dévalider le test' : 'Valider le test'}
+          >
+            <Icon name="check" size={16} />
+          </button>
         </div>
       )}
 
@@ -164,16 +176,21 @@ export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, libra
             )
           })}
         </div>
-        <DragOverlay modifiers={[snapCenterToCursor]}>
-          {dragging ? (
-            <div className="sess drag-ghost">
-              <span className="sess-grip">
-                <Icon name="grip" size={15} />
-              </span>
-              <span className="ghost-label">{dragging.detail || discLabel(dragging.disc)}</span>
-            </div>
-          ) : null}
-        </DragOverlay>
+        {/* Portail : l'overlay est en position:fixed, il doit vivre sous <body> pour ne pas
+            être décalé par un ancêtre transformé (sinon le fantôme ne suit pas le doigt). */}
+        {createPortal(
+          <DragOverlay modifiers={[snapCenterToCursor]}>
+            {dragging ? (
+              <div className="sess drag-ghost">
+                <span className="sess-grip">
+                  <Icon name="grip" size={15} />
+                </span>
+                <span className="ghost-label">{dragging.detail || discLabel(dragging.disc)}</span>
+              </div>
+            ) : null}
+          </DragOverlay>,
+          document.body,
+        )}
       </DndContext>
 
       {showFab && (

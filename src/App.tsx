@@ -18,7 +18,7 @@ import { WeekScreen } from './components/WeekScreen'
 import { ProgressScreen } from './components/ProgressScreen'
 import { PlanScreen } from './components/PlanScreen'
 import { RewardsScreen } from './components/RewardsScreen'
-import { NutritionScreen } from './components/NutritionScreen'
+import { FridgeScreen } from './components/FridgeScreen'
 import { SettingsScreen } from './components/SettingsScreen'
 
 export default function App() {
@@ -125,9 +125,7 @@ function PlanApp({
       {tab === 'rewards' && (
         <RewardsScreen weeks={weeksView} state={appState.state} today={today} />
       )}
-      {tab === 'nutrition' && (
-        <NutritionScreen sections={data.nutrition} settings={settings.settings} />
-      )}
+      {tab === 'fridge' && <FridgeScreen recipes={data.recipes} />}
       {tab === 'settings' && (
         <SettingsScreen
           settings={settings.settings}

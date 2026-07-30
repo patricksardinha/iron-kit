@@ -1,11 +1,11 @@
-// Chargement des données (plan.json + nutrition.json) — précachées par le SW.
+// Chargement des données (plan.json + recipes.json + sessions.json) — précachées par le SW.
 import { useEffect, useState } from 'react'
-import type { Week, NutritionSection, SessionLibrary } from '../types'
+import type { Week, Recipe, SessionLibrary } from '../types'
 import { migrateWeeks } from '../lib/migrate'
 
 export interface Data {
   plan: Week[]
-  nutrition: NutritionSection[]
+  recipes: Recipe[]
   sessions: SessionLibrary
 }
 
@@ -27,18 +27,18 @@ export function useData(): Status {
         if (!r.ok) throw new Error('plan.json')
         return migrateWeeks(await r.json()) as Week[]
       }),
-      fetch(`${base}nutrition.json`).then((r) => {
-        if (!r.ok) throw new Error('nutrition.json')
-        return r.json() as Promise<NutritionSection[]>
+      fetch(`${base}recipes.json`).then((r) => {
+        if (!r.ok) throw new Error('recipes.json')
+        return r.json() as Promise<Recipe[]>
       }),
       fetch(`${base}sessions.json`).then((r) => {
         if (!r.ok) throw new Error('sessions.json')
         return r.json() as Promise<SessionLibrary>
       }),
     ])
-      .then(([plan, nutrition, sessions]) => {
+      .then(([plan, recipes, sessions]) => {
         if (!alive) return
-        setStatus({ state: 'ready', data: { plan, nutrition, sessions } })
+        setStatus({ state: 'ready', data: { plan, recipes, sessions } })
       })
       .catch((e: unknown) => {
         if (!alive) return

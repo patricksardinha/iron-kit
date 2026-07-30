@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import {
   DndContext,
   DragOverlay,
@@ -193,18 +194,23 @@ export function WeekEditor({
               onToggleDayOption={(label) => onToggleDayOption(di, label)}
             />
           ))}
-          <DragOverlay modifiers={[snapCenterToCursor]}>
-            {dragging ? (
-              <div className="session-row drag-ghost">
-                <span className="drag-handle">
-                  <Icon name="grip" size={16} />
-                </span>
-                <span className="ghost-label">
-                  {dragging.detail || discLabel(dragging.disc)}
-                </span>
-              </div>
-            ) : null}
-          </DragOverlay>
+          {/* Portail sous <body> : évite le décalage de l'overlay (position:fixed) quand
+              un ancêtre porte un transform (animation d'entrée de .screen, etc.). */}
+          {createPortal(
+            <DragOverlay modifiers={[snapCenterToCursor]}>
+              {dragging ? (
+                <div className="session-row drag-ghost">
+                  <span className="drag-handle">
+                    <Icon name="grip" size={16} />
+                  </span>
+                  <span className="ghost-label">
+                    {dragging.detail || discLabel(dragging.disc)}
+                  </span>
+                </div>
+              ) : null}
+            </DragOverlay>,
+            document.body,
+          )}
         </DndContext>
       </div>
 

@@ -9,6 +9,7 @@ export const emptyState = (): State => ({
   notes: {},
   locks: {},
   layout: {},
+  tests: {},
 })
 
 /** Sanitise un objet inconnu en State valide (robuste au JSON importé). */
@@ -48,6 +49,11 @@ function coerce(raw: unknown): State {
   if (o['locks'] && typeof o['locks'] === 'object') {
     for (const [k, v] of Object.entries(o['locks'] as Record<string, unknown>)) {
       if (v === true) s.locks[k] = true
+    }
+  }
+  if (o['tests'] && typeof o['tests'] === 'object') {
+    for (const [k, v] of Object.entries(o['tests'] as Record<string, unknown>)) {
+      if (v === true) s.tests[k] = true
     }
   }
   if (o['layout'] && typeof o['layout'] === 'object') {

@@ -7,13 +7,13 @@ ni compte** — toutes les données restent en local sur l'appareil.
 ## Stack
 - Vite + React 19 + TypeScript (strict)
 - PWA via `vite-plugin-pwa` (manifest + service worker Workbox : precache app shell + `plan.json` +
-  `nutrition.json` + polices)
+  `recipes.json` + polices)
 - Persistance `localStorage` sous une clé unique `objectif-evian-state-v1`
 - Polices auto-hébergées (`@fontsource`, woff2) — aucun CDN, offline réel
 
 ## Sources de vérité (ne rien hardcoder)
 - `public/plan.json` — les 62 semaines (une séance par jour). Lu au runtime, précaché.
-- `public/nutrition.json` — contenu de l'onglet Nutrition.
+- `public/recipes.json` — recettes de l'onglet Frigo (ingrédients en minuscules, noms simples).
 Pour modifier le plan : régénérer ces fichiers (pas d'édition dans l'app).
 
 ## Commandes

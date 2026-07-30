@@ -80,8 +80,54 @@ export function isTrainingDay(day: Session[]): boolean {
 export function applyLayout(weeks: Week[], layout: State['layout']): Week[] {
   return weeks.map((w) => {
     const l = layout[String(w.wk)]
-    return l ? { ...w, days: l } : w
+    return l ? { ...w, days: mergeLayout(w.days, l) } : w
   })
+}
+
+/** Identité d'une séance pour la fusion plan/agencement (contenu, pas la position). */
+function sessSig(s: Session): string {
+  return JSON.stringify([s.disc, s.detail, s.min, s.info ?? null])
+}
+
+/**
+ * Fusionne l'agencement utilisateur (drag & drop de l'onglet Semaine) avec le plan
+ * courant. Le layout est un instantané : si le plan a changé depuis (séance ajoutée,
+ * modifiée ou supprimée dans l'onglet Plan), il doit rester la source de vérité du
+ * CONTENU, le layout ne gardant que le PLACEMENT des séances qui existent encore.
+ * - séance présente dans les deux → position du layout ;
+ * - séance du plan absente du layout (ajoutée / modifiée depuis) → son jour du plan,
+ *   en fin de journée pour ne pas décaler les validations positionnelles existantes ;
+ * - séance du layout absente du plan (supprimée / modifiée depuis) → retirée.
+ */
+function mergeLayout(planDays: Session[][], layoutDays: Session[][]): Session[][] {
+  // Multiset des séances du plan (les doublons « Vélo 1h » comptent double).
+  const remaining = new Map<string, number>()
+  for (const day of planDays)
+    for (const s of day) {
+      const k = sessSig(s)
+      remaining.set(k, (remaining.get(k) ?? 0) + 1)
+    }
+  // Garde les séances du layout encore présentes dans le plan, à leur place.
+  const days = planDays.map((_, di) =>
+    (layoutDays[di] ?? []).filter((s) => {
+      const k = sessSig(s)
+      const n = remaining.get(k) ?? 0
+      if (n <= 0) return false
+      remaining.set(k, n - 1)
+      return true
+    }),
+  )
+  // Les séances du plan non consommées (nouvelles) rejoignent leur jour d'origine.
+  planDays.forEach((day, di) => {
+    for (const s of day) {
+      const k = sessSig(s)
+      const n = remaining.get(k) ?? 0
+      if (n <= 0) continue
+      remaining.set(k, n - 1)
+      days[di]!.push(s)
+    }
+  })
+  return days
 }
 
 /** Volume d'une semaine (heures) = Σ des durées de toutes les séances. */

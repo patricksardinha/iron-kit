@@ -11,7 +11,7 @@ const TABS: { id: Tab; label: string; ic: IconName }[] = [
   { id: 'progress', label: 'Progrès', ic: 'progress' },
   { id: 'plan', label: 'Plan', ic: 'plan' },
   { id: 'rewards', label: 'Badges', ic: 'trophy' },
-  { id: 'nutrition', label: 'Nutrition', ic: 'nutrition' },
+  { id: 'fridge', label: 'Frigo', ic: 'fridge' },
   { id: 'settings', label: 'Réglages', ic: 'settings' },
 ]
 

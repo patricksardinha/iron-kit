@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 // Objectif Evian — PWA offline-first, mobile (Android), aucun backend.
-// Le service worker precache l'app shell + plan.json + nutrition.json + polices woff2.
+// Le service worker precache l'app shell + plan.json + recipes.json + polices woff2.
 export default defineConfig({
   // start_url "." (§10) → base relative pour fonctionner quel que soit le sous-chemin d'hébergement.
   base: './',
@@ -16,7 +16,7 @@ export default defineConfig({
         'favicon.svg',
         'icons/apple-touch-icon.png',
         'plan.json',
-        'nutrition.json',
+        'recipes.json',
         'sessions.json',
         'plan-template.json',
       ],

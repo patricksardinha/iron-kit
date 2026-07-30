@@ -10,6 +10,7 @@ export interface AppState {
   toggleOption: (wk: number, di: number, label: string) => void
   setNote: (wk: number, di: number, text: string) => void
   toggleLock: (wk: number, di: number) => void
+  toggleTest: (wk: number) => void // valide/dévalide le test-jalon de la semaine wk
   // Déplace une séance entre jours DANS la réalité de la semaine (n'altère pas le plan).
   // `days` = agencement courant effectif de la semaine (validations déplacées avec la séance).
   applyWeekMove: (
@@ -104,6 +105,13 @@ export function useAppState(planId: string): AppState {
     )
   }, [])
 
+  const toggleTest = useCallback((wk: number) => {
+    const k = String(wk)
+    setState((s) =>
+      s.tests[k] ? { ...s, tests: withoutKey(s.tests, k) } : { ...s, tests: { ...s.tests, [k]: true } },
+    )
+  }, [])
+
   // Déplace une séance entre jours dans la réalité de la semaine + suit ses validations.
   const applyWeekMove = useCallback(
     (wk: number, days: Session[][], fromDi: number, fromSi: number, toDi: number, toSi: number) => {
@@ -151,6 +159,7 @@ export function useAppState(planId: string): AppState {
       notes: remapKeys(s.notes, map),
       locks: remapKeys(s.locks, map),
       layout: remapNumKeys(s.layout, map),
+      tests: s.tests, // jalons fixés à des numéros de semaine constants → pas de remap
     }))
   }, [])
 
@@ -179,6 +188,7 @@ export function useAppState(planId: string): AppState {
     toggleOption,
     setNote,
     toggleLock,
+    toggleTest,
     applyWeekMove,
     replaceState,
     remapAfterDeleteWeek,

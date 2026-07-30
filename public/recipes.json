@@ -1,0 +1,337 @@
+[
+  {
+    "name": "Porridge banane-miel",
+    "cat": "Petit-déj",
+    "time": 10,
+    "desc": "Le classique d'avant sortie longue : glucides lents, digestion facile.",
+    "ingredients": ["flocons d'avoine", "lait", "banane", "miel"],
+    "steps": [
+      "Chauffer 60 g de flocons avec 250 ml de lait 3-4 min en remuant.",
+      "Couper la banane en rondelles, ajouter sur le porridge.",
+      "Napper d'une cuillère de miel."
+    ]
+  },
+  {
+    "name": "Pancakes avoine-banane",
+    "cat": "Petit-déj",
+    "time": 15,
+    "desc": "Pancakes sans farine, riches en glucides et protéines.",
+    "ingredients": ["flocons d'avoine", "banane", "oeufs", "lait"],
+    "steps": [
+      "Mixer 80 g de flocons, 1 banane, 2 œufs et un fond de lait.",
+      "Cuire des petits pancakes 2 min par face à feu moyen.",
+      "Servir avec miel ou fruits selon l'envie."
+    ]
+  },
+  {
+    "name": "Œufs brouillés sur toast",
+    "cat": "Petit-déj",
+    "time": 10,
+    "desc": "Protéines rapides pour bien démarrer un jour de récup.",
+    "ingredients": ["oeufs", "pain", "beurre"],
+    "steps": [
+      "Battre 3 œufs, cuire à feu doux avec une noix de beurre en remuant.",
+      "Toaster le pain.",
+      "Servir les œufs crémeux sur le toast."
+    ]
+  },
+  {
+    "name": "Yaourt grec, avoine et fruits rouges",
+    "cat": "Petit-déj",
+    "time": 5,
+    "desc": "Bol frais protéiné, parfait après une séance matinale.",
+    "ingredients": ["yaourt grec", "flocons d'avoine", "miel", "fruits rouges"],
+    "steps": [
+      "Verser le yaourt dans un bol.",
+      "Ajouter 2 cuillères de flocons et les fruits rouges.",
+      "Arroser de miel."
+    ]
+  },
+  {
+    "name": "Pâtes au thon express",
+    "cat": "Plat",
+    "time": 15,
+    "desc": "Le dépanneur ultime du soir de semaine chargée.",
+    "ingredients": ["pâtes", "thon", "tomates", "ail"],
+    "steps": [
+      "Cuire les pâtes al dente.",
+      "Faire revenir l'ail, ajouter les tomates coupées 5 min.",
+      "Mélanger avec le thon égoutté et les pâtes."
+    ]
+  },
+  {
+    "name": "Riz, poulet et brocoli",
+    "cat": "Plat",
+    "time": 25,
+    "desc": "Le trio du sportif : simple, complet, efficace.",
+    "ingredients": ["riz", "poulet", "brocoli"],
+    "steps": [
+      "Cuire le riz.",
+      "Poêler le poulet en morceaux jusqu'à coloration.",
+      "Cuire le brocoli 5 min à la vapeur et assembler."
+    ]
+  },
+  {
+    "name": "Bowl quinoa-pois chiches",
+    "cat": "Plat",
+    "time": 20,
+    "desc": "Protéines végétales et fibres, top les jours légers.",
+    "ingredients": ["quinoa", "pois chiches", "concombre", "feta", "citron"],
+    "steps": [
+      "Cuire le quinoa et laisser tiédir.",
+      "Ajouter pois chiches rincés, concombre en dés, feta émiettée.",
+      "Assaisonner au jus de citron et à l'huile d'olive."
+    ]
+  },
+  {
+    "name": "Omelette champignons-fromage",
+    "cat": "Plat",
+    "time": 10,
+    "desc": "Dîner express de soir de récup, pauvre en glucides.",
+    "ingredients": ["oeufs", "champignons", "fromage râpé"],
+    "steps": [
+      "Poêler les champignons émincés.",
+      "Verser 3 œufs battus, parsemer de fromage.",
+      "Replier l'omelette quand elle est presque prise."
+    ]
+  },
+  {
+    "name": "Saumon, patate douce et épinards",
+    "cat": "Plat",
+    "time": 30,
+    "desc": "Oméga-3 + glucides de qualité : l'assiette des grosses semaines.",
+    "ingredients": ["saumon", "patate douce", "épinards"],
+    "steps": [
+      "Rôtir la patate douce en cubes 25 min au four (200 °C).",
+      "Poêler le pavé de saumon 3-4 min par face.",
+      "Tomber les épinards 2 min à la poêle."
+    ]
+  },
+  {
+    "name": "Curry de lentilles corail",
+    "cat": "Plat",
+    "time": 25,
+    "desc": "Végétarien, réconfortant, riche en fer et en glucides.",
+    "ingredients": ["lentilles corail", "lait de coco", "oignon", "ail", "curry", "tomates"],
+    "steps": [
+      "Faire revenir oignon et ail, ajouter 1 c. à s. de curry.",
+      "Ajouter lentilles, tomates et lait de coco, couvrir d'eau.",
+      "Mijoter 18-20 min jusqu'à ce que ce soit fondant."
+    ]
+  },
+  {
+    "name": "Chili sin carne",
+    "cat": "Plat",
+    "time": 30,
+    "desc": "Une marmite = plusieurs repas. Se congèle très bien.",
+    "ingredients": ["haricots rouges", "tomates", "oignon", "maïs", "riz"],
+    "steps": [
+      "Faire revenir l'oignon, ajouter tomates, haricots et maïs.",
+      "Mijoter 20 min avec cumin/paprika si dispo.",
+      "Servir sur le riz."
+    ]
+  },
+  {
+    "name": "Poêlée poulet-légumes",
+    "cat": "Plat",
+    "time": 20,
+    "desc": "Flexible : marche avec à peu près tous les légumes du frigo.",
+    "ingredients": ["poulet", "courgette", "poivron", "oignon"],
+    "steps": [
+      "Saisir le poulet en lanières, réserver.",
+      "Poêler oignon, poivron et courgette 8-10 min.",
+      "Remettre le poulet, assaisonner et servir."
+    ]
+  },
+  {
+    "name": "Spaghetti bolognaise",
+    "cat": "Plat",
+    "time": 30,
+    "desc": "La valeur sûre pour recharger les stocks de glycogène.",
+    "ingredients": ["pâtes", "bœuf haché", "tomates", "oignon", "ail"],
+    "steps": [
+      "Faire revenir oignon et ail, ajouter le bœuf haché.",
+      "Ajouter les tomates, mijoter 15-20 min.",
+      "Servir sur les spaghetti."
+    ]
+  },
+  {
+    "name": "Wrap poulet-avocat",
+    "cat": "Plat",
+    "time": 10,
+    "desc": "Déjeuner rapide et transportable les jours de bureau.",
+    "ingredients": ["tortilla", "poulet", "avocat", "tomates"],
+    "steps": [
+      "Écraser l'avocat sur la tortilla.",
+      "Ajouter poulet cuit et tomate en dés.",
+      "Rouler serré et couper en deux."
+    ]
+  },
+  {
+    "name": "Salade de riz thon-maïs",
+    "cat": "Plat",
+    "time": 15,
+    "desc": "Se prépare à l'avance, idéale après la piscine.",
+    "ingredients": ["riz", "thon", "maïs", "tomates", "oeufs"],
+    "steps": [
+      "Cuire le riz et un œuf dur, laisser refroidir.",
+      "Mélanger riz, thon, maïs et tomates en dés.",
+      "Ajouter l'œuf en quartiers, vinaigrette au goût."
+    ]
+  },
+  {
+    "name": "Gratin pommes de terre-jambon",
+    "cat": "Plat",
+    "time": 45,
+    "desc": "Plat familial roboratif pour les grosses journées de vélo.",
+    "ingredients": ["pommes de terre", "jambon", "crème", "fromage râpé"],
+    "steps": [
+      "Précuire les pommes de terre en rondelles 10 min à l'eau.",
+      "Alterner couches de pommes de terre et jambon, couvrir de crème.",
+      "Gratiner au fromage 25 min au four (190 °C)."
+    ]
+  },
+  {
+    "name": "Risotto aux champignons",
+    "cat": "Plat",
+    "time": 35,
+    "desc": "Un peu de patience, beaucoup de glucides réconfortants.",
+    "ingredients": ["riz", "champignons", "oignon", "parmesan", "beurre"],
+    "steps": [
+      "Faire revenir l'oignon et les champignons dans le beurre.",
+      "Ajouter le riz, puis de l'eau chaude louche par louche 18 min.",
+      "Hors du feu, incorporer le parmesan."
+    ]
+  },
+  {
+    "name": "Poke bowl saumon-avocat",
+    "cat": "Plat",
+    "time": 20,
+    "desc": "Frais et complet, parfait l'été après un brick.",
+    "ingredients": ["riz", "saumon", "avocat", "concombre", "sauce soja"],
+    "steps": [
+      "Cuire le riz et le laisser tiédir.",
+      "Couper saumon, avocat et concombre en dés.",
+      "Dresser le bol et arroser de sauce soja."
+    ]
+  },
+  {
+    "name": "Soupe de légumes maison",
+    "cat": "Plat",
+    "time": 30,
+    "desc": "Hydratation + micronutriments les soirs de faible appétit.",
+    "ingredients": ["carottes", "pommes de terre", "poireau", "oignon"],
+    "steps": [
+      "Faire revenir l'oignon et le poireau émincés.",
+      "Ajouter carottes et pommes de terre, couvrir d'eau.",
+      "Cuire 20 min puis mixer."
+    ]
+  },
+  {
+    "name": "Smoothie récup' banane-cacahuète",
+    "cat": "Post-entraînement",
+    "time": 5,
+    "desc": "Glucides + protéines dans les 30 min après la séance.",
+    "ingredients": ["banane", "lait", "beurre de cacahuète", "miel"],
+    "steps": [
+      "Mixer banane, 300 ml de lait et 1 c. à s. de beurre de cacahuète.",
+      "Sucrer au miel selon la séance.",
+      "Boire bien frais."
+    ]
+  },
+  {
+    "name": "Toast avocat-œuf",
+    "cat": "Post-entraînement",
+    "time": 10,
+    "desc": "Le combo bons lipides + protéines après une séance courte.",
+    "ingredients": ["pain", "avocat", "oeufs", "citron"],
+    "steps": [
+      "Toaster le pain, écraser l'avocat avec un filet de citron.",
+      "Cuire l'œuf au plat ou poché.",
+      "Assembler et poivrer généreusement."
+    ]
+  },
+  {
+    "name": "Tortilla espagnole",
+    "cat": "Post-entraînement",
+    "time": 25,
+    "desc": "Œufs + pommes de terre : la récup' à l'espagnole, bonne froide aussi.",
+    "ingredients": ["oeufs", "pommes de terre", "oignon"],
+    "steps": [
+      "Faire fondre pommes de terre en fines tranches et oignon à la poêle 12 min.",
+      "Ajouter 4 œufs battus, cuire à feu doux.",
+      "Retourner à l'assiette et finir la cuisson 2 min."
+    ]
+  },
+  {
+    "name": "Overnight oats",
+    "cat": "Post-entraînement",
+    "time": 5,
+    "desc": "Se prépare la veille : prêt en sortant de la piscine du matin.",
+    "ingredients": ["flocons d'avoine", "lait", "banane", "beurre de cacahuète"],
+    "steps": [
+      "La veille : mélanger 60 g de flocons et 150 ml de lait dans un bocal.",
+      "Le matin : ajouter banane en rondelles et une cuillère de beurre de cacahuète."
+    ]
+  },
+  {
+    "name": "Energy balls avoine-choco",
+    "cat": "Collation",
+    "time": 15,
+    "desc": "À glisser dans la poche de maillot pour les sorties longues.",
+    "ingredients": ["flocons d'avoine", "beurre de cacahuète", "miel", "chocolat noir"],
+    "steps": [
+      "Mélanger 100 g de flocons, 3 c. à s. de beurre de cacahuète et 2 de miel.",
+      "Ajouter le chocolat concassé, former des boules.",
+      "Réserver 30 min au frais."
+    ]
+  },
+  {
+    "name": "Banana bread",
+    "cat": "Collation",
+    "time": 60,
+    "desc": "Recycle les bananes trop mûres en carburant de sortie vélo.",
+    "ingredients": ["bananes", "farine", "oeufs", "beurre", "miel"],
+    "steps": [
+      "Écraser 3 bananes, mélanger avec 2 œufs, 80 g de beurre fondu et 3 c. à s. de miel.",
+      "Incorporer 180 g de farine (+ levure si dispo).",
+      "Cuire 45 min à 175 °C."
+    ]
+  },
+  {
+    "name": "Barres avoine-miel maison",
+    "cat": "Collation",
+    "time": 30,
+    "desc": "Barres énergétiques maison, bien moins chères que celles du commerce.",
+    "ingredients": ["flocons d'avoine", "miel", "beurre de cacahuète", "raisins secs"],
+    "steps": [
+      "Chauffer doucement miel et beurre de cacahuète.",
+      "Mélanger aux flocons et raisins secs, tasser dans un plat.",
+      "Cuire 15 min à 180 °C puis découper en barres."
+    ]
+  },
+  {
+    "name": "Pasta party tomate-parmesan",
+    "cat": "Veille de course",
+    "time": 20,
+    "desc": "La veille d'un test ou d'une course : simple, digeste, plein de glucides.",
+    "ingredients": ["pâtes", "tomates", "ail", "parmesan"],
+    "steps": [
+      "Cuire une grosse portion de pâtes.",
+      "Faire une sauce rapide tomates + ail (peu de gras).",
+      "Servir avec le parmesan, dîner tôt."
+    ]
+  },
+  {
+    "name": "Riz-poulet-carottes digeste",
+    "cat": "Veille de course",
+    "time": 25,
+    "desc": "Assiette test-friendly : zéro fibre agressive, zéro surprise le jour J.",
+    "ingredients": ["riz", "poulet", "carottes"],
+    "steps": [
+      "Cuire le riz bien tendre.",
+      "Poêler le poulet sans matière grasse brûlée.",
+      "Ajouter les carottes cuites vapeur, saler légèrement."
+    ]
+  }
+]
