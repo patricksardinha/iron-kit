@@ -37,6 +37,8 @@ Chaque séance a une **pastille** à gauche :
   - **! jaune** : séance écourtée (fait, mais moins que prévu) ;
   - **✕ rouge** : réduite à 0 (pas faite du tout).
 - Un jour est « Enregistré » quand toutes ses séances sont renseignées.
+- La carte en tête de semaine affiche les **jours validés** et les **heures réellement
+  effectuées** face aux heures prévues — le surplus s'affiche en vert si tu en fais plus.
 
 ### Déplacer une séance (imprévu, météo…)
 Attrape une séance par sa **poignée** ⠿ et dépose-la sur un autre jour. C'est ta **réalité** qui
@@ -73,7 +75,9 @@ passe en vert « Test validé ». Les tests validés comptent dans Progrès et d
 
 ## Onglet Plan — la théorie
 
-Touche une semaine pour l'ouvrir en édition. Tout est enregistré automatiquement.
+Touche une semaine pour l'ouvrir en édition. Tout est enregistré automatiquement. Chaque ligne
+de semaine montre les heures faites / prévues (avec le surplus éventuel en vert) et une barre de
+progression des jours validés — calculée sur ton agencement réel, séances déplacées comprises.
 
 - **Semaine** : date de début (toujours un lundi), phase (Fondation → Pic & Affûtage), type
   (Charge, Récup, PIC…), objectif libre.
@@ -96,27 +100,30 @@ Touche une semaine pour l'ouvrir en édition. Tout est enregistré automatiqueme
 
 Des récompenses par paliers — bronze, argent, or, spéciale — regroupées par thème : premiers pas,
 régularité (séries), assiduité, volume horaire, chaque discipline, semaines parfaites, tests…
-Certains badges sont **secrets** (❓) : à toi de les découvrir. Quand un badge se débloque, une
-notification animée apparaît en haut de l'écran.
+Chaque badge a son icône, colorée à la teinte de son palier une fois débloqué. Certains badges
+sont **secrets** (« ? ») : à toi de les découvrir. Quand un badge se débloque, une notification
+animée apparaît en haut de l'écran.
 
 ---
 
 ## Onglet Frigo — quoi cuisiner avec ce que tu as
 
-1. **Saisis tes ingrédients** (tomate, riz, poulet…) — l'autocomplétion connaît tous les
-   ingrédients des recettes, et la rangée « Souvent utile » propose les plus fréquents.
-   Pas la peine d'ajouter sel, poivre, huile, sucre, vinaigre : ils sont considérés toujours
-   disponibles.
-2. L'app classe les recettes :
+1. **Coche tes aliments** dans le catalogue, organisé par catégories (Fruits, Légumes,
+   Féculents, Protéines…) avec une recherche. Tous les aliments proposés ont **au moins une
+   recette associée**. Pas la peine de cocher sel, poivre, huile, sucre, vinaigre : ils sont
+   considérés toujours disponibles.
+2. **« Souvent utile »** est ta liste de favoris : l'**étoile** sur un aliment du catalogue l'y
+   ajoute, le **×** sur un favori l'en retire. Un appui sur un favori le met directement dans
+   ton frigo.
+3. L'app classe les ~125 recettes (sportives : avant/après séance, veille de course…) :
    - **Réalisables maintenant** — tout est dans ton frigo ;
    - **Presque** — il manque 1 ou 2 ingrédients, listés en orange ;
+   - **Meilleures pistes** — si rien n'est réalisable, les recettes les moins incomplètes ;
    - **Voir les autres recettes** — le reste, replié.
-3. **Ouvre une recette** pour voir les ingrédients (verts = tu les as, orange = manquants), le
+4. **Ouvre une recette** pour voir les ingrédients (verts = tu les as, orange = manquants), le
    temps de préparation et les étapes.
 
-Les recettes sont orientées sportif d'endurance : petit-déj d'avant sortie, récup', collations
-maison, pasta party de veille de course… Ton frigo est mémorisé d'une visite à l'autre et partagé
-entre tous tes plans.
+Ton frigo et tes favoris sont mémorisés d'une visite à l'autre et partagés entre tous tes plans.
 
 ---
 
@@ -129,9 +136,11 @@ entre tous tes plans.
 - **Profil** : sexe, poids, taille, âge.
 - **Thème** : 7 ambiances (Sombre, Clair, Océan, Coucher, Forêt, Raisin, Ardoise) et 8 couleurs
   d'accent — l'app entière suit ton choix.
-- **Sauvegarde** : **Exporter** télécharge un fichier JSON avec toutes tes validations, notes,
-  agencements et tests validés. **Importer** restaure ce fichier — c'est le moyen de changer de
-  téléphone sans rien perdre.
+- **Sauvegarde** : **Exporter** télécharge un fichier JSON **complet** — tous tes plans (avec
+  leurs validations, notes, agencements, tests), tes réglages et thème, ton frigo et tes favoris.
+  **Importer** ce fichier restaure tout et recharge l'app — c'est le moyen de réinstaller ou de
+  changer de téléphone sans rien perdre. (Les anciens fichiers d'export restent importables :
+  ils ne restaurent que l'état du plan actif.)
 
 ---
 
@@ -141,8 +150,6 @@ entre tous tes plans.
   appareil. Personne d'autre n'y a accès — pas même un serveur.
 - La contrepartie : si tu désinstalles l'app ou effaces les données du navigateur, **tout est
   perdu**. Prends l'habitude d'**exporter une sauvegarde** régulièrement (Réglages → Sauvegarde),
-  par exemple à la fin de chaque phase.
-- La sauvegarde couvre l'état du **plan actif** ; les plans importés eux-mêmes se réimportent
-  depuis leur fichier JSON d'origine.
+  par exemple à la fin de chaque phase — elle contient l'intégralité de tes données.
 
 Bonne préparation 💪

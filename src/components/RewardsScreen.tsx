@@ -1,5 +1,6 @@
 import type { Badge, State, Week } from '../types'
 import { computeBadges } from '../lib/badges'
+import { Icon } from './Icon'
 
 interface Props {
   weeks: Week[]
@@ -67,7 +68,9 @@ function BadgeCard({ badge }: { badge: Badge }) {
   if (secret) {
     return (
       <div className="badge-card tier-special locked secret" title="Badge secret — à découvrir">
-        <span className="badge-emoji">❓</span>
+        <span className="badge-emoji">
+          <Icon name="help" size={28} />
+        </span>
         <span className="badge-title">Badge secret</span>
         <span className="badge-desc">À débloquer…</span>
       </div>
@@ -79,7 +82,9 @@ function BadgeCard({ badge }: { badge: Badge }) {
       className={`badge-card tier-${badge.tier}${badge.earned ? ' earned' : ' locked'}`}
       title={`${badge.title} - ${badge.desc}`}
     >
-      <span className="badge-emoji">{badge.emoji}</span>
+      <span className="badge-emoji">
+        <Icon name={badge.icon} size={28} />
+      </span>
       <span className="badge-title">{badge.title}</span>
       <span className="badge-desc">{badge.desc}</span>
       {badge.earned ? (

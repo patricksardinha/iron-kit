@@ -1,0 +1,42 @@
+[
+  {
+    "cat": "Fruits",
+    "items": ["banane", "pomme", "poire", "orange", "citron", "kiwi", "mangue", "ananas", "pêche", "melon", "pastèque", "raisin", "figues", "dattes", "abricots secs", "raisins secs", "fraises", "framboises", "myrtilles", "fruits rouges"]
+  },
+  {
+    "cat": "Légumes",
+    "items": ["tomates", "oignon", "ail", "carottes", "courgette", "poivron", "brocoli", "épinards", "champignons", "concombre", "salade", "avocat", "poireau", "haricots verts", "petits pois", "maïs", "chou-fleur", "kale", "betterave", "aubergine", "céleri", "fenouil", "asperges", "potiron", "radis", "navet", "patate douce", "pommes de terre"]
+  },
+  {
+    "cat": "Féculents & céréales",
+    "items": ["riz", "pâtes", "quinoa", "semoule", "boulgour", "polenta", "gnocchis", "nouilles de riz", "flocons d'avoine", "müesli", "pain", "tortilla", "farine", "galettes de riz"]
+  },
+  {
+    "cat": "Légumineuses",
+    "items": ["lentilles corail", "lentilles vertes", "pois chiches", "haricots rouges", "haricots blancs"]
+  },
+  {
+    "cat": "Protéines",
+    "items": ["oeufs", "poulet", "dinde", "bœuf haché", "steak", "jambon", "thon", "saumon", "cabillaud", "crevettes", "sardines", "maquereau", "tofu"]
+  },
+  {
+    "cat": "Produits laitiers",
+    "items": ["lait", "yaourt grec", "skyr", "fromage blanc", "feta", "mozzarella", "parmesan", "fromage râpé", "emmental", "chèvre", "crème", "beurre", "lait de coco", "lait d'amande"]
+  },
+  {
+    "cat": "Épicerie sucrée",
+    "items": ["miel", "chocolat noir", "cacao", "sirop d'érable", "sucre vanillé", "cannelle", "noix de coco râpée", "levure chimique"]
+  },
+  {
+    "cat": "Fruits secs & graines",
+    "items": ["beurre de cacahuète", "amandes", "noix", "noix de cajou", "noisettes", "pignons", "graines de chia", "graines de courge", "sésame"]
+  },
+  {
+    "cat": "Herbes & épices",
+    "items": ["basilic", "persil", "coriandre", "menthe", "thym", "romarin", "curry", "paprika", "cumin", "curcuma", "gingembre"]
+  },
+  {
+    "cat": "Condiments",
+    "items": ["sauce soja", "moutarde", "olives", "bouillon de légumes"]
+  }
+]

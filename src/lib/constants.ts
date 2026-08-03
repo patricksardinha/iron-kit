@@ -1,7 +1,7 @@
 // Constantes & jalons (§7)
 
+// Début par défaut du plan intégré (utilisé par la migration des plans legacy).
 export const START = new Date(2026, 6, 6) // lundi 6 juil. 2026 (mois 0-indexé)
-export const RACE = new Date(2027, 8, 12) // 12 sept. 2027
 export const TOTAL_WEEKS = 62
 export const DAY_MS = 24 * 60 * 60 * 1000
 
@@ -23,7 +23,7 @@ export const JALONS: Jalon[] = [
   { wk: 42, t: 'Test montagne vélo', d: '2 cols sur une sortie longue · 2000+ m D+.' },
   { wk: 47, t: 'Course test (Half)', d: 'Finir un half vallonné. Tester nutrition/transitions.' },
   { wk: 55, t: 'Pic de charge', d: 'Vélo 5-6 h montagne (2500-3000 D+) · brick long · 3,8 km eau libre.' },
-  { wk: 62, t: 'LÉ-MAN Evian', d: 'Le jour J. ~14-16 h visées.' },
+  { wk: 62, t: 'Course objectif', d: 'Le jour J. Tout le travail paie ici.' },
 ]
 
 // Phases connues (ordre chronologique) et types autorisés par phase (§ menus).

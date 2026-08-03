@@ -54,7 +54,8 @@ Trois idées structurent l'app :
 public/
   plan.json            # les 62 semaines du plan intégré (source de vérité)
   sessions.json        # catalogue des séances détaillées (échauffement, blocs, consignes)
-  recipes.json         # recettes de l'onglet Frigo
+  recipes.json         # recettes de l'onglet Frigo (~125 recettes sportives)
+  ingredients.json     # catégories d'aliments du Frigo (le catalogue = union des recettes)
   plan-template.json   # modèle téléchargeable pour créer son propre plan
   icons/               # icônes PWA générées (voir scripts/gen-icons.mjs)
 src/

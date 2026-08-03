@@ -17,6 +17,7 @@ export default defineConfig({
         'icons/apple-touch-icon.png',
         'plan.json',
         'recipes.json',
+        'ingredients.json',
         'sessions.json',
         'plan-template.json',
       ],

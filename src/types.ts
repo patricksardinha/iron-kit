@@ -1,4 +1,5 @@
 // Données du plan (source de vérité : plan.json, migré au chargement)
+import type { IconName } from './components/Icon'
 
 // Discipline d'une séance (voir lib/logic:disciplineOf).
 export type SessionDisc = 'swim' | 'bike' | 'run' | 'strength' | 'race' | 'other'
@@ -36,6 +37,13 @@ export interface SessionInfo {
 }
 export type SessionLibrary = Record<string, SessionInfo>
 
+// Catalogue d'ingrédients de l'onglet Frigo (source : ingredients.json).
+// Seuls les ingrédients utilisés par au moins une recette sont proposés à la sélection.
+export interface IngredientCategory {
+  cat: string
+  items: string[]
+}
+
 // Recette de l'onglet Frigo (source : recipes.json)
 export interface Recipe {
   name: string
@@ -68,7 +76,7 @@ export interface Badge {
   group: string // catégorie (pour l'affichage groupé)
   title: string
   desc: string
-  emoji: string
+  icon: IconName // icône personnalisée (jeu de lignes de Icon.tsx)
   tier: BadgeTier
   earned: boolean
   current: number

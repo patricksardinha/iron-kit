@@ -91,3 +91,68 @@ export function parseImported(text: string): State {
   const s = coerce(parsed)
   return s
 }
+
+/* ---------- sauvegarde COMPLÈTE (tous les plans, réglages, frigo, badges vus) ---------- */
+
+// Tout ce qui appartient à IronKit dans le localStorage : clés `ik-*` (plans, états,
+// options, frigo, badges vus) + réglages. Les anciennes clés legacy sont migrées vers
+// `ik-*` au premier lancement, inutile de les couvrir.
+const BACKUP_PREFIX = 'ik-'
+const BACKUP_EXTRA_KEYS = ['ironkit-settings-v1']
+
+export interface FullBackup {
+  format: 'ironkit-backup'
+  version: 1
+  exportedAt: string
+  data: Record<string, string> // clé localStorage → valeur brute (JSON sérialisé)
+}
+
+function ownedKeys(): string[] {
+  const keys: string[] = []
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i)
+    if (k && (k.startsWith(BACKUP_PREFIX) || BACKUP_EXTRA_KEYS.includes(k))) keys.push(k)
+  }
+  return keys
+}
+
+/** Instantané complet de toutes les données IronKit de l'appareil. */
+export function fullBackup(): FullBackup {
+  const data: Record<string, string> = {}
+  try {
+    for (const k of ownedKeys()) {
+      const v = localStorage.getItem(k)
+      if (v !== null) data[k] = v
+    }
+  } catch {
+    /* ignore */
+  }
+  return { format: 'ironkit-backup', version: 1, exportedAt: new Date().toISOString(), data }
+}
+
+export function isFullBackup(parsed: unknown): parsed is FullBackup {
+  if (!parsed || typeof parsed !== 'object') return false
+  const o = parsed as Record<string, unknown>
+  return o['format'] === 'ironkit-backup' && !!o['data'] && typeof o['data'] === 'object'
+}
+
+/** Restaure une sauvegarde complète : purge les clés IronKit puis réécrit tout.
+ * L'appelant doit recharger l'app ensuite (les hooks lisent le storage au montage). */
+export function restoreFullBackup(b: FullBackup): void {
+  for (const k of ownedKeys()) {
+    try {
+      localStorage.removeItem(k)
+    } catch {
+      /* ignore */
+    }
+  }
+  for (const [k, v] of Object.entries(b.data)) {
+    if (typeof v !== 'string') continue
+    if (!k.startsWith(BACKUP_PREFIX) && !BACKUP_EXTRA_KEYS.includes(k)) continue
+    try {
+      localStorage.setItem(k, v)
+    } catch {
+      /* quota : on ignore */
+    }
+  }
+}

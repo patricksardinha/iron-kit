@@ -1,6 +1,6 @@
 import type { Week, State } from '../types'
-import { JALONS, RACE, phaseColor } from '../lib/constants'
-import { daysBetween, parseISO } from '../lib/logic'
+import { JALONS, phaseColor } from '../lib/constants'
+import { addDays, daysBetween, formatShort, parseISO } from '../lib/logic'
 import {
   overallProgress,
   weekProgress,
@@ -57,10 +57,10 @@ export function ProgressScreen({ weeks, state, currentWk, today, options }: Prop
     wp.total === 0 ? 'none' : wpPct >= 100 ? 'perfect' : wpPct >= 67 ? 'high' : wpPct >= 34 ? 'mid' : 'low'
   const message: Record<string, string> = {
     none: 'Aucune séance prévue cette semaine.',
-    low: 'On lance la machine. Chaque séance compte 💪',
+    low: 'On lance la machine. Chaque séance compte.',
     mid: 'Bien parti — continue sur ta lancée !',
-    high: 'Grosse semaine, presque parfaite 🔥',
-    perfect: 'Semaine PARFAITE. Chapeau 🎉',
+    high: 'Grosse semaine, presque parfaite.',
+    perfect: 'Semaine PARFAITE. Chapeau !',
   }
 
   const streakM = milestone(streak, [3, 7, 14, 21, 30, 45, 60, 90])
@@ -78,7 +78,10 @@ export function ProgressScreen({ weeks, state, currentWk, today, options }: Prop
   const jLabel =
     jDays === null ? '' : jDays <= 0 ? 'cette semaine' : jDays <= 6 ? `J−${jDays}` : `J−${jDays}`
 
-  const raceDay = Math.max(0, daysBetween(today, RACE))
+  // Compte à rebours générique : jusqu'au dernier jour du plan actif.
+  const lastWeek = weeks[weeks.length - 1]
+  const goalDate = lastWeek ? addDays(parseISO(lastWeek.start), 6) : today
+  const goalDays = Math.max(0, daysBetween(today, goalDate))
 
   return (
     <div className="screen">
@@ -105,7 +108,14 @@ export function ProgressScreen({ weeks, state, currentWk, today, options }: Prop
 
       <div className="stat-grid">
         <div className={`stat${streak >= 7 ? ' hot' : ''}`}>
-          <div className="k">Série en cours {streak >= 3 && <span className="fire">🔥</span>}</div>
+          <div className="k">
+            Série en cours{' '}
+            {streak >= 3 && (
+              <span className="fire">
+                <Icon name="flame" size={14} />
+              </span>
+            )}
+          </div>
           <div className="v">
             {streak}
             <small> {streak > 1 ? 'jours' : 'jour'}</small>
@@ -215,8 +225,10 @@ export function ProgressScreen({ weeks, state, currentWk, today, options }: Prop
       ))}
 
       <div className="countdown">
-        <div className="big">J−{raceDay}</div>
-        <div className="lbl">jusqu'à LÉ-MAN Evian · 12 sept. 2027</div>
+        <div className="big">J−{goalDays}</div>
+        <div className="lbl">
+          jusqu'à l'objectif · {formatShort(goalDate)} {goalDate.getFullYear()}
+        </div>
       </div>
     </div>
   )

@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import type { Week, State, SessionLibrary } from '../types'
 import type { PlanApi } from '../hooks/usePlan'
 import { phaseColor, phaseParts } from '../lib/constants'
-import { weekDatesLabel, weekVolume } from '../lib/logic'
-import { weekProgress } from '../lib/stats'
+import { applyLayout, formatDuration, weekDatesLabel, weekVolume } from '../lib/logic'
+import { weekDoneMinutes, weekProgress } from '../lib/stats'
 import { Icon } from './Icon'
 import { WeekEditor } from './WeekEditor'
 import { ConfirmDialog } from './ConfirmDialog'
@@ -39,6 +39,13 @@ export function PlanScreen({ plan, state, currentWk, library }: Props) {
     null,
   )
 
+  // Les validations sont enregistrées sur l'agencement RÉEL (séances déplacées dans
+  // Semaine) : la progression doit se calculer dessus, pas sur les positions du plan.
+  const effByWk = useMemo(() => {
+    const eff = applyLayout(weeks, state.layout)
+    return new Map(eff.map((w) => [w.wk, w]))
+  }, [weeks, state.layout])
+
   // Regroupement par phase (conserve l'ordre chronologique).
   const groups: { phase: string; weeks: Week[] }[] = []
   for (const w of weeks) {
@@ -68,8 +75,12 @@ export function PlanScreen({ plan, state, currentWk, library }: Props) {
             </div>
             {g.weeks.map((w) => {
               const open = expanded === w.wk
-              const p = weekProgress(w, state.sessions)
-              const pct = p.total ? (p.validated / p.total) * 100 : 0
+              const eff = effByWk.get(w.wk) ?? w
+              const p = weekProgress(eff, state.sessions)
+              const pct = p.total ? Math.min(100, (p.validated / p.total) * 100) : 0
+              const doneMin = weekDoneMinutes(eff, state.sessions)
+              const plannedMin = Math.round(weekVolume(w) * 60)
+              const over = plannedMin > 0 && doneMin > plannedMin
               return (
                 <div className={`edit-week${open ? ' open' : ''}`} key={w.wk}>
                   <button
@@ -82,10 +93,13 @@ export function PlanScreen({ plan, state, currentWk, library }: Props) {
                     <span className="info">
                       <span className="dates">{weekDatesLabel(w.start)}</span>
                       <span className="sub">
-                        {w.typ} · {weekVolume(w)} h
+                        {w.typ} · {doneMin > 0 ? formatDuration(doneMin) : '0h'}
+                        {' / '}
+                        {formatDuration(plannedMin)}
+                        {over && <b className="sub-over"> +{formatDuration(doneMin - plannedMin)}</b>}
                       </span>
                       <span className="mini">
-                        <i style={{ width: `${pct}%` }} />
+                        <i className={pct >= 100 ? 'full' : ''} style={{ width: `${pct}%` }} />
                       </span>
                     </span>
                     <span className="cnt" aria-hidden="true">

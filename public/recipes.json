@@ -4,7 +4,12 @@
     "cat": "Petit-déj",
     "time": 10,
     "desc": "Le classique d'avant sortie longue : glucides lents, digestion facile.",
-    "ingredients": ["flocons d'avoine", "lait", "banane", "miel"],
+    "ingredients": [
+      "flocons d'avoine",
+      "lait",
+      "banane",
+      "miel"
+    ],
     "steps": [
       "Chauffer 60 g de flocons avec 250 ml de lait 3-4 min en remuant.",
       "Couper la banane en rondelles, ajouter sur le porridge.",
@@ -16,7 +21,12 @@
     "cat": "Petit-déj",
     "time": 15,
     "desc": "Pancakes sans farine, riches en glucides et protéines.",
-    "ingredients": ["flocons d'avoine", "banane", "oeufs", "lait"],
+    "ingredients": [
+      "flocons d'avoine",
+      "banane",
+      "oeufs",
+      "lait"
+    ],
     "steps": [
       "Mixer 80 g de flocons, 1 banane, 2 œufs et un fond de lait.",
       "Cuire des petits pancakes 2 min par face à feu moyen.",
@@ -28,7 +38,11 @@
     "cat": "Petit-déj",
     "time": 10,
     "desc": "Protéines rapides pour bien démarrer un jour de récup.",
-    "ingredients": ["oeufs", "pain", "beurre"],
+    "ingredients": [
+      "oeufs",
+      "pain",
+      "beurre"
+    ],
     "steps": [
       "Battre 3 œufs, cuire à feu doux avec une noix de beurre en remuant.",
       "Toaster le pain.",
@@ -40,7 +54,12 @@
     "cat": "Petit-déj",
     "time": 5,
     "desc": "Bol frais protéiné, parfait après une séance matinale.",
-    "ingredients": ["yaourt grec", "flocons d'avoine", "miel", "fruits rouges"],
+    "ingredients": [
+      "yaourt grec",
+      "flocons d'avoine",
+      "miel",
+      "fruits rouges"
+    ],
     "steps": [
       "Verser le yaourt dans un bol.",
       "Ajouter 2 cuillères de flocons et les fruits rouges.",
@@ -52,7 +71,12 @@
     "cat": "Plat",
     "time": 15,
     "desc": "Le dépanneur ultime du soir de semaine chargée.",
-    "ingredients": ["pâtes", "thon", "tomates", "ail"],
+    "ingredients": [
+      "pâtes",
+      "thon",
+      "tomates",
+      "ail"
+    ],
     "steps": [
       "Cuire les pâtes al dente.",
       "Faire revenir l'ail, ajouter les tomates coupées 5 min.",
@@ -64,7 +88,11 @@
     "cat": "Plat",
     "time": 25,
     "desc": "Le trio du sportif : simple, complet, efficace.",
-    "ingredients": ["riz", "poulet", "brocoli"],
+    "ingredients": [
+      "riz",
+      "poulet",
+      "brocoli"
+    ],
     "steps": [
       "Cuire le riz.",
       "Poêler le poulet en morceaux jusqu'à coloration.",
@@ -76,7 +104,13 @@
     "cat": "Plat",
     "time": 20,
     "desc": "Protéines végétales et fibres, top les jours légers.",
-    "ingredients": ["quinoa", "pois chiches", "concombre", "feta", "citron"],
+    "ingredients": [
+      "quinoa",
+      "pois chiches",
+      "concombre",
+      "feta",
+      "citron"
+    ],
     "steps": [
       "Cuire le quinoa et laisser tiédir.",
       "Ajouter pois chiches rincés, concombre en dés, feta émiettée.",
@@ -88,7 +122,11 @@
     "cat": "Plat",
     "time": 10,
     "desc": "Dîner express de soir de récup, pauvre en glucides.",
-    "ingredients": ["oeufs", "champignons", "fromage râpé"],
+    "ingredients": [
+      "oeufs",
+      "champignons",
+      "fromage râpé"
+    ],
     "steps": [
       "Poêler les champignons émincés.",
       "Verser 3 œufs battus, parsemer de fromage.",
@@ -100,7 +138,11 @@
     "cat": "Plat",
     "time": 30,
     "desc": "Oméga-3 + glucides de qualité : l'assiette des grosses semaines.",
-    "ingredients": ["saumon", "patate douce", "épinards"],
+    "ingredients": [
+      "saumon",
+      "patate douce",
+      "épinards"
+    ],
     "steps": [
       "Rôtir la patate douce en cubes 25 min au four (200 °C).",
       "Poêler le pavé de saumon 3-4 min par face.",
@@ -112,7 +154,14 @@
     "cat": "Plat",
     "time": 25,
     "desc": "Végétarien, réconfortant, riche en fer et en glucides.",
-    "ingredients": ["lentilles corail", "lait de coco", "oignon", "ail", "curry", "tomates"],
+    "ingredients": [
+      "lentilles corail",
+      "lait de coco",
+      "oignon",
+      "ail",
+      "curry",
+      "tomates"
+    ],
     "steps": [
       "Faire revenir oignon et ail, ajouter 1 c. à s. de curry.",
       "Ajouter lentilles, tomates et lait de coco, couvrir d'eau.",
@@ -124,7 +173,13 @@
     "cat": "Plat",
     "time": 30,
     "desc": "Une marmite = plusieurs repas. Se congèle très bien.",
-    "ingredients": ["haricots rouges", "tomates", "oignon", "maïs", "riz"],
+    "ingredients": [
+      "haricots rouges",
+      "tomates",
+      "oignon",
+      "maïs",
+      "riz"
+    ],
     "steps": [
       "Faire revenir l'oignon, ajouter tomates, haricots et maïs.",
       "Mijoter 20 min avec cumin/paprika si dispo.",
@@ -136,7 +191,12 @@
     "cat": "Plat",
     "time": 20,
     "desc": "Flexible : marche avec à peu près tous les légumes du frigo.",
-    "ingredients": ["poulet", "courgette", "poivron", "oignon"],
+    "ingredients": [
+      "poulet",
+      "courgette",
+      "poivron",
+      "oignon"
+    ],
     "steps": [
       "Saisir le poulet en lanières, réserver.",
       "Poêler oignon, poivron et courgette 8-10 min.",
@@ -148,7 +208,13 @@
     "cat": "Plat",
     "time": 30,
     "desc": "La valeur sûre pour recharger les stocks de glycogène.",
-    "ingredients": ["pâtes", "bœuf haché", "tomates", "oignon", "ail"],
+    "ingredients": [
+      "pâtes",
+      "bœuf haché",
+      "tomates",
+      "oignon",
+      "ail"
+    ],
     "steps": [
       "Faire revenir oignon et ail, ajouter le bœuf haché.",
       "Ajouter les tomates, mijoter 15-20 min.",
@@ -160,7 +226,12 @@
     "cat": "Plat",
     "time": 10,
     "desc": "Déjeuner rapide et transportable les jours de bureau.",
-    "ingredients": ["tortilla", "poulet", "avocat", "tomates"],
+    "ingredients": [
+      "tortilla",
+      "poulet",
+      "avocat",
+      "tomates"
+    ],
     "steps": [
       "Écraser l'avocat sur la tortilla.",
       "Ajouter poulet cuit et tomate en dés.",
@@ -172,7 +243,13 @@
     "cat": "Plat",
     "time": 15,
     "desc": "Se prépare à l'avance, idéale après la piscine.",
-    "ingredients": ["riz", "thon", "maïs", "tomates", "oeufs"],
+    "ingredients": [
+      "riz",
+      "thon",
+      "maïs",
+      "tomates",
+      "oeufs"
+    ],
     "steps": [
       "Cuire le riz et un œuf dur, laisser refroidir.",
       "Mélanger riz, thon, maïs et tomates en dés.",
@@ -184,7 +261,12 @@
     "cat": "Plat",
     "time": 45,
     "desc": "Plat familial roboratif pour les grosses journées de vélo.",
-    "ingredients": ["pommes de terre", "jambon", "crème", "fromage râpé"],
+    "ingredients": [
+      "pommes de terre",
+      "jambon",
+      "crème",
+      "fromage râpé"
+    ],
     "steps": [
       "Précuire les pommes de terre en rondelles 10 min à l'eau.",
       "Alterner couches de pommes de terre et jambon, couvrir de crème.",
@@ -196,7 +278,13 @@
     "cat": "Plat",
     "time": 35,
     "desc": "Un peu de patience, beaucoup de glucides réconfortants.",
-    "ingredients": ["riz", "champignons", "oignon", "parmesan", "beurre"],
+    "ingredients": [
+      "riz",
+      "champignons",
+      "oignon",
+      "parmesan",
+      "beurre"
+    ],
     "steps": [
       "Faire revenir l'oignon et les champignons dans le beurre.",
       "Ajouter le riz, puis de l'eau chaude louche par louche 18 min.",
@@ -208,7 +296,13 @@
     "cat": "Plat",
     "time": 20,
     "desc": "Frais et complet, parfait l'été après un brick.",
-    "ingredients": ["riz", "saumon", "avocat", "concombre", "sauce soja"],
+    "ingredients": [
+      "riz",
+      "saumon",
+      "avocat",
+      "concombre",
+      "sauce soja"
+    ],
     "steps": [
       "Cuire le riz et le laisser tiédir.",
       "Couper saumon, avocat et concombre en dés.",
@@ -220,7 +314,12 @@
     "cat": "Plat",
     "time": 30,
     "desc": "Hydratation + micronutriments les soirs de faible appétit.",
-    "ingredients": ["carottes", "pommes de terre", "poireau", "oignon"],
+    "ingredients": [
+      "carottes",
+      "pommes de terre",
+      "poireau",
+      "oignon"
+    ],
     "steps": [
       "Faire revenir l'oignon et le poireau émincés.",
       "Ajouter carottes et pommes de terre, couvrir d'eau.",
@@ -232,7 +331,12 @@
     "cat": "Post-entraînement",
     "time": 5,
     "desc": "Glucides + protéines dans les 30 min après la séance.",
-    "ingredients": ["banane", "lait", "beurre de cacahuète", "miel"],
+    "ingredients": [
+      "banane",
+      "lait",
+      "beurre de cacahuète",
+      "miel"
+    ],
     "steps": [
       "Mixer banane, 300 ml de lait et 1 c. à s. de beurre de cacahuète.",
       "Sucrer au miel selon la séance.",
@@ -244,7 +348,12 @@
     "cat": "Post-entraînement",
     "time": 10,
     "desc": "Le combo bons lipides + protéines après une séance courte.",
-    "ingredients": ["pain", "avocat", "oeufs", "citron"],
+    "ingredients": [
+      "pain",
+      "avocat",
+      "oeufs",
+      "citron"
+    ],
     "steps": [
       "Toaster le pain, écraser l'avocat avec un filet de citron.",
       "Cuire l'œuf au plat ou poché.",
@@ -256,7 +365,11 @@
     "cat": "Post-entraînement",
     "time": 25,
     "desc": "Œufs + pommes de terre : la récup' à l'espagnole, bonne froide aussi.",
-    "ingredients": ["oeufs", "pommes de terre", "oignon"],
+    "ingredients": [
+      "oeufs",
+      "pommes de terre",
+      "oignon"
+    ],
     "steps": [
       "Faire fondre pommes de terre en fines tranches et oignon à la poêle 12 min.",
       "Ajouter 4 œufs battus, cuire à feu doux.",
@@ -268,7 +381,12 @@
     "cat": "Post-entraînement",
     "time": 5,
     "desc": "Se prépare la veille : prêt en sortant de la piscine du matin.",
-    "ingredients": ["flocons d'avoine", "lait", "banane", "beurre de cacahuète"],
+    "ingredients": [
+      "flocons d'avoine",
+      "lait",
+      "banane",
+      "beurre de cacahuète"
+    ],
     "steps": [
       "La veille : mélanger 60 g de flocons et 150 ml de lait dans un bocal.",
       "Le matin : ajouter banane en rondelles et une cuillère de beurre de cacahuète."
@@ -279,7 +397,12 @@
     "cat": "Collation",
     "time": 15,
     "desc": "À glisser dans la poche de maillot pour les sorties longues.",
-    "ingredients": ["flocons d'avoine", "beurre de cacahuète", "miel", "chocolat noir"],
+    "ingredients": [
+      "flocons d'avoine",
+      "beurre de cacahuète",
+      "miel",
+      "chocolat noir"
+    ],
     "steps": [
       "Mélanger 100 g de flocons, 3 c. à s. de beurre de cacahuète et 2 de miel.",
       "Ajouter le chocolat concassé, former des boules.",
@@ -291,7 +414,13 @@
     "cat": "Collation",
     "time": 60,
     "desc": "Recycle les bananes trop mûres en carburant de sortie vélo.",
-    "ingredients": ["bananes", "farine", "oeufs", "beurre", "miel"],
+    "ingredients": [
+      "bananes",
+      "farine",
+      "oeufs",
+      "beurre",
+      "miel"
+    ],
     "steps": [
       "Écraser 3 bananes, mélanger avec 2 œufs, 80 g de beurre fondu et 3 c. à s. de miel.",
       "Incorporer 180 g de farine (+ levure si dispo).",
@@ -303,7 +432,12 @@
     "cat": "Collation",
     "time": 30,
     "desc": "Barres énergétiques maison, bien moins chères que celles du commerce.",
-    "ingredients": ["flocons d'avoine", "miel", "beurre de cacahuète", "raisins secs"],
+    "ingredients": [
+      "flocons d'avoine",
+      "miel",
+      "beurre de cacahuète",
+      "raisins secs"
+    ],
     "steps": [
       "Chauffer doucement miel et beurre de cacahuète.",
       "Mélanger aux flocons et raisins secs, tasser dans un plat.",
@@ -315,7 +449,12 @@
     "cat": "Veille de course",
     "time": 20,
     "desc": "La veille d'un test ou d'une course : simple, digeste, plein de glucides.",
-    "ingredients": ["pâtes", "tomates", "ail", "parmesan"],
+    "ingredients": [
+      "pâtes",
+      "tomates",
+      "ail",
+      "parmesan"
+    ],
     "steps": [
       "Cuire une grosse portion de pâtes.",
       "Faire une sauce rapide tomates + ail (peu de gras).",
@@ -327,11 +466,1491 @@
     "cat": "Veille de course",
     "time": 25,
     "desc": "Assiette test-friendly : zéro fibre agressive, zéro surprise le jour J.",
-    "ingredients": ["riz", "poulet", "carottes"],
+    "ingredients": [
+      "riz",
+      "poulet",
+      "carottes"
+    ],
     "steps": [
       "Cuire le riz bien tendre.",
       "Poêler le poulet sans matière grasse brûlée.",
       "Ajouter les carottes cuites vapeur, saler légèrement."
+    ]
+  },
+  {
+    "name": "Porridge chocolat-amandes",
+    "cat": "Petit-déj",
+    "time": 10,
+    "ingredients": [
+      "flocons d'avoine",
+      "lait",
+      "cacao",
+      "amandes"
+    ],
+    "steps": [
+      "Cuire 60 g de flocons dans 250 ml de lait avec 1 c. à s. de cacao.",
+      "Parsemer d’amandes concassées."
+    ]
+  },
+  {
+    "name": "Bowl skyr-müesli aux myrtilles",
+    "cat": "Petit-déj",
+    "time": 5,
+    "ingredients": [
+      "skyr",
+      "müesli",
+      "myrtilles",
+      "miel"
+    ],
+    "steps": [
+      "Verser le skyr, ajouter müesli et myrtilles.",
+      "Arroser de miel."
+    ]
+  },
+  {
+    "name": "Tartine fromage blanc-figues",
+    "cat": "Petit-déj",
+    "time": 5,
+    "ingredients": [
+      "pain",
+      "fromage blanc",
+      "figues",
+      "miel"
+    ],
+    "steps": [
+      "Toaster le pain, tartiner de fromage blanc.",
+      "Ajouter les figues en quartiers et un filet de miel."
+    ]
+  },
+  {
+    "name": "Omelette tomate-basilic",
+    "cat": "Petit-déj",
+    "time": 10,
+    "ingredients": [
+      "oeufs",
+      "tomates",
+      "basilic"
+    ],
+    "steps": [
+      "Battre 3 œufs, verser dans la poêle chaude.",
+      "Ajouter tomates en dés et basilic, replier."
+    ]
+  },
+  {
+    "name": "Smoothie bowl mangue-chia",
+    "cat": "Petit-déj",
+    "time": 10,
+    "ingredients": [
+      "mangue",
+      "banane",
+      "lait d'amande",
+      "graines de chia"
+    ],
+    "steps": [
+      "Mixer mangue, banane et lait d’amande.",
+      "Verser en bol, parsemer de graines de chia."
+    ]
+  },
+  {
+    "name": "Pain perdu cannelle-érable",
+    "cat": "Petit-déj",
+    "time": 15,
+    "ingredients": [
+      "pain",
+      "oeufs",
+      "lait",
+      "cannelle",
+      "sirop d'érable"
+    ],
+    "steps": [
+      "Tremper le pain dans œufs battus + lait + cannelle.",
+      "Dorer à la poêle, napper de sirop d’érable."
+    ]
+  },
+  {
+    "name": "Porridge pomme-cannelle-noix",
+    "cat": "Petit-déj",
+    "time": 12,
+    "ingredients": [
+      "flocons d'avoine",
+      "lait",
+      "pomme",
+      "cannelle",
+      "noix"
+    ],
+    "steps": [
+      "Cuire les flocons dans le lait avec la pomme râpée.",
+      "Saupoudrer de cannelle et de noix."
+    ]
+  },
+  {
+    "name": "Œufs à la coque, mouillettes",
+    "cat": "Petit-déj",
+    "time": 8,
+    "ingredients": [
+      "oeufs",
+      "pain",
+      "beurre"
+    ],
+    "steps": [
+      "Cuire les œufs 3 min à l’eau bouillante.",
+      "Servir avec mouillettes beurrées."
+    ]
+  },
+  {
+    "name": "Crêpes maison",
+    "cat": "Petit-déj",
+    "time": 25,
+    "ingredients": [
+      "farine",
+      "oeufs",
+      "lait",
+      "sucre vanillé"
+    ],
+    "steps": [
+      "Mélanger 250 g de farine, 3 œufs, 500 ml de lait, le sucre vanillé.",
+      "Laisser reposer 15 min puis cuire à la poêle."
+    ]
+  },
+  {
+    "name": "Müesli pêche-noisettes",
+    "cat": "Petit-déj",
+    "time": 5,
+    "ingredients": [
+      "müesli",
+      "lait",
+      "pêche",
+      "noisettes"
+    ],
+    "steps": [
+      "Verser le lait sur le müesli.",
+      "Ajouter la pêche en morceaux et les noisettes."
+    ]
+  },
+  {
+    "name": "Gaufres à l'avoine",
+    "cat": "Petit-déj",
+    "time": 20,
+    "ingredients": [
+      "flocons d'avoine",
+      "oeufs",
+      "lait",
+      "levure chimique",
+      "miel"
+    ],
+    "steps": [
+      "Mixer flocons, œufs, lait et levure en pâte épaisse.",
+      "Cuire au gaufrier, servir avec miel."
+    ]
+  },
+  {
+    "name": "Dahl de lentilles vertes",
+    "cat": "Plat",
+    "time": 35,
+    "ingredients": [
+      "lentilles vertes",
+      "oignon",
+      "ail",
+      "curcuma",
+      "gingembre",
+      "riz"
+    ],
+    "steps": [
+      "Revenir oignon, ail, gingembre et curcuma.",
+      "Ajouter les lentilles, couvrir d’eau, mijoter 25 min.",
+      "Servir sur le riz."
+    ]
+  },
+  {
+    "name": "Couscous express au poulet",
+    "cat": "Plat",
+    "time": 25,
+    "ingredients": [
+      "semoule",
+      "poulet",
+      "carottes",
+      "pois chiches",
+      "cumin"
+    ],
+    "steps": [
+      "Cuire le poulet et les carottes avec le cumin.",
+      "Ajouter pois chiches, servir sur semoule gonflée."
+    ]
+  },
+  {
+    "name": "Taboulé menthe-citron",
+    "cat": "Plat",
+    "time": 15,
+    "ingredients": [
+      "semoule",
+      "tomates",
+      "concombre",
+      "menthe",
+      "citron"
+    ],
+    "steps": [
+      "Gonfler la semoule à l’eau chaude.",
+      "Ajouter tomates, concombre, menthe, jus de citron et huile d’olive."
+    ]
+  },
+  {
+    "name": "Boulgour aux légumes rôtis",
+    "cat": "Plat",
+    "time": 35,
+    "ingredients": [
+      "boulgour",
+      "aubergine",
+      "poivron",
+      "courgette",
+      "feta"
+    ],
+    "steps": [
+      "Rôtir les légumes 25 min au four à 200 °C.",
+      "Mélanger au boulgour cuit, émietter la feta."
+    ]
+  },
+  {
+    "name": "Pâtes au pesto maison",
+    "cat": "Plat",
+    "time": 20,
+    "ingredients": [
+      "pâtes",
+      "basilic",
+      "parmesan",
+      "pignons",
+      "ail"
+    ],
+    "steps": [
+      "Mixer basilic, parmesan, pignons, ail et huile d’olive.",
+      "Mélanger aux pâtes chaudes."
+    ]
+  },
+  {
+    "name": "Pâtes crémeuses au saumon",
+    "cat": "Plat",
+    "time": 20,
+    "ingredients": [
+      "pâtes",
+      "saumon",
+      "crème",
+      "citron"
+    ],
+    "steps": [
+      "Poêler le saumon en dés.",
+      "Ajouter crème et zeste de citron, mélanger aux pâtes."
+    ]
+  },
+  {
+    "name": "One-pot pâtes tomates-olives",
+    "cat": "Plat",
+    "time": 20,
+    "ingredients": [
+      "pâtes",
+      "tomates",
+      "olives",
+      "ail",
+      "basilic"
+    ],
+    "steps": [
+      "Tout mettre dans une casserole, couvrir d’eau.",
+      "Cuire 12 min en remuant, finir au basilic."
+    ]
+  },
+  {
+    "name": "Riz sauté aux crevettes",
+    "cat": "Plat",
+    "time": 20,
+    "ingredients": [
+      "riz",
+      "crevettes",
+      "petits pois",
+      "oeufs",
+      "sauce soja"
+    ],
+    "steps": [
+      "Sauter les crevettes, réserver.",
+      "Faire sauter riz cuit, petits pois et œuf battu, déglacer à la sauce soja."
+    ]
+  },
+  {
+    "name": "Pad thaï simplifié",
+    "cat": "Plat",
+    "time": 25,
+    "ingredients": [
+      "nouilles de riz",
+      "crevettes",
+      "oeufs",
+      "beurre de cacahuète",
+      "citron"
+    ],
+    "steps": [
+      "Tremper les nouilles à l’eau chaude.",
+      "Sauter crevettes et œuf, ajouter nouilles + sauce cacahuète-citron."
+    ]
+  },
+  {
+    "name": "Curry de poulet coco",
+    "cat": "Plat",
+    "time": 30,
+    "ingredients": [
+      "poulet",
+      "lait de coco",
+      "curry",
+      "riz",
+      "oignon"
+    ],
+    "steps": [
+      "Dorer le poulet et l’oignon avec le curry.",
+      "Ajouter le lait de coco, mijoter 15 min, servir sur riz."
+    ]
+  },
+  {
+    "name": "Poulet rôti, haricots verts",
+    "cat": "Plat",
+    "time": 45,
+    "ingredients": [
+      "poulet",
+      "haricots verts",
+      "pommes de terre",
+      "thym"
+    ],
+    "steps": [
+      "Rôtir le poulet au thym avec les pommes de terre.",
+      "Cuire les haricots verts vapeur."
+    ]
+  },
+  {
+    "name": "Dinde à la moutarde",
+    "cat": "Plat",
+    "time": 25,
+    "ingredients": [
+      "dinde",
+      "moutarde",
+      "crème",
+      "riz"
+    ],
+    "steps": [
+      "Poêler les escalopes de dinde.",
+      "Déglacer avec crème + moutarde, servir sur riz."
+    ]
+  },
+  {
+    "name": "Bœuf sauté brocoli-gingembre",
+    "cat": "Plat",
+    "time": 20,
+    "ingredients": [
+      "steak",
+      "brocoli",
+      "sauce soja",
+      "gingembre",
+      "riz"
+    ],
+    "steps": [
+      "Saisir le bœuf émincé, réserver.",
+      "Sauter le brocoli, remettre le bœuf avec sauce soja et gingembre."
+    ]
+  },
+  {
+    "name": "Steak, patates douces rôties",
+    "cat": "Plat",
+    "time": 35,
+    "ingredients": [
+      "steak",
+      "patate douce",
+      "salade"
+    ],
+    "steps": [
+      "Rôtir la patate douce en frites 25 min à 210 °C.",
+      "Griller le steak, servir avec la salade."
+    ]
+  },
+  {
+    "name": "Burger maison",
+    "cat": "Plat",
+    "time": 25,
+    "ingredients": [
+      "pain",
+      "steak",
+      "tomates",
+      "salade",
+      "fromage râpé"
+    ],
+    "steps": [
+      "Griller le steak haché, fondre le fromage dessus.",
+      "Monter le burger avec tomate et salade."
+    ]
+  },
+  {
+    "name": "Hachis parmentier",
+    "cat": "Plat",
+    "time": 45,
+    "ingredients": [
+      "bœuf haché",
+      "pommes de terre",
+      "lait",
+      "beurre"
+    ],
+    "steps": [
+      "Préparer une purée maison.",
+      "Étaler la viande revenue, couvrir de purée, gratiner 20 min."
+    ]
+  },
+  {
+    "name": "Chou-fleur rôti, pois chiches",
+    "cat": "Plat",
+    "time": 35,
+    "ingredients": [
+      "chou-fleur",
+      "pois chiches",
+      "curcuma"
+    ],
+    "steps": [
+      "Mélanger chou-fleur et pois chiches, huile + curcuma.",
+      "Rôtir 30 min à 200 °C."
+    ]
+  },
+  {
+    "name": "Gratin de courgettes",
+    "cat": "Plat",
+    "time": 40,
+    "ingredients": [
+      "courgette",
+      "oeufs",
+      "crème",
+      "fromage râpé"
+    ],
+    "steps": [
+      "Précuire les courgettes en rondelles.",
+      "Couvrir d’œufs battus + crème + fromage, cuire 25 min à 190 °C."
+    ]
+  },
+  {
+    "name": "Ratatouille, œuf poché",
+    "cat": "Plat",
+    "time": 40,
+    "ingredients": [
+      "aubergine",
+      "courgette",
+      "poivron",
+      "tomates",
+      "oignon",
+      "oeufs"
+    ],
+    "steps": [
+      "Mijoter tous les légumes 30 min.",
+      "Servir avec un œuf poché par personne."
+    ]
+  },
+  {
+    "name": "Frittata épinards-chèvre",
+    "cat": "Plat",
+    "time": 25,
+    "ingredients": [
+      "oeufs",
+      "épinards",
+      "chèvre"
+    ],
+    "steps": [
+      "Tomber les épinards à la poêle.",
+      "Verser 6 œufs battus, parsemer de chèvre, finir au four 10 min."
+    ]
+  },
+  {
+    "name": "Cabillaud vapeur au fenouil",
+    "cat": "Plat",
+    "time": 25,
+    "ingredients": [
+      "cabillaud",
+      "fenouil",
+      "citron",
+      "pommes de terre"
+    ],
+    "steps": [
+      "Cuire fenouil émincé et pommes de terre vapeur.",
+      "Ajouter le cabillaud 8 min, arroser de citron."
+    ]
+  },
+  {
+    "name": "Papillote saumon-asperges",
+    "cat": "Plat",
+    "time": 25,
+    "ingredients": [
+      "saumon",
+      "asperges",
+      "citron"
+    ],
+    "steps": [
+      "Enfermer saumon, asperges et citron en papillote.",
+      "Cuire 18 min à 200 °C."
+    ]
+  },
+  {
+    "name": "Maquereau grillé, betterave",
+    "cat": "Plat",
+    "time": 25,
+    "ingredients": [
+      "maquereau",
+      "betterave",
+      "pommes de terre"
+    ],
+    "steps": [
+      "Griller les filets de maquereau.",
+      "Servir avec betterave en dés et pommes de terre vapeur."
+    ]
+  },
+  {
+    "name": "Sardines, haricots blancs",
+    "cat": "Plat",
+    "time": 15,
+    "ingredients": [
+      "sardines",
+      "haricots blancs",
+      "tomates",
+      "oignon"
+    ],
+    "steps": [
+      "Mélanger haricots rincés, tomates et oignon rouge.",
+      "Poser les sardines dessus, filet d’huile d’olive."
+    ]
+  },
+  {
+    "name": "Tofu sauté au sésame",
+    "cat": "Plat",
+    "time": 20,
+    "ingredients": [
+      "tofu",
+      "sésame",
+      "brocoli",
+      "sauce soja",
+      "riz"
+    ],
+    "steps": [
+      "Dorer le tofu en cubes.",
+      "Ajouter brocoli, sauce soja et sésame, servir sur riz."
+    ]
+  },
+  {
+    "name": "Buddha bowl au tofu",
+    "cat": "Plat",
+    "time": 25,
+    "ingredients": [
+      "tofu",
+      "quinoa",
+      "avocat",
+      "carottes",
+      "épinards"
+    ],
+    "steps": [
+      "Cuire le quinoa, dorer le tofu.",
+      "Dresser avec avocat, carottes râpées et épinards."
+    ]
+  },
+  {
+    "name": "Polenta crémeuse aux champignons",
+    "cat": "Plat",
+    "time": 25,
+    "ingredients": [
+      "polenta",
+      "champignons",
+      "parmesan"
+    ],
+    "steps": [
+      "Cuire la polenta dans l’eau ou le lait.",
+      "Poêler les champignons, servir avec parmesan."
+    ]
+  },
+  {
+    "name": "Gnocchis sauce tomate",
+    "cat": "Plat",
+    "time": 15,
+    "ingredients": [
+      "gnocchis",
+      "tomates",
+      "basilic",
+      "parmesan"
+    ],
+    "steps": [
+      "Faire une sauce tomate rapide.",
+      "Poêler les gnocchis, mélanger, finir basilic + parmesan."
+    ]
+  },
+  {
+    "name": "Velouté de potiron",
+    "cat": "Plat",
+    "time": 30,
+    "ingredients": [
+      "potiron",
+      "oignon",
+      "crème",
+      "bouillon de légumes"
+    ],
+    "steps": [
+      "Cuire potiron et oignon dans le bouillon 20 min.",
+      "Mixer avec un trait de crème."
+    ]
+  },
+  {
+    "name": "Velouté brocoli-chèvre",
+    "cat": "Plat",
+    "time": 25,
+    "ingredients": [
+      "brocoli",
+      "chèvre",
+      "bouillon de légumes"
+    ],
+    "steps": [
+      "Cuire le brocoli dans le bouillon 15 min.",
+      "Mixer avec le chèvre."
+    ]
+  },
+  {
+    "name": "Minestrone",
+    "cat": "Plat",
+    "time": 35,
+    "ingredients": [
+      "tomates",
+      "carottes",
+      "céleri",
+      "haricots blancs",
+      "pâtes"
+    ],
+    "steps": [
+      "Mijoter les légumes en dés 20 min.",
+      "Ajouter haricots et petites pâtes 10 min."
+    ]
+  },
+  {
+    "name": "Salade lentilles-feta",
+    "cat": "Plat",
+    "time": 30,
+    "ingredients": [
+      "lentilles vertes",
+      "feta",
+      "tomates",
+      "oignon"
+    ],
+    "steps": [
+      "Cuire les lentilles, laisser tiédir.",
+      "Ajouter tomates, oignon rouge et feta, vinaigrette moutardée."
+    ]
+  },
+  {
+    "name": "Salade quinoa-avocat-maïs",
+    "cat": "Plat",
+    "time": 20,
+    "ingredients": [
+      "quinoa",
+      "avocat",
+      "maïs",
+      "citron",
+      "coriandre"
+    ],
+    "steps": [
+      "Cuire le quinoa, laisser refroidir.",
+      "Ajouter avocat, maïs, coriandre et jus de citron."
+    ]
+  },
+  {
+    "name": "Salade César au poulet",
+    "cat": "Plat",
+    "time": 20,
+    "ingredients": [
+      "salade",
+      "poulet",
+      "parmesan",
+      "pain",
+      "oeufs"
+    ],
+    "steps": [
+      "Griller le poulet et des croûtons de pain.",
+      "Assembler avec salade, œuf mollet, copeaux de parmesan."
+    ]
+  },
+  {
+    "name": "Salade grecque",
+    "cat": "Plat",
+    "time": 10,
+    "ingredients": [
+      "tomates",
+      "concombre",
+      "feta",
+      "olives",
+      "oignon"
+    ],
+    "steps": [
+      "Couper tomates et concombre.",
+      "Ajouter oignon, olives et feta, huile d’olive."
+    ]
+  },
+  {
+    "name": "Salade caprese",
+    "cat": "Plat",
+    "time": 10,
+    "ingredients": [
+      "tomates",
+      "mozzarella",
+      "basilic"
+    ],
+    "steps": [
+      "Alterner tranches de tomate et mozzarella.",
+      "Basilic, huile d’olive, poivre."
+    ]
+  },
+  {
+    "name": "Wrap thon-crudités",
+    "cat": "Plat",
+    "time": 10,
+    "ingredients": [
+      "tortilla",
+      "thon",
+      "carottes",
+      "concombre",
+      "fromage blanc"
+    ],
+    "steps": [
+      "Tartiner la tortilla de fromage blanc.",
+      "Garnir de thon et crudités râpées, rouler."
+    ]
+  },
+  {
+    "name": "Fajitas de poulet",
+    "cat": "Plat",
+    "time": 25,
+    "ingredients": [
+      "tortilla",
+      "poulet",
+      "poivron",
+      "oignon",
+      "paprika"
+    ],
+    "steps": [
+      "Sauter poulet, poivron et oignon au paprika.",
+      "Servir dans les tortillas chaudes."
+    ]
+  },
+  {
+    "name": "Riz cantonais",
+    "cat": "Plat",
+    "time": 15,
+    "ingredients": [
+      "riz",
+      "jambon",
+      "petits pois",
+      "oeufs"
+    ],
+    "steps": [
+      "Sauter le riz cuit avec jambon et petits pois.",
+      "Pousser sur le côté, brouiller l’œuf, mélanger."
+    ]
+  },
+  {
+    "name": "Croque-monsieur",
+    "cat": "Plat",
+    "time": 15,
+    "ingredients": [
+      "pain",
+      "jambon",
+      "emmental",
+      "beurre"
+    ],
+    "steps": [
+      "Monter pain-jambon-emmental.",
+      "Dorer au four ou à la poêle beurrée."
+    ]
+  },
+  {
+    "name": "Chili con carne",
+    "cat": "Plat",
+    "time": 40,
+    "ingredients": [
+      "bœuf haché",
+      "haricots rouges",
+      "tomates",
+      "cumin",
+      "riz"
+    ],
+    "steps": [
+      "Revenir la viande avec le cumin.",
+      "Ajouter tomates et haricots, mijoter 25 min, servir sur riz."
+    ]
+  },
+  {
+    "name": "Poivrons farcis",
+    "cat": "Plat",
+    "time": 45,
+    "ingredients": [
+      "poivron",
+      "bœuf haché",
+      "riz",
+      "tomates"
+    ],
+    "steps": [
+      "Farcir les poivrons de viande + riz cuit + tomate.",
+      "Cuire 35 min à 190 °C."
+    ]
+  },
+  {
+    "name": "Curry pois chiches-épinards",
+    "cat": "Plat",
+    "time": 25,
+    "ingredients": [
+      "pois chiches",
+      "épinards",
+      "lait de coco",
+      "curry",
+      "riz"
+    ],
+    "steps": [
+      "Chauffer pois chiches et curry dans le lait de coco.",
+      "Ajouter les épinards 3 min, servir sur riz."
+    ]
+  },
+  {
+    "name": "Saumon teriyaki",
+    "cat": "Plat",
+    "time": 20,
+    "ingredients": [
+      "saumon",
+      "sauce soja",
+      "miel",
+      "riz",
+      "sésame"
+    ],
+    "steps": [
+      "Laquer le saumon sauce soja + miel.",
+      "Poêler 3 min par face, parsemer de sésame, servir sur riz."
+    ]
+  },
+  {
+    "name": "Poulet citron-romarin",
+    "cat": "Plat",
+    "time": 45,
+    "ingredients": [
+      "poulet",
+      "citron",
+      "romarin",
+      "pommes de terre"
+    ],
+    "steps": [
+      "Rôtir le poulet avec citron et romarin.",
+      "Ajouter les pommes de terre autour, 35 min à 200 °C."
+    ]
+  },
+  {
+    "name": "Blanquette légère de dinde",
+    "cat": "Plat",
+    "time": 40,
+    "ingredients": [
+      "dinde",
+      "carottes",
+      "champignons",
+      "crème",
+      "riz"
+    ],
+    "steps": [
+      "Mijoter dinde, carottes et champignons 25 min.",
+      "Lier à la crème, servir sur riz."
+    ]
+  },
+  {
+    "name": "Spaghetti aglio e olio",
+    "cat": "Plat",
+    "time": 15,
+    "ingredients": [
+      "pâtes",
+      "ail",
+      "persil"
+    ],
+    "steps": [
+      "Dorer l’ail émincé dans l’huile d’olive.",
+      "Mélanger aux spaghetti avec persil et eau de cuisson."
+    ]
+  },
+  {
+    "name": "Pâtes kale-parmesan",
+    "cat": "Plat",
+    "time": 20,
+    "ingredients": [
+      "kale",
+      "pâtes",
+      "parmesan",
+      "ail"
+    ],
+    "steps": [
+      "Tomber le kale avec l’ail.",
+      "Mélanger aux pâtes, lier au parmesan."
+    ]
+  },
+  {
+    "name": "Bowl d'automne",
+    "cat": "Plat",
+    "time": 35,
+    "ingredients": [
+      "patate douce",
+      "kale",
+      "quinoa",
+      "noix",
+      "chèvre",
+      "graines de courge"
+    ],
+    "steps": [
+      "Rôtir la patate douce.",
+      "Assembler quinoa, kale massé, noix, graines et chèvre."
+    ]
+  },
+  {
+    "name": "Aubergines rôties au yaourt",
+    "cat": "Plat",
+    "time": 35,
+    "ingredients": [
+      "aubergine",
+      "yaourt grec",
+      "menthe",
+      "ail"
+    ],
+    "steps": [
+      "Rôtir les aubergines 30 min.",
+      "Napper de yaourt à l’ail et menthe."
+    ]
+  },
+  {
+    "name": "Chakchouka",
+    "cat": "Plat",
+    "time": 25,
+    "ingredients": [
+      "oeufs",
+      "tomates",
+      "poivron",
+      "oignon",
+      "cumin"
+    ],
+    "steps": [
+      "Compoter tomates, poivron, oignon et cumin.",
+      "Creuser des puits, casser les œufs, couvrir 5 min."
+    ]
+  },
+  {
+    "name": "Salade croquante radis-concombre",
+    "cat": "Plat",
+    "time": 10,
+    "ingredients": [
+      "radis",
+      "concombre",
+      "yaourt grec",
+      "menthe"
+    ],
+    "steps": [
+      "Trancher radis et concombre.",
+      "Sauce yaourt-menthe, servir frais."
+    ]
+  },
+  {
+    "name": "Poulet aux navets glacés",
+    "cat": "Plat",
+    "time": 35,
+    "ingredients": [
+      "poulet",
+      "navet",
+      "carottes",
+      "miel"
+    ],
+    "steps": [
+      "Dorer le poulet.",
+      "Glacer navets et carottes au miel, mijoter 20 min ensemble."
+    ]
+  },
+  {
+    "name": "Salade betterave-chèvre-noix",
+    "cat": "Plat",
+    "time": 10,
+    "ingredients": [
+      "betterave",
+      "chèvre",
+      "noix",
+      "salade"
+    ],
+    "steps": [
+      "Couper la betterave cuite en dés.",
+      "Dresser sur salade avec chèvre et noix."
+    ]
+  },
+  {
+    "name": "Smoothie vert kiwi-épinards",
+    "cat": "Post-entraînement",
+    "time": 5,
+    "ingredients": [
+      "épinards",
+      "banane",
+      "kiwi",
+      "lait d'amande"
+    ],
+    "steps": [
+      "Mixer épinards, banane, kiwi et lait d’amande.",
+      "Boire frais."
+    ]
+  },
+  {
+    "name": "Milkshake choco-banane",
+    "cat": "Post-entraînement",
+    "time": 5,
+    "ingredients": [
+      "lait",
+      "banane",
+      "cacao",
+      "miel"
+    ],
+    "steps": [
+      "Mixer lait, banane, cacao et miel.",
+      "Idéal dans les 30 min après l’effort."
+    ]
+  },
+  {
+    "name": "Bowl fromage blanc-müesli",
+    "cat": "Post-entraînement",
+    "time": 5,
+    "ingredients": [
+      "fromage blanc",
+      "müesli",
+      "fruits rouges",
+      "miel"
+    ],
+    "steps": [
+      "Verser le fromage blanc, ajouter müesli et fruits rouges.",
+      "Arroser de miel."
+    ]
+  },
+  {
+    "name": "Smoothie fraise-menthe",
+    "cat": "Post-entraînement",
+    "time": 5,
+    "ingredients": [
+      "fraises",
+      "yaourt grec",
+      "menthe",
+      "miel"
+    ],
+    "steps": [
+      "Mixer fraises, yaourt et menthe.",
+      "Sucrer au miel selon l’effort."
+    ]
+  },
+  {
+    "name": "Riz au lait vanillé",
+    "cat": "Post-entraînement",
+    "time": 35,
+    "ingredients": [
+      "riz",
+      "lait",
+      "sucre vanillé",
+      "cannelle"
+    ],
+    "steps": [
+      "Cuire le riz rond dans le lait 30 min à feu doux.",
+      "Sucrer, saupoudrer de cannelle."
+    ]
+  },
+  {
+    "name": "Toast cacahuète-banane",
+    "cat": "Post-entraînement",
+    "time": 5,
+    "ingredients": [
+      "pain",
+      "beurre de cacahuète",
+      "banane"
+    ],
+    "steps": [
+      "Toaster le pain, tartiner de beurre de cacahuète.",
+      "Couvrir de rondelles de banane."
+    ]
+  },
+  {
+    "name": "Shake avoine-cacao",
+    "cat": "Post-entraînement",
+    "time": 5,
+    "ingredients": [
+      "flocons d'avoine",
+      "lait",
+      "cacao",
+      "beurre de cacahuète"
+    ],
+    "steps": [
+      "Tout mixer 30 secondes.",
+      "Glucides + protéines + lipides en un verre."
+    ]
+  },
+  {
+    "name": "Wrap récup' dinde-avocat",
+    "cat": "Post-entraînement",
+    "time": 10,
+    "ingredients": [
+      "tortilla",
+      "dinde",
+      "avocat",
+      "tomates"
+    ],
+    "steps": [
+      "Écraser l’avocat sur la tortilla.",
+      "Ajouter dinde et tomate, rouler."
+    ]
+  },
+  {
+    "name": "Skyr miel-noix-banane",
+    "cat": "Post-entraînement",
+    "time": 5,
+    "ingredients": [
+      "skyr",
+      "miel",
+      "noix",
+      "banane"
+    ],
+    "steps": [
+      "Verser le skyr, ajouter banane et noix.",
+      "Arroser de miel."
+    ]
+  },
+  {
+    "name": "Compote pomme-cannelle",
+    "cat": "Collation",
+    "time": 20,
+    "ingredients": [
+      "pomme",
+      "cannelle",
+      "miel"
+    ],
+    "steps": [
+      "Cuire les pommes en morceaux 15 min avec un fond d’eau.",
+      "Écraser, ajouter miel et cannelle."
+    ]
+  },
+  {
+    "name": "Muffins myrtilles-avoine",
+    "cat": "Collation",
+    "time": 35,
+    "ingredients": [
+      "flocons d'avoine",
+      "myrtilles",
+      "oeufs",
+      "miel",
+      "farine",
+      "levure chimique"
+    ],
+    "steps": [
+      "Mélanger secs et humides, incorporer les myrtilles.",
+      "Cuire 20 min à 180 °C."
+    ]
+  },
+  {
+    "name": "Cookies avoine-chocolat",
+    "cat": "Collation",
+    "time": 25,
+    "ingredients": [
+      "flocons d'avoine",
+      "chocolat noir",
+      "beurre",
+      "farine",
+      "oeufs"
+    ],
+    "steps": [
+      "Mélanger beurre fondu, œuf, flocons, farine et pépites.",
+      "Cuire 12 min à 180 °C."
+    ]
+  },
+  {
+    "name": "Dattes fourrées cacahuète",
+    "cat": "Collation",
+    "time": 10,
+    "ingredients": [
+      "dattes",
+      "beurre de cacahuète",
+      "chocolat noir"
+    ],
+    "steps": [
+      "Ouvrir les dattes, fourrer de beurre de cacahuète.",
+      "Napper d’un filet de chocolat fondu, mettre au frais."
+    ]
+  },
+  {
+    "name": "Mélange du randonneur",
+    "cat": "Collation",
+    "time": 2,
+    "ingredients": [
+      "amandes",
+      "noix de cajou",
+      "raisins secs",
+      "chocolat noir"
+    ],
+    "steps": [
+      "Tout mélanger dans un bocal.",
+      "Doser une poignée par sortie."
+    ]
+  },
+  {
+    "name": "Pommes au four aux noix",
+    "cat": "Collation",
+    "time": 35,
+    "ingredients": [
+      "pomme",
+      "miel",
+      "cannelle",
+      "noix"
+    ],
+    "steps": [
+      "Creuser les pommes, garnir de miel, cannelle et noix.",
+      "Cuire 30 min à 180 °C."
+    ]
+  },
+  {
+    "name": "Barres figues-amandes",
+    "cat": "Collation",
+    "time": 25,
+    "ingredients": [
+      "figues",
+      "amandes",
+      "flocons d'avoine",
+      "miel"
+    ],
+    "steps": [
+      "Mixer figues et amandes, mélanger aux flocons et miel.",
+      "Tasser, cuire 15 min à 180 °C, découper."
+    ]
+  },
+  {
+    "name": "Pudding de chia à la mangue",
+    "cat": "Collation",
+    "time": 10,
+    "ingredients": [
+      "graines de chia",
+      "lait de coco",
+      "mangue"
+    ],
+    "steps": [
+      "Mélanger 3 c. à s. de chia dans 250 ml de lait de coco, 4 h au frais.",
+      "Couvrir de dés de mangue."
+    ]
+  },
+  {
+    "name": "Galettes de riz choco-amandes",
+    "cat": "Collation",
+    "time": 10,
+    "ingredients": [
+      "galettes de riz",
+      "chocolat noir",
+      "amandes"
+    ],
+    "steps": [
+      "Napper les galettes de chocolat fondu.",
+      "Parsemer d’amandes, laisser figer."
+    ]
+  },
+  {
+    "name": "Houmous maison, bâtonnets",
+    "cat": "Collation",
+    "time": 10,
+    "ingredients": [
+      "pois chiches",
+      "sésame",
+      "citron",
+      "ail",
+      "carottes"
+    ],
+    "steps": [
+      "Mixer pois chiches, sésame, citron et ail avec de l’eau.",
+      "Tremper des bâtonnets de carotte."
+    ]
+  },
+  {
+    "name": "Guacamole express",
+    "cat": "Collation",
+    "time": 10,
+    "ingredients": [
+      "avocat",
+      "citron",
+      "tomates",
+      "coriandre",
+      "tortilla"
+    ],
+    "steps": [
+      "Écraser l’avocat au citron.",
+      "Ajouter tomate et coriandre, servir avec tortilla grillée."
+    ]
+  },
+  {
+    "name": "Yaourt glacé aux framboises",
+    "cat": "Collation",
+    "time": 10,
+    "ingredients": [
+      "yaourt grec",
+      "framboises",
+      "miel"
+    ],
+    "steps": [
+      "Mixer yaourt, framboises congelées et miel.",
+      "Servir immédiatement."
+    ]
+  },
+  {
+    "name": "Melon-jambon",
+    "cat": "Collation",
+    "time": 5,
+    "ingredients": [
+      "melon",
+      "jambon"
+    ],
+    "steps": [
+      "Couper le melon en quartiers.",
+      "Enrouler de fines tranches de jambon."
+    ]
+  },
+  {
+    "name": "Eau de pastèque à la menthe",
+    "cat": "Collation",
+    "time": 5,
+    "ingredients": [
+      "pastèque",
+      "menthe",
+      "citron"
+    ],
+    "steps": [
+      "Mixer la pastèque avec menthe et citron.",
+      "Hydratation parfaite après une sortie chaude."
+    ]
+  },
+  {
+    "name": "Salade d'oranges à la cannelle",
+    "cat": "Collation",
+    "time": 10,
+    "ingredients": [
+      "orange",
+      "cannelle",
+      "amandes"
+    ],
+    "steps": [
+      "Peler les oranges à vif en rondelles.",
+      "Saupoudrer de cannelle et d’amandes effilées."
+    ]
+  },
+  {
+    "name": "Ananas rôti au miel",
+    "cat": "Collation",
+    "time": 15,
+    "ingredients": [
+      "ananas",
+      "miel"
+    ],
+    "steps": [
+      "Poêler les tranches d’ananas.",
+      "Laquer au miel 2 min de chaque côté."
+    ]
+  },
+  {
+    "name": "En-cas raisin-emmental",
+    "cat": "Collation",
+    "time": 2,
+    "ingredients": [
+      "raisin",
+      "emmental"
+    ],
+    "steps": [
+      "Couper l’emmental en cubes.",
+      "Servir avec les grains de raisin."
+    ]
+  },
+  {
+    "name": "Poires au chocolat noir",
+    "cat": "Collation",
+    "time": 10,
+    "ingredients": [
+      "poire",
+      "chocolat noir"
+    ],
+    "steps": [
+      "Couper les poires en quartiers.",
+      "Tremper dans le chocolat fondu."
+    ]
+  },
+  {
+    "name": "Barres abricots-coco",
+    "cat": "Collation",
+    "time": 25,
+    "ingredients": [
+      "abricots secs",
+      "noix de coco râpée",
+      "flocons d'avoine",
+      "miel"
+    ],
+    "steps": [
+      "Mixer les abricots, mélanger au reste.",
+      "Tasser, 15 min à 180 °C, découper en barres."
+    ]
+  },
+  {
+    "name": "Riz citron-parmesan",
+    "cat": "Veille de course",
+    "time": 20,
+    "ingredients": [
+      "riz",
+      "citron",
+      "parmesan"
+    ],
+    "steps": [
+      "Cuire le riz bien tendre.",
+      "Lier avec parmesan et zeste de citron, dîner tôt."
+    ]
+  },
+  {
+    "name": "Pâtes beurre-parmesan",
+    "cat": "Veille de course",
+    "time": 15,
+    "ingredients": [
+      "pâtes",
+      "beurre",
+      "parmesan"
+    ],
+    "steps": [
+      "Cuire une grosse portion de pâtes.",
+      "Beurre + parmesan, simple et digeste."
+    ]
+  },
+  {
+    "name": "Semoule au bouillon, poulet",
+    "cat": "Veille de course",
+    "time": 20,
+    "ingredients": [
+      "semoule",
+      "poulet",
+      "bouillon de légumes",
+      "carottes"
+    ],
+    "steps": [
+      "Pocher le poulet et les carottes dans le bouillon.",
+      "Servir sur semoule gonflée au bouillon."
+    ]
+  },
+  {
+    "name": "Patate douce, fromage blanc",
+    "cat": "Veille de course",
+    "time": 45,
+    "ingredients": [
+      "patate douce",
+      "fromage blanc"
+    ],
+    "steps": [
+      "Cuire les patates douces entières au four 40 min.",
+      "Fendre et garnir de fromage blanc salé-poivré."
+    ]
+  },
+  {
+    "name": "Pommes de terre vapeur, cabillaud",
+    "cat": "Veille de course",
+    "time": 25,
+    "ingredients": [
+      "pommes de terre",
+      "cabillaud",
+      "citron"
+    ],
+    "steps": [
+      "Cuire pommes de terre et cabillaud à la vapeur.",
+      "Arroser de citron, saler légèrement."
     ]
   }
 ]

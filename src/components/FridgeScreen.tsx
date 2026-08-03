@@ -1,22 +1,28 @@
-// Onglet Frigo : je note ce que j'ai, l'app me dit ce que je peux cuisiner.
-// Les recettes complètes sont mises en avant ; celles où il manque 1-2 ingrédients
-// restent proposées avec un avertissement listant ce qui manque.
+// Onglet Frigo : je coche ce que j'ai, l'app me dit ce que je peux cuisiner.
+// Le catalogue d'aliments est DÉRIVÉ des recettes (union de leurs ingrédients) et
+// groupé par catégories (ingredients.json) : chaque aliment sélectionnable a donc,
+// par construction, au moins une recette associée. « Souvent utile » est une liste
+// de favoris gérée par l'utilisateur (étoile pour ajouter, × pour retirer).
 import { useEffect, useMemo, useRef, useState } from 'react'
-import type { Recipe } from '../types'
+import type { IngredientCategory, Recipe } from '../types'
 import { Icon } from './Icon'
 
 interface Props {
   recipes: Recipe[]
+  catalog: IngredientCategory[]
 }
 
-// Le frigo est global (indépendant du plan actif).
+// Le frigo et les favoris sont globaux (indépendants du plan actif).
 const FRIDGE_KEY = 'ik-fridge-v1'
+const FAVS_KEY = 'ik-fridge-favs-v1'
 
 // Placard de base : supposé toujours disponible, jamais compté comme manquant.
 const BASICS = ['sel', 'poivre', "huile d'olive", 'huile', 'eau', 'sucre', 'vinaigre']
 
-// Au-delà de ce nombre d'ingrédients manquants, la recette n'est proposée
-// que dans la liste repliée « autres recettes ».
+// Favoris proposés au premier lancement (modifiables ensuite).
+const DEFAULT_FAVS = ['oeufs', 'pâtes', 'riz', 'lait', 'banane', "flocons d'avoine", 'tomates', 'poulet']
+
+// Au-delà de ce nombre d'ingrédients manquants, la recette part dans la liste repliée.
 const NEAR_MISSING_MAX = 2
 
 /** Normalise un nom d'ingrédient pour la comparaison : minuscules, accents,
@@ -37,16 +43,16 @@ function norm(raw: string): string {
     .join(' ')
 }
 
-function loadFridge(): string[] {
+function loadList(key: string, fallback: string[]): string[] {
   try {
-    const raw = localStorage.getItem(FRIDGE_KEY)
-    if (!raw) return []
+    const raw = localStorage.getItem(key)
+    if (!raw) return fallback
     const parsed: unknown = JSON.parse(raw)
     if (Array.isArray(parsed)) return parsed.filter((x): x is string => typeof x === 'string')
   } catch {
     /* ignore */
   }
-  return []
+  return fallback
 }
 
 interface Scored {
@@ -54,9 +60,16 @@ interface Scored {
   missing: string[] // ingrédients manquants (libellés d'origine)
 }
 
-export function FridgeScreen({ recipes }: Props) {
-  const [items, setItems] = useState<string[]>(loadFridge)
-  const [input, setInput] = useState('')
+interface CatalogItem {
+  key: string // clé normalisée
+  label: string // libellé d'affichage
+}
+
+export function FridgeScreen({ recipes, catalog }: Props) {
+  const [items, setItems] = useState<string[]>(() => loadList(FRIDGE_KEY, []))
+  const [favs, setFavs] = useState<string[]>(() => loadList(FAVS_KEY, DEFAULT_FAVS))
+  const [search, setSearch] = useState('')
+  const [openCats, setOpenCats] = useState<Set<string>>(new Set())
   const [showAll, setShowAll] = useState(false)
 
   const first = useRef(true)
@@ -67,16 +80,52 @@ export function FridgeScreen({ recipes }: Props) {
     }
     try {
       localStorage.setItem(FRIDGE_KEY, JSON.stringify(items))
+      localStorage.setItem(FAVS_KEY, JSON.stringify(favs))
     } catch {
       /* quota / mode privé : on ignore */
     }
-  }, [items])
+  }, [items, favs])
+
+  // Tous les ingrédients connus des recettes : clé normalisée → libellé d'affichage.
+  const known = useMemo(() => {
+    const m = new Map<string, string>()
+    for (const r of recipes)
+      for (const i of r.ingredients) {
+        const k = norm(i)
+        if (!m.has(k)) m.set(k, i)
+      }
+    return m
+  }, [recipes])
+
+  // Catalogue groupé : catégories limitées aux ingrédients couverts par ≥1 recette,
+  // + « Autres » pour les ingrédients de recettes non catégorisés.
+  const groups = useMemo(() => {
+    const used = new Set<string>()
+    const out: { cat: string; items: CatalogItem[] }[] = []
+    for (const c of catalog) {
+      const list: CatalogItem[] = []
+      for (const name of c.items) {
+        const k = norm(name)
+        if (!known.has(k) || used.has(k)) continue
+        used.add(k)
+        list.push({ key: k, label: known.get(k)! })
+      }
+      if (list.length) out.push({ cat: c.cat, items: list })
+    }
+    const rest = [...known.entries()]
+      .filter(([k]) => !used.has(k))
+      .map(([key, label]) => ({ key, label }))
+      .sort((a, b) => a.label.localeCompare(b.label, 'fr'))
+    if (rest.length) out.push({ cat: 'Autres', items: rest })
+    return out
+  }, [catalog, known])
 
   const owned = useMemo(() => {
     const set = new Set(BASICS.map(norm))
     for (const it of items) set.add(norm(it))
     return set
   }, [items])
+  const favKeys = useMemo(() => new Set(favs.map(norm)), [favs])
 
   // Recettes triées par nombre d'ingrédients manquants.
   const { ready, near, rest } = useMemo(() => {
@@ -92,91 +141,48 @@ export function FridgeScreen({ recipes }: Props) {
     }
   }, [recipes, owned])
 
-  // Suggestions : ingrédients les plus fréquents des recettes, pas encore au frigo.
-  const suggestions = useMemo(() => {
-    const freq = new Map<string, { label: string; n: number }>()
-    for (const r of recipes)
-      for (const i of r.ingredients) {
-        const k = norm(i)
-        if (owned.has(k)) continue
-        const cur = freq.get(k)
-        if (cur) cur.n++
-        else freq.set(k, { label: i, n: 1 })
-      }
-    return [...freq.values()]
-      .sort((a, b) => b.n - a.n)
-      .slice(0, 8)
-      .map((f) => f.label)
-  }, [recipes, owned])
+  // Toujours proposer quelque chose : si rien de réalisable ni de « presque »,
+  // montrer les meilleures pistes (les recettes les moins incomplètes).
+  const fallback = items.length > 0 && ready.length === 0 && near.length === 0 ? rest.slice(0, 6) : []
 
-  // Autocomplétion : tous les ingrédients connus des recettes.
-  const knownIngredients = useMemo(() => {
-    const seen = new Map<string, string>()
-    for (const r of recipes)
-      for (const i of r.ingredients) {
-        const k = norm(i)
-        if (!seen.has(k) && !owned.has(k)) seen.set(k, i)
-      }
-    return [...seen.values()].sort((a, b) => a.localeCompare(b, 'fr'))
-  }, [recipes, owned])
-
-  function addItem(raw: string) {
-    const label = raw.replace(/\s+/g, ' ').trim()
-    if (!label) return
+  function toggleItem(label: string) {
     const k = norm(label)
-    setItems((prev) => (prev.some((p) => norm(p) === k) ? prev : [...prev, label]))
-    setInput('')
+    setItems((prev) =>
+      prev.some((p) => norm(p) === k) ? prev.filter((p) => norm(p) !== k) : [...prev, label],
+    )
+  }
+  function toggleFav(label: string) {
+    const k = norm(label)
+    setFavs((prev) =>
+      prev.some((p) => norm(p) === k) ? prev.filter((p) => norm(p) !== k) : [...prev, label],
+    )
   }
 
-  function removeItem(label: string) {
-    setItems((prev) => prev.filter((p) => p !== label))
-  }
+  const q = norm(search)
+  const searching = q.length > 0
+  const visibleGroups = searching
+    ? groups
+        .map((g) => ({ ...g, items: g.items.filter((i) => i.key.includes(q)) }))
+        .filter((g) => g.items.length > 0)
+    : groups
 
   return (
     <div className="screen">
       <h1 className="screen-title">Frigo</h1>
 
-      <div className="fridge-add">
-        <input
-          type="text"
-          value={input}
-          list="fridge-known"
-          placeholder="Ajouter un ingrédient (tomate, riz, poulet…)"
-          enterKeyHint="done"
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault()
-              addItem(input)
-            }
-          }}
-        />
-        <datalist id="fridge-known">
-          {knownIngredients.map((i) => (
-            <option key={i} value={i} />
-          ))}
-        </datalist>
-        <button type="button" className="tool-btn accent" onClick={() => addItem(input)}>
-          <Icon name="plus" size={16} /> Ajouter
-        </button>
-      </div>
-
+      {/* --- Ce que j'ai --- */}
       {items.length === 0 ? (
         <p className="tool-hint" style={{ marginTop: 0 }}>
-          Note ce que tu as dans ton frigo et tes placards : je te proposerai des recettes
-          réalisables (ou presque) avec ce que tu as. Sel, poivre, huile, sucre et vinaigre sont
-          considérés comme toujours disponibles.
+          Coche ci-dessous ce que tu as dans ton frigo et tes placards : je te proposerai des
+          recettes réalisables (ou presque) avec ce que tu as. Sel, poivre, huile, sucre et
+          vinaigre sont considérés toujours disponibles.
         </p>
       ) : (
         <div className="fridge-items">
           {items.map((it) => (
             <span className="fridge-chip" key={it}>
               {it}
-              <button
-                type="button"
-                onClick={() => removeItem(it)}
-                aria-label={`Retirer ${it} du frigo`}
-              >
+              <button type="button" onClick={() => toggleItem(it)} aria-label={`Retirer ${it} du frigo`}>
                 <Icon name="close" size={11} />
               </button>
             </span>
@@ -187,17 +193,110 @@ export function FridgeScreen({ recipes }: Props) {
         </div>
       )}
 
-      {suggestions.length > 0 && (
+      {/* --- Souvent utile (favoris gérés par l'utilisateur) --- */}
+      {favs.filter((f) => !owned.has(norm(f))).length > 0 && (
         <div className="fridge-suggest">
           <span className="fs-label">Souvent utile :</span>
-          {suggestions.map((s) => (
-            <button type="button" key={s} className="fs-chip" onClick={() => addItem(s)}>
-              + {s}
-            </button>
-          ))}
+          {favs
+            .filter((f) => !owned.has(norm(f)))
+            .map((f) => (
+              <span className="fs-chip" key={f}>
+                <button type="button" className="fs-add" onClick={() => toggleItem(f)}>
+                  + {f}
+                </button>
+                <button
+                  type="button"
+                  className="fs-del"
+                  onClick={() => toggleFav(f)}
+                  aria-label={`Retirer ${f} des favoris`}
+                >
+                  <Icon name="close" size={10} />
+                </button>
+              </span>
+            ))}
         </div>
       )}
 
+      {/* --- Catalogue d'aliments (recherche + catégories) --- */}
+      <div className="fridge-add">
+        <input
+          type="search"
+          value={search}
+          placeholder="Chercher un aliment (tomate, riz, poulet…)"
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+      <p className="tool-hint" style={{ marginTop: 0 }}>
+        Touche un aliment pour l'ajouter / le retirer, l'étoile pour le garder dans « Souvent
+        utile ». Tous les aliments proposés ont au moins une recette.
+      </p>
+
+      <div className="fridge-catalog">
+        {visibleGroups.map((g) => {
+          const open = searching || openCats.has(g.cat)
+          const ownedCount = g.items.filter((i) => owned.has(i.key)).length
+          return (
+            <div className="fc-group" key={g.cat}>
+              <button
+                type="button"
+                className="fc-head"
+                onClick={() =>
+                  setOpenCats((prev) => {
+                    const next = new Set(prev)
+                    if (next.has(g.cat)) next.delete(g.cat)
+                    else next.add(g.cat)
+                    return next
+                  })
+                }
+                aria-expanded={open}
+              >
+                <Icon name={open ? 'chevron-down' : 'chevron-right'} size={15} />
+                <span className="fc-name">{g.cat}</span>
+                <span className="fc-count">
+                  {ownedCount > 0 ? `${ownedCount} · ` : ''}
+                  {g.items.length}
+                </span>
+              </button>
+              {open && (
+                <div className="fc-items">
+                  {g.items.map((i) => {
+                    const has = owned.has(i.key)
+                    const fav = favKeys.has(i.key)
+                    return (
+                      <span className={`cat-item${has ? ' on' : ''}`} key={i.key}>
+                        <button
+                          type="button"
+                          className="cat-chip"
+                          onClick={() => toggleItem(i.label)}
+                          aria-pressed={has}
+                        >
+                          {has ? <Icon name="check" size={12} /> : '+'} {i.label}
+                        </button>
+                        <button
+                          type="button"
+                          className={`cat-star${fav ? ' on' : ''}`}
+                          onClick={() => toggleFav(i.label)}
+                          aria-pressed={fav}
+                          aria-label={
+                            fav ? `Retirer ${i.label} des favoris` : `Ajouter ${i.label} aux favoris`
+                          }
+                        >
+                          <Icon name="star" size={12} />
+                        </button>
+                      </span>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+          )
+        })}
+        {searching && visibleGroups.length === 0 && (
+          <p className="tool-hint">Aucun aliment ne correspond à « {search} ».</p>
+        )}
+      </div>
+
+      {/* --- Recettes --- */}
       {ready.length > 0 && (
         <>
           <div className="section-h">Réalisables maintenant · {ready.length}</div>
@@ -209,20 +308,20 @@ export function FridgeScreen({ recipes }: Props) {
 
       {near.length > 0 && (
         <>
-          <div className="section-h">
-            Presque — il manque 1 ou 2 ingrédients · {near.length}
-          </div>
+          <div className="section-h">Presque — il manque 1 ou 2 ingrédients · {near.length}</div>
           {near.map((s) => (
             <RecipeCard key={s.recipe.name} scored={s} owned={owned} />
           ))}
         </>
       )}
 
-      {items.length > 0 && ready.length === 0 && near.length === 0 && (
-        <p className="tool-hint">
-          Rien de réalisable avec ça pour l'instant — ajoute quelques ingrédients ou parcours
-          toutes les recettes ci-dessous.
-        </p>
+      {fallback.length > 0 && (
+        <>
+          <div className="section-h">Meilleures pistes avec ton frigo</div>
+          {fallback.map((s) => (
+            <RecipeCard key={s.recipe.name} scored={s} owned={owned} />
+          ))}
+        </>
       )}
 
       {rest.length > 0 && (
@@ -262,9 +361,7 @@ function RecipeCard({ scored, owned }: { scored: Scored; owned: Set<string> }) {
               <Icon name="check" size={12} /> Tout est là
             </span>
           ) : (
-            <span className="recipe-state warn">
-              Il manque : {missing.join(', ')}
-            </span>
+            <span className="recipe-state warn">Il manque : {missing.join(', ')}</span>
           )}
         </span>
         <span className="recipe-chevron" aria-hidden="true">

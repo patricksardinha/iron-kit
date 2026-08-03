@@ -14,9 +14,17 @@ import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import type { Session, Week, SessionLibrary } from '../types'
 import type { AppState } from '../hooks/useAppState'
 import { JALONS, phaseColor, phaseParts } from '../lib/constants'
-import { dateOfDay, dayKey, discLabel, optionKey, weekDatesLabel, weekVolume } from '../lib/logic'
+import {
+  dateOfDay,
+  dayKey,
+  discLabel,
+  formatDuration,
+  optionKey,
+  weekDatesLabel,
+  weekVolume,
+} from '../lib/logic'
 import { followPointer, parseSessId } from '../lib/dnd'
-import { weekProgress } from '../lib/stats'
+import { weekDoneMinutes, weekProgress } from '../lib/stats'
 import { DayCard } from './DayCard'
 import { Icon } from './Icon'
 
@@ -66,6 +74,10 @@ export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, libra
   }
   const prog = weekProgress(week, state.sessions)
   const pct = prog.total ? Math.round((prog.validated / prog.total) * 100) : 0
+  // Heures réellement effectuées vs prévues sur la semaine (le surplus reste visible).
+  const doneMin = weekDoneMinutes(week, state.sessions)
+  const plannedMin = Math.round(weekVolume(week) * 60)
+  const overHours = plannedMin > 0 && doneMin > plannedMin
   const pc = phaseColor(week.phase)
   const { num: phaseNum, label: phaseLabel } = phaseParts(week.phase)
   const jalon = JALONS.find((j) => j.wk === week.wk)
@@ -132,9 +144,15 @@ export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, libra
         </div>
         <div className="wk-obj">{week.obj}</div>
         <div className="progress-row">
-          <span className="muted">Séances validées</span>
+          <span className="muted">Jours validés</span>
           <span className="num">
             {prog.validated}/{prog.total}
+          </span>
+        </div>
+        <div className="progress-row">
+          <span className="muted">Heures effectuées</span>
+          <span className={`num${overHours ? ' over' : ''}`}>
+            {doneMin > 0 ? formatDuration(doneMin) : '0h'} / {formatDuration(plannedMin)}
           </span>
         </div>
         <div className="progress">

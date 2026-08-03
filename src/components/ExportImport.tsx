@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import type { State } from '../types'
-import { parseImported } from '../lib/storage'
+import { fullBackup, isFullBackup, parseImported, restoreFullBackup } from '../lib/storage'
 import { Icon } from './Icon'
 
 interface Props {
@@ -8,8 +8,12 @@ interface Props {
   onImport: (next: State) => void
 }
 
-// Export / import JSON de l'état (backup, changement d'appareil) — §6.
-export function ExportImport({ state, onImport }: Props) {
+// Export / import JSON (backup, changement d'appareil).
+// L'export couvre TOUT : tous les plans (avec leurs validations, notes, agencements),
+// les réglages, le frigo et les badges déjà vus. L'import d'une sauvegarde complète
+// remplace les données de l'appareil puis recharge l'app ; les anciens fichiers
+// (état seul) restent importés dans le plan actif, comme avant.
+export function ExportImport({ onImport }: Props) {
   const fileRef = useRef<HTMLInputElement>(null)
   const [toast, setToast] = useState<string | null>(null)
 
@@ -19,14 +23,14 @@ export function ExportImport({ state, onImport }: Props) {
   }
 
   function doExport() {
-    const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' })
+    const blob = new Blob([JSON.stringify(fullBackup(), null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = 'objectif-evian-backup.json'
+    a.download = 'ironkit-backup.json'
     a.click()
     URL.revokeObjectURL(url)
-    flash('Sauvegarde exportée')
+    flash('Sauvegarde complète exportée')
   }
 
   function onFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -36,6 +40,14 @@ export function ExportImport({ state, onImport }: Props) {
     const reader = new FileReader()
     reader.onload = () => {
       try {
+        const parsed: unknown = JSON.parse(String(reader.result))
+        if (isFullBackup(parsed)) {
+          restoreFullBackup(parsed)
+          flash('Sauvegarde restaurée — rechargement…')
+          window.setTimeout(() => window.location.reload(), 900)
+          return
+        }
+        // Ancien format : état seul → importé dans le plan actif.
         const next = parseImported(String(reader.result))
         onImport(next)
         flash('Sauvegarde importée')
@@ -66,8 +78,9 @@ export function ExportImport({ state, onImport }: Props) {
         />
       </div>
       <p className="tool-hint">
-        Données stockées uniquement sur cet appareil. Exporte un fichier pour sauvegarder ou
-        changer de téléphone.
+        Données stockées uniquement sur cet appareil. L'export contient <b>tout</b> : plans,
+        validations, notes, tests, réglages, thème et frigo — c'est le fichier à garder avant de
+        réinstaller ou pour changer de téléphone.
       </p>
       {toast && <div className="toast">{toast}</div>}
     </>

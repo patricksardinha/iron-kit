@@ -125,7 +125,7 @@ function PlanApp({
       {tab === 'rewards' && (
         <RewardsScreen weeks={weeksView} state={appState.state} today={today} />
       )}
-      {tab === 'fridge' && <FridgeScreen recipes={data.recipes} />}
+      {tab === 'fridge' && <FridgeScreen recipes={data.recipes} catalog={data.ingredients} />}
       {tab === 'settings' && (
         <SettingsScreen
           settings={settings.settings}

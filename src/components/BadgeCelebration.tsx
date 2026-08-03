@@ -76,7 +76,9 @@ export function BadgeCelebration({ badges, planId }: { badges: Badge[]; planId: 
     >
       <span className="bp-spark bp-spark-a">✦</span>
       <span className="bp-spark bp-spark-b">✧</span>
-      <span className="bp-emoji">{current.emoji}</span>
+      <span className="bp-emoji">
+        <Icon name={current.icon} size={32} />
+      </span>
       <span className="bp-text">
         <span className="bp-kicker">
           <Icon name="trophy" size={13} /> Badge débloqué !

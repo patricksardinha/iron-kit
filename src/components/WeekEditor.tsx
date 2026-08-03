@@ -472,6 +472,7 @@ function SessionRow({
           aria-expanded={showDetail}
           aria-label="Aperçu du détail de la séance"
         >
+          Détail
           <Icon name={showDetail ? 'close' : 'chevron-down'} size={15} />
         </button>
         <button

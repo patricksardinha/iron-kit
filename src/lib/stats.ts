@@ -58,6 +58,18 @@ export function hoursProgress(weeks: Week[], sessions: Sessions): {
   return { validated: Math.round((done / 60) * 10) / 10, planned }
 }
 
+/** Minutes réellement effectuées sur une semaine (0 loggé pour une épreuve → planifié). */
+export function weekDoneMinutes(week: Week, sessions: Sessions): number {
+  let min = 0
+  week.days.forEach((day, di) =>
+    day.forEach((s, si) => {
+      const k = sessionKey(week.wk, di, si)
+      if (k in sessions) min += sessions[k]! || s.min
+    }),
+  )
+  return min
+}
+
 export interface DisciplineStat {
   key: 'swim' | 'bike' | 'run'
   label: string
