@@ -293,9 +293,13 @@ svg {
 .progress-row .num {
   font-weight: 600;
 }
-/* surplus d'heures effectuées (au-delà du prévu) */
-.progress-row .num.over {
+/* heures effectuées : faites en gras, prévues atténuées, surplus en vert */
+.progress-row .num b.over {
   color: var(--done);
+}
+.progress-row .num .dim {
+  color: var(--muted);
+  font-weight: 500;
 }
 
 /* ---------- day card ---------- */
@@ -806,9 +810,17 @@ button:disabled {
   font-size: 11.5px;
   color: var(--muted);
 }
-/* surplus d'heures faites au-delà du prévu */
+/* heures faites (gras, pour les distinguer du prévu) + surplus (vert) / manque (rouge) */
+.plan-row .info .sub .sub-done {
+  color: var(--text);
+  font-weight: 700;
+}
 .plan-row .info .sub .sub-over {
   color: var(--done);
+  font-weight: 700;
+}
+.plan-row .info .sub .sub-miss {
+  color: var(--danger);
   font-weight: 700;
 }
 .plan-row .info .mini {

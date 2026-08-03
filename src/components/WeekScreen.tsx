@@ -21,6 +21,7 @@ import {
   formatDuration,
   optionKey,
   weekDatesLabel,
+  weekPlannedMinutes,
   weekVolume,
 } from '../lib/logic'
 import { followPointer, parseSessId } from '../lib/dnd'
@@ -76,7 +77,7 @@ export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, libra
   const pct = prog.total ? Math.round((prog.validated / prog.total) * 100) : 0
   // Heures réellement effectuées vs prévues sur la semaine (le surplus reste visible).
   const doneMin = weekDoneMinutes(week, state.sessions)
-  const plannedMin = Math.round(weekVolume(week) * 60)
+  const plannedMin = weekPlannedMinutes(week)
   const overHours = plannedMin > 0 && doneMin > plannedMin
   const pc = phaseColor(week.phase)
   const { num: phaseNum, label: phaseLabel } = phaseParts(week.phase)
@@ -151,8 +152,11 @@ export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, libra
         </div>
         <div className="progress-row">
           <span className="muted">Heures effectuées</span>
-          <span className={`num${overHours ? ' over' : ''}`}>
-            {doneMin > 0 ? formatDuration(doneMin) : '0h'} / {formatDuration(plannedMin)}
+          <span className="num">
+            <b className={overHours ? 'over' : ''}>
+              {doneMin > 0 ? formatDuration(doneMin) : '0h'}
+            </b>
+            <span className="dim"> / {formatDuration(plannedMin)}</span>
           </span>
         </div>
         <div className="progress">

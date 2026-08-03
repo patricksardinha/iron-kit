@@ -58,6 +58,7 @@ function loadList(key: string, fallback: string[]): string[] {
 interface Scored {
   recipe: Recipe
   missing: string[] // ingrédients manquants (libellés d'origine)
+  used: number // combien de MES ingrédients (hors placard de base) la recette utilise
 }
 
 interface CatalogItem {
@@ -125,21 +126,29 @@ export function FridgeScreen({ recipes, catalog }: Props) {
     for (const it of items) set.add(norm(it))
     return set
   }, [items])
+  // Mes ingrédients à moi (sans le placard de base) — pour scorer la pertinence.
+  const mine = useMemo(() => new Set(items.map(norm)), [items])
   const favKeys = useMemo(() => new Set(favs.map(norm)), [favs])
 
-  // Recettes triées par nombre d'ingrédients manquants.
+  // Recettes triées : d'abord le moins d'ingrédients manquants, puis, à égalité,
+  // celles qui utilisent LE PLUS de mes ingrédients (une recette de 5 ingrédients
+  // dont 4 sont dans mon frigo passe devant une recette de 2 dont 1 seul est à moi).
   const { ready, near, rest } = useMemo(() => {
     const scored: Scored[] = recipes.map((recipe) => ({
       recipe,
       missing: recipe.ingredients.filter((i) => !owned.has(norm(i))),
+      used: recipe.ingredients.filter((i) => mine.has(norm(i))).length,
     }))
-    scored.sort((a, b) => a.missing.length - b.missing.length)
+    scored.sort((a, b) => a.missing.length - b.missing.length || b.used - a.used)
+    const rest = scored.filter((s) => s.missing.length > NEAR_MISSING_MAX)
+    // Le fond de liste privilégie la pertinence : mes ingrédients d'abord.
+    rest.sort((a, b) => b.used - a.used || a.missing.length - b.missing.length)
     return {
       ready: scored.filter((s) => s.missing.length === 0),
       near: scored.filter((s) => s.missing.length > 0 && s.missing.length <= NEAR_MISSING_MAX),
-      rest: scored.filter((s) => s.missing.length > NEAR_MISSING_MAX),
+      rest,
     }
-  }, [recipes, owned])
+  }, [recipes, owned, mine])
 
   // Toujours proposer quelque chose : si rien de réalisable ni de « presque »,
   // montrer les meilleures pistes (les recettes les moins incomplètes).

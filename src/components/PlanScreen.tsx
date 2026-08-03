@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import type { Week, State, SessionLibrary } from '../types'
 import type { PlanApi } from '../hooks/usePlan'
 import { phaseColor, phaseParts } from '../lib/constants'
-import { applyLayout, formatDuration, weekDatesLabel, weekVolume } from '../lib/logic'
+import { applyLayout, formatDuration, weekDatesLabel, weekPlannedMinutes } from '../lib/logic'
 import { weekDoneMinutes, weekProgress } from '../lib/stats'
 import { Icon } from './Icon'
 import { WeekEditor } from './WeekEditor'
@@ -79,8 +79,14 @@ export function PlanScreen({ plan, state, currentWk, library }: Props) {
               const p = weekProgress(eff, state.sessions)
               const pct = p.total ? Math.min(100, (p.validated / p.total) * 100) : 0
               const doneMin = weekDoneMinutes(eff, state.sessions)
-              const plannedMin = Math.round(weekVolume(w) * 60)
+              const plannedMin = weekPlannedMinutes(w)
               const over = plannedMin > 0 && doneMin > plannedMin
+              // Manque affiché en rouge uniquement pour les semaines passées / en cours
+              // (une semaine future n'a rien de « pas fait »).
+              const missing =
+                w.wk <= currentWk && plannedMin > 0 && doneMin < plannedMin
+                  ? plannedMin - doneMin
+                  : 0
               return (
                 <div className={`edit-week${open ? ' open' : ''}`} key={w.wk}>
                   <button
@@ -93,10 +99,12 @@ export function PlanScreen({ plan, state, currentWk, library }: Props) {
                     <span className="info">
                       <span className="dates">{weekDatesLabel(w.start)}</span>
                       <span className="sub">
-                        {w.typ} · {doneMin > 0 ? formatDuration(doneMin) : '0h'}
+                        {w.typ} ·{' '}
+                        <b className="sub-done">{doneMin > 0 ? formatDuration(doneMin) : '0h'}</b>
                         {' / '}
                         {formatDuration(plannedMin)}
                         {over && <b className="sub-over"> +{formatDuration(doneMin - plannedMin)}</b>}
+                        {missing > 0 && <b className="sub-miss"> −{formatDuration(missing)}</b>}
                       </span>
                       <span className="mini">
                         <i className={pct >= 100 ? 'full' : ''} style={{ width: `${pct}%` }} />

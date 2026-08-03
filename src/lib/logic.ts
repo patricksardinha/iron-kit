@@ -130,11 +130,16 @@ function mergeLayout(planDays: Session[][], layoutDays: Session[][]): Session[][
   return days
 }
 
-/** Volume d'une semaine (heures) = Σ des durées de toutes les séances. */
-export function weekVolume(week: Week): number {
+/** Minutes prévues d'une semaine = Σ des durées de toutes les séances (valeur exacte). */
+export function weekPlannedMinutes(week: Week): number {
   let min = 0
   for (const day of week.days) for (const s of day) min += s.min || 0
-  return Math.round((min / 60) * 10) / 10
+  return min
+}
+
+/** Volume d'une semaine (heures, arrondi au dixième) — pour l'affichage « X h ». */
+export function weekVolume(week: Week): number {
+  return Math.round((weekPlannedMinutes(week) / 60) * 10) / 10
 }
 
 /** Discipline + couleur d'une séance (ou d'un jour via sa 1re séance). */
