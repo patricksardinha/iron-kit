@@ -49,7 +49,17 @@ export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, libra
   const week = weeks[weekIndex - 1]
   if (!week) return null
 
-  const { state, setSession, toggleOption, setNote, toggleLock, toggleTest, applyWeekMove } = appState
+  const {
+    state,
+    setSession,
+    toggleOption,
+    setNote,
+    toggleLock,
+    toggleTest,
+    applyWeekMove,
+    addExtraSession,
+    removeExtraSession,
+  } = appState
 
   function onDragStart(e: DragStartEvent) {
     if (!week) return
@@ -194,6 +204,8 @@ export function WeekScreen({ weeks, weekIndex, currentWk, today, appState, libra
                 onToggleOption={(label) => toggleOption(week.wk, di, label)}
                 onSetNote={(text) => setNote(week.wk, di, text)}
                 onToggleLock={() => toggleLock(week.wk, di)}
+                onAddExtra={(sess) => addExtraSession(week.wk, week.days, di, sess)}
+                onRemoveExtra={(si) => removeExtraSession(week.wk, week.days, di, si)}
               />
             )
           })}

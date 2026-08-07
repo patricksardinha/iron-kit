@@ -211,12 +211,22 @@ svg {
 }
 
 /* ---------- week header ---------- */
+/* Barre de navigation de semaine : collante au scroll pour changer de semaine
+   sans remonter en haut de page. Fond translucide + flou pour rester lisible. */
 .wk-nav {
+  position: sticky;
+  top: calc(var(--safe-t) + 6px);
+  z-index: 30;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
   margin-bottom: 12px;
+  padding: 6px;
+  border-radius: var(--r-lg);
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .wk-nav button.arrow {
@@ -1865,6 +1875,71 @@ button:disabled {
   background: var(--surface3);
 }
 
+/* ---- séance extra (hors plan, ajoutée depuis Semaine) ---- */
+.sess-flag.extra {
+  color: var(--accent);
+}
+.extra-del {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  color: var(--faint);
+}
+.extra-del:active {
+  color: var(--danger);
+  background: var(--surface2);
+}
+.extra-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px dashed color-mix(in srgb, var(--accent) 45%, var(--line));
+  border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface2));
+}
+.extra-form .extra-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.extra-form select,
+.extra-form input {
+  min-height: 38px;
+  padding: 0 10px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+}
+.extra-form select {
+  flex: 1;
+}
+.extra-form input[type='number'] {
+  width: 72px;
+  text-align: center;
+}
+.extra-form input[type='text'] {
+  flex: 1;
+  min-width: 0;
+}
+.extra-form .extra-unit {
+  font-size: 12px;
+  color: var(--muted);
+}
+.extra-form .tool-btn {
+  flex: 0 0 auto;
+  min-height: 38px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
 /* ---- badges / récompenses ---- */
 .section-count {
   font-size: 12px;
@@ -1890,14 +1965,29 @@ button:disabled {
   background: var(--surface);
   overflow: hidden;
 }
+/* médaillon de l'icône du badge */
 .badge-emoji {
   display: grid;
   place-items: center;
-  height: 32px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  margin-bottom: 3px;
   color: var(--muted);
+  background: var(--surface2);
+  border: 1.5px solid var(--line);
 }
 .badge-card.earned .badge-emoji {
   color: var(--tc, var(--silver));
+  background: color-mix(in srgb, var(--tc, var(--silver)) 18%, var(--surface2));
+  border-color: color-mix(in srgb, var(--tc, var(--silver)) 65%, transparent);
+  box-shadow: 0 4px 14px -4px color-mix(in srgb, var(--tc, var(--silver)) 60%, transparent);
+  animation: checkpop 0.35s ease;
+}
+/* les paliers or & spéciaux flottent doucement */
+.badge-card.tier-gold.earned .badge-emoji,
+.badge-card.tier-special.earned .badge-emoji {
+  animation: float 3.2s ease-in-out infinite;
 }
 .badge-title {
   font-size: 11.5px;
@@ -1966,8 +2056,25 @@ button:disabled {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--tc) 22%, transparent), transparent 62%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--tc) 30%, transparent), transparent 68%);
   pointer-events: none;
+}
+/* reflet animé sur les paliers or & spéciaux */
+.badge-card.tier-gold.earned::after,
+.badge-card.tier-special.earned::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    transparent 42%,
+    color-mix(in srgb, var(--tc) 26%, transparent) 50%,
+    transparent 58%
+  );
+  background-size: 260% 100%;
+  animation: shimmer 3s linear infinite;
 }
 .badge-card.earned .badge-check {
   background: var(--tc);
@@ -2156,53 +2263,120 @@ button:disabled {
   gap: 2px;
 }
 
-/* ---- récap récompenses ---- */
-.rewards-summary {
-  background: var(--surface);
-  border: 1px solid var(--line);
+/* ---- carte de niveau (bois → légende) ---- */
+.level-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--lc) 20%, var(--surface)), var(--surface) 70%);
+  border: 1px solid color-mix(in srgb, var(--lc) 55%, var(--line));
   border-radius: var(--r-lg);
   padding: 16px;
-  margin-bottom: 18px;
-  box-shadow: var(--shadow-md);
+  margin-bottom: 12px;
+  box-shadow: 0 10px 30px -12px color-mix(in srgb, var(--lc) 55%, transparent);
 }
-.rw-top {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
+/* reflet animé qui balaie la carte */
+.level-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 42%,
+    color-mix(in srgb, var(--lc) 22%, transparent) 50%,
+    transparent 58%
+  );
+  background-size: 260% 100%;
+  animation: shimmer 3.2s linear infinite;
 }
-.rw-count {
-  font-family: var(--font-display);
-  font-size: 30px;
+.lv-medal {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--lc);
+  background: color-mix(in srgb, var(--lc) 16%, var(--surface2));
+  border: 2px solid color-mix(in srgb, var(--lc) 60%, transparent);
+  filter: drop-shadow(0 4px 14px color-mix(in srgb, var(--lc) 45%, transparent));
+  animation: float 3.4s ease-in-out infinite;
+}
+.lv-body {
+  flex: 1;
+  min-width: 0;
+}
+.lv-kicker {
+  font-size: 10px;
   font-weight: 800;
-  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--lc);
 }
-.rw-count small {
-  font-size: 15px;
-  color: var(--muted);
-  font-weight: 600;
-}
-.rw-pct {
+.lv-name {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.1;
   color: var(--text);
 }
-.rw-track {
-  height: 9px;
-  border-radius: 999px;
-  background: var(--surface2);
-  overflow: hidden;
-  margin: 10px 0 6px;
+.lv-sub {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 2px;
 }
-.rw-track > i {
+.lv-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--lc) 14%, var(--surface2));
+  overflow: hidden;
+  margin: 8px 0 5px;
+}
+.lv-bar > i {
   display: block;
   height: 100%;
   border-radius: 999px;
-  background: var(--accent);
-  transition: width 0.4s ease;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--lc) 70%, var(--surface)), var(--lc));
+  transition: width 0.5s ease;
 }
-.rw-lbl {
-  font-size: 12px;
+.lv-goal {
+  font-size: 11.5px;
   color: var(--muted);
+}
+.lv-goal b {
+  color: var(--lc);
+}
+
+/* échelle des niveaux */
+.level-track {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.lv-step {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--faint);
+  background: var(--surface);
+}
+.lv-step.on {
+  color: color-mix(in srgb, var(--lc) 80%, var(--text));
+  border-color: color-mix(in srgb, var(--lc) 55%, transparent);
+  background: color-mix(in srgb, var(--lc) 14%, var(--surface));
+}
+.lv-step.cur {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--lc) 45%, transparent);
+  animation: pop 0.3s ease;
 }
 .reward-group {
   margin-bottom: 6px;
@@ -2587,11 +2761,34 @@ button:disabled {
   border-radius: 999px;
 }
 
-/* ---- semaine sélectionnée dans Plan (cadre pointillé) ---- */
-.edit-week.open {
-  outline: 2px dashed var(--accent);
-  outline-offset: 3px;
+/* ---- vue dédiée d'édition d'une semaine (Plan) ---- */
+.edit-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 38px;
+  padding: 0 12px 0 8px;
   border-radius: var(--r-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.back-btn:active {
+  background: var(--surface2);
+}
+.title-sub {
+  font-size: 15px;
+  color: var(--muted);
+  font-weight: 500;
 }
 
 /* ---------- Graphiques (Progression) ---------- */

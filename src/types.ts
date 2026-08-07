@@ -10,6 +10,9 @@ export interface Session {
   detail: string // libre : « Z2 vallonné », « 5×4' bosses », « 2000 m EL »…
   min: number // durée en minutes (0 possible)
   info?: SessionInfo // détail éditable (override du catalogue sessions.json), propre au plan
+  // Séance EXTRA ajoutée depuis l'onglet Semaine : hors plan (jamais comptée dans le
+  // « prévu »), vit dans state.layout et survit à la fusion plan/réalité.
+  extra?: true
 }
 
 export interface Week {

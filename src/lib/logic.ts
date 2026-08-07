@@ -108,8 +108,11 @@ function mergeLayout(planDays: Session[][], layoutDays: Session[][]): Session[][
       remaining.set(k, (remaining.get(k) ?? 0) + 1)
     }
   // Garde les séances du layout encore présentes dans le plan, à leur place.
+  // Les séances EXTRA (ajoutées depuis Semaine) n'existent pas dans le plan :
+  // elles sont toujours conservées telles quelles.
   const days = planDays.map((_, di) =>
     (layoutDays[di] ?? []).filter((s) => {
+      if (s.extra) return true
       const k = sessSig(s)
       const n = remaining.get(k) ?? 0
       if (n <= 0) return false
@@ -130,10 +133,11 @@ function mergeLayout(planDays: Session[][], layoutDays: Session[][]): Session[][
   return days
 }
 
-/** Minutes prévues d'une semaine = Σ des durées de toutes les séances (valeur exacte). */
+/** Minutes prévues d'une semaine = Σ des durées des séances PLANIFIÉES (les séances
+ * extra ajoutées depuis l'onglet Semaine ne comptent que dans le « fait »). */
 export function weekPlannedMinutes(week: Week): number {
   let min = 0
-  for (const day of week.days) for (const s of day) min += s.min || 0
+  for (const day of week.days) for (const s of day) if (!s.extra) min += s.min || 0
   return min
 }
 

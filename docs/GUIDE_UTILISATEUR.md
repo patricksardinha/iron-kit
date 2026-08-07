@@ -25,8 +25,9 @@ Les mises à jour s'installent automatiquement à l'ouverture suivante quand tu 
 C'est l'écran principal : la semaine en cours, jour par jour.
 
 ### Naviguer
-- Les flèches ← → changent de semaine ; le bouton **« Semaine du jour »** (en bas) te ramène
-  toujours à la semaine courante.
+- Les flèches ← → changent de semaine ; la barre de navigation **reste collée en haut de
+  l'écran** quand tu scrolles, pour changer de semaine sans remonter. Le bouton
+  **« Semaine du jour »** (en bas) te ramène toujours à la semaine courante.
 - Le jour actuel est surligné ; un jour d'entraînement passé non validé est marqué **« manqué »**.
 
 ### Valider une séance
@@ -39,6 +40,13 @@ Chaque séance a une **pastille** à gauche :
 - Un jour est « Enregistré » quand toutes ses séances sont renseignées.
 - La carte en tête de semaine affiche les **jours validés** et les **heures réellement
   effectuées** face aux heures prévues — le surplus s'affiche en vert si tu en fais plus.
+
+### Ajouter une séance extra (hors plan)
+Le bouton **+ Séance** d'un jour ajoute une séance **extra** : une sortie imprévue qui n'était
+pas planifiée (footing bonus, sortie entre amis…). Choisis la discipline, la durée et un détail
+libre. Les extras portent l'étiquette *extra*, se valident comme les autres et comptent dans tes
+**heures effectuées** — mais jamais dans les heures *prévues* (le plan reste intact). La petite
+poubelle les supprime.
 
 ### Déplacer une séance (imprévu, météo…)
 Attrape une séance par sa **poignée** ⠿ et dépose-la sur un autre jour. C'est ta **réalité** qui
@@ -75,9 +83,11 @@ passe en vert « Test validé ». Les tests validés comptent dans Progrès et d
 
 ## Onglet Plan — la théorie
 
-Touche une semaine pour l'ouvrir en édition. Tout est enregistré automatiquement. Chaque ligne
-de semaine montre les heures faites / prévues (avec le surplus éventuel en vert) et une barre de
-progression des jours validés — calculée sur ton agencement réel, séances déplacées comprises.
+Touche une semaine : elle s'ouvre dans une **vue dédiée** (les autres semaines sont masquées),
+avec un bouton retour qui te ramène au plan à l'endroit où tu étais. Tout est enregistré
+automatiquement. Dans la liste, chaque semaine montre les heures faites (en gras) / prévues,
+le surplus en vert ou le manque en rouge, et une barre de progression des jours validés —
+calculée sur ton agencement réel, séances déplacées comprises.
 
 - **Semaine** : date de début (toujours un lundi), phase (Fondation → Pic & Affûtage), type
   (Charge, Récup, PIC…), objectif libre.
@@ -98,11 +108,13 @@ progression des jours validés — calculée sur ton agencement réel, séances 
 
 ## Onglet Badges
 
-Des récompenses par paliers — bronze, argent, or, spéciale — regroupées par thème : premiers pas,
-régularité (séries), assiduité, volume horaire, chaque discipline, semaines parfaites, tests…
-Chaque badge a son icône, colorée à la teinte de son palier une fois débloqué. Certains badges
-sont **secrets** (« ? ») : à toi de les découvrir. Quand un badge se débloque, une notification
-animée apparaît en haut de l'écran.
+75 badges par paliers — bronze (1 pt), argent (2 pts), or (3 pts), spécial (5 pts) — regroupés
+par thème : premiers pas, régularité (séries), assiduité, volume horaire, chaque discipline,
+semaines parfaites, tests… Chaque badge débloqué rapporte des points qui font monter ton
+**niveau global** : Bois → Pierre → Bronze → Argent → Or → Platine → Diamant → **Légende**,
+affiché en haut de l'onglet avec ta progression vers le niveau suivant. Les badges or et
+spéciaux brillent d'un reflet animé. Certains badges sont **secrets** (« ? ») : à toi de les
+découvrir. Quand un badge se débloque, une notification animée apparaît en haut de l'écran.
 
 ---
 

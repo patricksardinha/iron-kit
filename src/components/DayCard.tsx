@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useDroppable } from '@dnd-kit/core'
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import type { Session, SessionLibrary } from '../types'
+import type { Session, SessionDisc, SessionLibrary } from '../types'
 import { DAY_NAMES } from '../lib/constants'
 import { resolveSession, restInfo } from '../lib/sessions'
 import { dayDropId, sessId } from '../lib/dnd'
@@ -37,6 +37,8 @@ interface Props {
   onToggleOption: (label: string) => void
   onSetNote: (text: string) => void
   onToggleLock: () => void
+  onAddExtra: (sess: Session) => void
+  onRemoveExtra: (si: number) => void
 }
 
 export function DayCard({
@@ -56,9 +58,12 @@ export function DayCard({
   onToggleOption,
   onSetNote,
   onToggleLock,
+  onAddExtra,
+  onRemoveExtra,
 }: Props) {
   const [editing, setEditing] = useState(false)
   const [showDetail, setShowDetail] = useState(false)
+  const [addingExtra, setAddingExtra] = useState(false)
   const training = isTrainingDay(day)
   const dayDone = isDayValidated(wk, di, day, sessions)
   const overdue = !dayDone && isOverdue(date, day, today)
@@ -154,6 +159,7 @@ export function DayCard({
                 sessions={sessions}
                 locked={locked}
                 onSetSession={onSetSession}
+                onRemoveExtra={onRemoveExtra}
               />
             ))}
           </ul>
@@ -191,6 +197,17 @@ export function DayCard({
 
         <button
           type="button"
+          className={`detail-btn extra-btn${addingExtra ? ' active' : ''}`}
+          disabled={locked}
+          onClick={() => setAddingExtra((a) => !a)}
+          aria-expanded={addingExtra}
+          title="Ajouter une séance extra (hors plan) à ce jour"
+        >
+          <Icon name={addingExtra ? 'close' : 'plus'} size={15} /> Séance
+        </button>
+
+        <button
+          type="button"
           className={`note-btn${note ? ' has' : ''}${editing ? ' active' : ''}`}
           disabled={locked}
           onClick={() => setEditing((e) => !e)}
@@ -200,6 +217,15 @@ export function DayCard({
           <Icon name={editing ? 'close' : 'note'} size={16} />
         </button>
       </div>
+
+      {addingExtra && (
+        <ExtraForm
+          onAdd={(sess) => {
+            onAddExtra(sess)
+            setAddingExtra(false)
+          }}
+        />
+      )}
 
       {showDetail && (
         <div className="day-detail">
@@ -243,6 +269,55 @@ export function DayCard({
   )
 }
 
+// Formulaire compact d'ajout d'une séance EXTRA (hors plan) au jour courant.
+const EXTRA_DISCS: SessionDisc[] = ['run', 'bike', 'swim', 'strength', 'other']
+
+function ExtraForm({ onAdd }: { onAdd: (sess: Session) => void }) {
+  const [disc, setDisc] = useState<SessionDisc>('run')
+  const [detail, setDetail] = useState('')
+  const [min, setMin] = useState(30)
+
+  return (
+    <div className="extra-form">
+      <div className="extra-row">
+        <select value={disc} onChange={(e) => setDisc(e.target.value as SessionDisc)} aria-label="Discipline">
+          {EXTRA_DISCS.map((d) => (
+            <option key={d} value={d}>
+              {discLabel(d)}
+            </option>
+          ))}
+        </select>
+        <input
+          type="number"
+          inputMode="numeric"
+          min={5}
+          max={360}
+          step={5}
+          value={min}
+          onChange={(e) => setMin(Math.max(5, Math.min(360, Number(e.target.value) || 0)))}
+          aria-label="Durée (minutes)"
+        />
+        <span className="extra-unit">min</span>
+      </div>
+      <div className="extra-row">
+        <input
+          type="text"
+          value={detail}
+          placeholder="Détail (ex. footing léger, sortie imprévue…)"
+          onChange={(e) => setDetail(e.target.value)}
+        />
+        <button
+          type="button"
+          className="tool-btn accent"
+          onClick={() => onAdd({ disc, detail: detail.trim(), min })}
+        >
+          <Icon name="plus" size={15} /> Ajouter
+        </button>
+      </div>
+    </div>
+  )
+}
+
 // Une séance déplaçable (poignée) dans la vue Semaine — la validation suit la séance.
 function DragSess({
   id,
@@ -253,6 +328,7 @@ function DragSess({
   sessions,
   locked,
   onSetSession,
+  onRemoveExtra,
 }: {
   id: string
   s: Session
@@ -262,6 +338,7 @@ function DragSess({
   sessions: Record<string, number>
   locked: boolean
   onSetSession: (si: number, min: number | null) => void
+  onRemoveExtra: (si: number) => void
 }) {
   const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition, isDragging } =
     useSortable({ id, disabled: locked })
@@ -308,7 +385,21 @@ function DragSess({
         {status === 'zero' && <b className="g">✕</b>}
       </button>
       <span className="sess-body">
-        <span className="sess-label">{s.detail || discLabel(s.disc)}</span>
+        <span className="sess-label">
+          {s.detail || discLabel(s.disc)}
+          {s.extra && <span className="sess-flag extra"> extra</span>}
+        </span>
+        {s.extra && !locked && (
+          <button
+            type="button"
+            className="extra-del"
+            onClick={() => onRemoveExtra(si)}
+            aria-label="Supprimer la séance extra"
+            title="Supprimer la séance extra"
+          >
+            <Icon name="trash" size={13} />
+          </button>
+        )}
         {s.min > 0 && (
           <span className="sess-dur">
             {logged ? (

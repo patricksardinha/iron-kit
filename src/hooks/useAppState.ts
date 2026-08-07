@@ -21,6 +21,9 @@ export interface AppState {
     toDi: number,
     toSi: number,
   ) => void
+  // Séances EXTRA (hors plan) ajoutées/retirées directement dans l'onglet Semaine.
+  addExtraSession: (wk: number, days: Session[][], di: number, sess: Session) => void
+  removeExtraSession: (wk: number, days: Session[][], di: number, si: number) => void
   replaceState: (next: State) => void
   remapAfterDeleteWeek: (pos: number) => void
   remapAfterInsertWeek: (pos: number) => void
@@ -150,6 +153,47 @@ export function useAppState(planId: string): AppState {
     [],
   )
 
+  // Ajoute une séance extra en fin de journée (les validations existantes ne bougent pas).
+  const addExtraSession = useCallback((wk: number, days: Session[][], di: number, sess: Session) => {
+    setState((s) => {
+      if (!days[di]) return s
+      const nd = days.map((d) => [...d])
+      nd[di]!.push({ ...sess, extra: true })
+      return { ...s, layout: { ...s.layout, [String(wk)]: nd } }
+    })
+  }, [])
+
+  // Retire une séance extra + réaligne les validations positionnelles de la semaine.
+  const removeExtraSession = useCallback(
+    (wk: number, days: Session[][], di: number, si: number) => {
+      setState((s) => {
+        if (!days[di]?.[si]?.extra) return s
+        const val = days.map((day, d) =>
+          day.map((_, i) => {
+            const k = sessionKey(wk, d, i)
+            return k in s.sessions ? s.sessions[k]! : undefined
+          }),
+        )
+        const nd = days.map((d) => [...d])
+        const nv = val.map((a) => [...a])
+        nd[di]!.splice(si, 1)
+        nv[di]!.splice(si, 1)
+        const prefix = `${wk}-`
+        const sessions: Record<string, number> = {}
+        for (const [k, v] of Object.entries(s.sessions)) {
+          if (!k.startsWith(prefix)) sessions[k] = v
+        }
+        nv.forEach((day, d) =>
+          day.forEach((v, i) => {
+            if (v !== undefined) sessions[sessionKey(wk, d, i)] = v
+          }),
+        )
+        return { ...s, sessions, layout: { ...s.layout, [String(wk)]: nd } }
+      })
+    },
+    [],
+  )
+
   const replaceState = useCallback((next: State) => setState(next), [])
 
   const applyRemap = useCallback((map: (wk: number) => number | null) => {
@@ -190,6 +234,8 @@ export function useAppState(planId: string): AppState {
     toggleLock,
     toggleTest,
     applyWeekMove,
+    addExtraSession,
+    removeExtraSession,
     replaceState,
     remapAfterDeleteWeek,
     remapAfterInsertWeek,

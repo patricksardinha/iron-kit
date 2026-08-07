@@ -1,5 +1,5 @@
 import type { Badge, State, Week } from '../types'
-import { computeBadges } from '../lib/badges'
+import { LEVELS, badgePoints, computeBadges, levelFor } from '../lib/badges'
 import { Icon } from './Icon'
 
 interface Props {
@@ -11,7 +11,13 @@ interface Props {
 export function RewardsScreen({ weeks, state, today }: Props) {
   const badges = computeBadges(weeks, state, today)
   const earned = badges.filter((b) => b.earned).length
-  const pct = badges.length ? Math.round((earned / badges.length) * 100) : 0
+
+  // Niveau global : chaque badge rapporte des points selon son palier.
+  const points = badgePoints(badges)
+  const { level, next } = levelFor(points)
+  const lvlPct = next
+    ? Math.round(((points - level.min) / (next.min - level.min)) * 100)
+    : 100
 
   // Regroupe par catégorie (ordre de première apparition).
   const groups: { name: string; items: Badge[] }[] = []
@@ -28,18 +34,42 @@ export function RewardsScreen({ weeks, state, today }: Props) {
     <div className="screen">
       <h1 className="screen-title">Badges</h1>
 
-      <div className="rewards-summary">
-        <div className="rw-top">
-          <span className="rw-count">
-            {earned}
-            <small> / {badges.length}</small>
+      {/* Carte de niveau : bois → légende, alimentée par les points des badges. */}
+      <div className="level-card" style={{ ['--lc' as string]: level.color }}>
+        <div className="lv-medal">
+          <Icon name="medal" size={32} />
+        </div>
+        <div className="lv-body">
+          <div className="lv-kicker">Niveau</div>
+          <div className="lv-name">{level.name}</div>
+          <div className="lv-sub">
+            {points} pts · {earned}/{badges.length} badges
+          </div>
+          <div className="lv-bar">
+            <i style={{ width: `${lvlPct}%` }} />
+          </div>
+          <div className="lv-goal">
+            {next ? (
+              <>
+                Prochain niveau : <b>{next.name}</b> à {next.min} pts
+              </>
+            ) : (
+              'Niveau maximum atteint. Légende vivante.'
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="level-track" aria-label="Échelle des niveaux">
+        {LEVELS.map((l) => (
+          <span
+            key={l.id}
+            className={`lv-step${points >= l.min ? ' on' : ''}${l.id === level.id ? ' cur' : ''}`}
+            style={{ ['--lc' as string]: l.color }}
+          >
+            {l.name}
           </span>
-          <span className="rw-pct">{pct}%</span>
-        </div>
-        <div className="rw-track">
-          <i style={{ width: `${pct}%` }} />
-        </div>
-        <div className="rw-lbl">récompenses débloquées</div>
+        ))}
       </div>
 
       {groups.map((g) => {
